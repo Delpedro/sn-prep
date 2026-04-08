@@ -1,0 +1,1650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServiceNow Scripting Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f8f9fb;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 2.5rem 1.2rem;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: #8b5cf6; }
+
+  header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #8b5cf6, #6366f1);
+    margin: 1.2rem auto 0;
+    border-radius: 2px;
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .role-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    color: #7c3aed;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Progress */
+  .progress-wrap { margin-bottom: 2rem; }
+
+  .progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #94a3b8;
+    text-align: right;
+    margin-bottom: 0.4rem;
+  }
+
+  .progress-bar {
+    background: #e2e8f0;
+    border-radius: 20px;
+    height: 8px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8b5cf6, #6366f1);
+    border-radius: 20px;
+    transition: width 0.5s ease;
+    width: 0%;
+  }
+
+  /* Filter tabs */
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .filter-tab:hover { border-color: #8b5cf6; color: #7c3aed; }
+
+  .filter-tab.active {
+    background: rgba(139, 92, 246, 0.08);
+    border-color: rgba(139, 92, 246, 0.4);
+    color: #7c3aed;
+    font-weight: 600;
+  }
+
+  /* Section labels */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.85rem;
+    margin-top: 2.5rem;
+  }
+
+  .section-label:first-of-type { margin-top: 0; }
+
+  /* Cards */
+  .card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .card:hover { border-color: #8b5cf6; }
+
+  .card.answered-correct {
+    border-color: #10b981;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.1);
+  }
+
+  .card.answered-partial {
+    border-color: #f59e0b;
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.1);
+  }
+
+  .card.open {
+    border-color: #8b5cf6;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
+  }
+
+  .card-header {
+    padding: 1.3rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .card-header:hover { background: #f8fafc; }
+
+  .q-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  }
+
+  .q-text {
+    flex: 1;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.45;
+  }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.15rem 0.55rem;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+
+  .badge-gliderecord { background: rgba(59,130,246,0.08); color: #2563eb; border: 1px solid rgba(59,130,246,0.2); }
+  .badge-rules { background: rgba(16,185,129,0.08); color: #059669; border: 1px solid rgba(16,185,129,0.2); }
+  .badge-client { background: rgba(245,158,11,0.08); color: #d97706; border: 1px solid rgba(245,158,11,0.2); }
+  .badge-glideajax { background: rgba(239,68,68,0.08); color: #dc2626; border: 1px solid rgba(239,68,68,0.2); }
+  .badge-api { background: rgba(139,92,246,0.08); color: #7c3aed; border: 1px solid rgba(139,92,246,0.2); }
+
+  .status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: #e2e8f0;
+    transition: background 0.3s;
+  }
+
+  .status-dot.correct { background: #10b981; }
+  .status-dot.partial { background: #f59e0b; }
+
+  .toggle-icon {
+    font-size: 1.4rem;
+    color: #94a3b8;
+    transition: transform 0.3s ease, color 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .card.open .toggle-icon { transform: rotate(45deg); color: #8b5cf6; }
+
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .card-body-inner { padding: 0 1.5rem 1.5rem 1.5rem; }
+
+  .divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin-bottom: 1.3rem;
+  }
+
+  /* Answer input area */
+  .answer-area { margin-bottom: 1.2rem; }
+
+  .answer-area textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #1e293b;
+    background: #f8fafc;
+    resize: vertical;
+    transition: border-color 0.2s;
+  }
+
+  .answer-area textarea:focus {
+    outline: none;
+    border-color: #8b5cf6;
+    background: #fff;
+  }
+
+  .answer-area textarea::placeholder { color: #94a3b8; }
+
+  .answer-actions {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.7rem;
+    align-items: center;
+  }
+
+  .btn-check {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 0.6rem 1.3rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: #fff;
+  }
+
+  .btn-check:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3); }
+  .btn-check:disabled { opacity: 0.4; cursor: not-allowed; transform: none; box-shadow: none; }
+
+  .btn-reveal {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.2s;
+  }
+
+  .btn-reveal:hover { border-color: #8b5cf6; color: #7c3aed; }
+
+  .btn-reset {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    padding: 0.6rem 1.1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #fff;
+    color: #94a3b8;
+    transition: all 0.2s;
+    display: none;
+  }
+
+  .btn-reset.visible { display: inline-block; }
+  .btn-reset:hover { border-color: #ef4444; color: #dc2626; }
+
+  .reset-all-wrap {
+    text-align: right;
+    margin-bottom: 1rem;
+  }
+
+  .btn-reset-all {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #fff;
+    color: #94a3b8;
+    transition: all 0.2s;
+  }
+
+  .btn-reset-all:hover { border-color: #ef4444; color: #dc2626; }
+
+  .hint-text-small {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-left: auto;
+  }
+
+  /* Key points (what we check for) */
+  .key-points {
+    margin-bottom: 1.2rem;
+    padding: 0.9rem 1.1rem;
+    background: rgba(139, 92, 246, 0.04);
+    border: 1px solid rgba(139, 92, 246, 0.12);
+    border-radius: 10px;
+    display: none;
+  }
+
+  .key-points.visible { display: block; }
+
+  .key-points-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #7c3aed;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.6rem;
+  }
+
+  .key-point {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    margin-bottom: 0.4rem;
+    font-size: 0.92rem;
+    color: #475569;
+    line-height: 1.5;
+  }
+
+  .key-point-icon {
+    flex-shrink: 0;
+    margin-top: 2px;
+    font-size: 0.85rem;
+  }
+
+  .key-point.hit { color: #059669; }
+  .key-point.miss { color: #94a3b8; }
+
+  /* Full answer reveal */
+  .full-answer {
+    margin-top: 1rem;
+    padding: 1.1rem 1.3rem;
+    background: #f5f3ff;
+    border: 1px solid #ddd6fe;
+    border-radius: 10px;
+    display: none;
+  }
+
+  .full-answer.visible { display: block; }
+
+  .full-answer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #7c3aed;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.7rem;
+  }
+
+  .full-answer-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #334155;
+  }
+
+  .full-answer-text code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    background: rgba(139, 92, 246, 0.08);
+    padding: 0.15rem 0.4rem;
+    border-radius: 5px;
+    color: #6d28d9;
+  }
+
+  .code-block {
+    background: #1e1b2e;
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    margin: 0.8rem 0;
+    overflow-x: auto;
+  }
+
+  .code-block code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    line-height: 1.7;
+    color: #e2d9f3;
+    background: none;
+    padding: 0;
+  }
+
+  .code-block .comment { color: #6b7280; }
+  .code-block .keyword { color: #c084fc; }
+  .code-block .string { color: #86efac; }
+  .code-block .method { color: #67e8f9; }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease;
+    padding: 1.5rem;
+  }
+
+  .modal-overlay.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal {
+    background: #fff;
+    border-radius: 18px;
+    max-width: 440px;
+    width: 100%;
+    padding: 2rem;
+    text-align: center;
+    transform: scale(0.9);
+    transition: transform 0.25s ease;
+    box-shadow: 0 24px 48px rgba(0,0,0,0.12);
+  }
+
+  .modal-overlay.show .modal { transform: scale(1); }
+
+  .modal-emoji { font-size: 3rem; margin-bottom: 0.8rem; }
+
+  .modal-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.4rem;
+  }
+
+  .modal-subtitle {
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .modal-score {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    display: inline-block;
+    margin-bottom: 1.2rem;
+  }
+
+  .modal-score.great { background: rgba(16,185,129,0.1); color: #059669; }
+  .modal-score.ok { background: rgba(245,158,11,0.1); color: #d97706; }
+  .modal-score.miss { background: rgba(239,68,68,0.1); color: #dc2626; }
+
+  .modal-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: 0.7rem 2rem;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #8b5cf6, #6366f1);
+    color: #fff;
+    transition: all 0.2s;
+  }
+
+  .modal-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(139,92,246,0.3); }
+
+  /* Think / Gotcha boxes */
+  .think-box {
+    margin-top: 1rem;
+    padding: 0.85rem 1.1rem;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #0369a1;
+  }
+
+  .gotcha {
+    margin-top: 0.7rem;
+    padding: 0.85rem 1.1rem;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #92400e;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+  }
+
+  @media (max-width: 500px) {
+    body { padding: 1.2rem 0.8rem; }
+    h1 { font-size: 1.5rem; }
+    .card-header { padding: 1.1rem; }
+    .card-body-inner { padding: 0 1.1rem 1.1rem; }
+    .q-text { font-size: 1.05rem; }
+    .answer-actions { flex-wrap: wrap; }
+    .hint-text-small { margin-left: 0; width: 100%; margin-top: 0.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="index.html" class="back-link">← back</a>
+
+  <header>
+    <h1>Scripting Guide</h1>
+    <p class="subtitle">GlideRecord • Business Rules • Client Scripts • GlideAjax</p>
+    <span class="role-tag">type your answer • check what you know</span>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-label" id="progressLabel">0 / 15 attempted</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="filter-tabs">
+    <div class="filter-tab active" onclick="filterCards('all')">All</div>
+    <div class="filter-tab" onclick="filterCards('gliderecord')">GlideRecord</div>
+    <div class="filter-tab" onclick="filterCards('rules')">Business Rules</div>
+    <div class="filter-tab" onclick="filterCards('client')">Client-Side</div>
+    <div class="filter-tab" onclick="filterCards('glideajax')">GlideAjax</div>
+    <div class="filter-tab" onclick="filterCards('api')">APIs</div>
+  </div>
+
+  <div class="reset-all-wrap">
+    <button class="btn-reset-all" onclick="resetAll()">↺ Reset All</button>
+  </div>
+
+  <div id="cards">
+
+    <!-- ============ GLIDERECORD ============ -->
+    <div class="section-label">📦 GlideRecord</div>
+
+    <!-- Q1 -->
+    <div class="card" data-cat="gliderecord" data-id="1">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">01</div>
+        <div class="q-text">What is a GlideRecord and how do you write one from scratch?</div>
+        <span class="badge badge-gliderecord">gliderecord</span>
+        <div class="status-dot" id="dot-1"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-1" placeholder="Write the 5-step GlideRecord pattern and explain what each step does..."></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(1)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(1)">Show Answer</button>
+              <button class="btn-reset" id="reset-1" onclick="resetCard(1)">↺ Reset</button>
+              <span class="hint-text-small">5 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-1">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-1-0"><span class="key-point-icon">○</span> GlideRecord is a server-side API for querying / manipulating table data</div>
+            <div class="key-point" id="kp-1-1"><span class="key-point-icon">○</span> new GlideRecord('table_name') — instantiate with table name</div>
+            <div class="key-point" id="kp-1-2"><span class="key-point-icon">○</span> addQuery() to filter, then query() to execute</div>
+            <div class="key-point" id="kp-1-3"><span class="key-point-icon">○</span> while (gr.next()) to iterate through results</div>
+            <div class="key-point" id="kp-1-4"><span class="key-point-icon">○</span> Access field values with gr.field_name inside the loop</div>
+          </div>
+          <div class="full-answer" id="fa-1">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              GlideRecord is the server-side API for querying and manipulating records in ServiceNow tables. It follows a consistent 5-step pattern:
+              <div class="code-block"><code><span class="keyword">var</span> gr = <span class="keyword">new</span> <span class="method">GlideRecord</span>(<span class="string">'incident'</span>);    <span class="comment">// 1. Pick table</span>
+gr.<span class="method">addQuery</span>(<span class="string">'state'</span>, <span class="string">1</span>);                <span class="comment">// 2. Filter</span>
+gr.<span class="method">query</span>();                               <span class="comment">// 3. Execute</span>
+<span class="keyword">while</span> (gr.<span class="method">next</span>()) {                        <span class="comment">// 4. Loop</span>
+    gs.<span class="method">info</span>(gr.short_description);          <span class="comment">// 5. Do something</span>
+}</code></div>
+              You can also use <code>addOrCondition()</code> for OR logic, <code>addEncodedQuery()</code> to paste filter URLs, and <code>get()</code> to grab a single record by sys_id without needing <code>query()</code>.
+            </div>
+            <div class="think-box">💡 In an interview, write this pattern out on paper or whiteboard first — it shows you know the fundamentals cold.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="card" data-cat="gliderecord" data-id="2">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">02</div>
+        <div class="q-text">Explain dot-walking. When would you need it?</div>
+        <span class="badge badge-gliderecord">gliderecord</span>
+        <div class="status-dot" id="dot-2"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-2" placeholder="What's the problem dot-walking solves? Give an example..."></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(2)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(2)">Show Answer</button>
+              <button class="btn-reset" id="reset-2" onclick="resetCard(2)">↺ Reset</button>
+              <span class="hint-text-small">4 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-2">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-2-0"><span class="key-point-icon">○</span> Reference fields store a sys_id, not the display value</div>
+            <div class="key-point" id="kp-2-1"><span class="key-point-icon">○</span> Dot-walking lets you traverse reference fields to reach related record data</div>
+            <div class="key-point" id="kp-2-2"><span class="key-point-icon">○</span> Example: assigned_to.name or assignment_group.manager.email</div>
+            <div class="key-point" id="kp-2-3"><span class="key-point-icon">○</span> Can chain multiple dot-walks for deep references</div>
+          </div>
+          <div class="full-answer" id="fa-2">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              Reference fields in ServiceNow store a sys_id — not a name or display value. So if you do <code>gr.addQuery('assigned_to', 'Fred Luddy')</code>, it won't work because you're comparing a sys_id to a string.
+              <br><br>
+              Dot-walking lets you traverse through reference fields to reach the actual data:
+              <div class="code-block"><code><span class="comment">// WRONG — comparing sys_id to a string</span>
+gr.<span class="method">addQuery</span>(<span class="string">'assigned_to'</span>, <span class="string">'Fred Luddy'</span>);
+
+<span class="comment">// RIGHT — dot-walk to the name field</span>
+gr.<span class="method">addQuery</span>(<span class="string">'assigned_to.name'</span>, <span class="string">'Fred Luddy'</span>);
+
+<span class="comment">// Chain them for deeper references</span>
+gr.<span class="method">addQuery</span>(<span class="string">'assignment_group.manager.email'</span>, <span class="string">'<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="74161b070734171b1904151a0d5a171b19">[email&#160;protected]</a>'</span>);</code></div>
+            </div>
+            <div class="gotcha">⚠ Interview favourite — if they ask about reference fields, always bring up dot-walking and sys_ids.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="card" data-cat="gliderecord" data-id="3">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">03</div>
+        <div class="q-text">Walk me through GlideRecord CRUD operations.</div>
+        <span class="badge badge-gliderecord">gliderecord</span>
+        <div class="status-dot" id="dot-3"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-3" placeholder="Show Create, Read, Update, Delete with GlideRecord..."></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(3)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(3)">Show Answer</button>
+              <button class="btn-reset" id="reset-3" onclick="resetCard(3)">↺ Reset</button>
+              <span class="hint-text-small">4 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-3">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-3-0"><span class="key-point-icon">○</span> Create: initialize(), set fields, insert()</div>
+            <div class="key-point" id="kp-3-1"><span class="key-point-icon">○</span> Read: get(sys_id) or addQuery + query + next</div>
+            <div class="key-point" id="kp-3-2"><span class="key-point-icon">○</span> Update: get the record, set fields, update()</div>
+            <div class="key-point" id="kp-3-3"><span class="key-point-icon">○</span> Delete: get the record, deleteRecord()</div>
+          </div>
+          <div class="full-answer" id="fa-3">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              <div class="code-block"><code><span class="comment">// CREATE</span>
+<span class="keyword">var</span> gr = <span class="keyword">new</span> <span class="method">GlideRecord</span>(<span class="string">'incident'</span>);
+gr.<span class="method">initialize</span>();
+gr.short_description = <span class="string">'New issue'</span>;
+gr.<span class="method">insert</span>();
+
+<span class="comment">// READ</span>
+gr.<span class="method">get</span>(sys_id);
+gs.<span class="method">info</span>(gr.short_description);
+
+<span class="comment">// UPDATE</span>
+gr.<span class="method">get</span>(sys_id);
+gr.state = <span class="string">2</span>;
+gr.<span class="method">update</span>();
+
+<span class="comment">// DELETE</span>
+gr.<span class="method">get</span>(sys_id);
+gr.<span class="method">deleteRecord</span>();</code></div>
+            </div>
+            <div class="think-box">💡 Notice <code>get()</code> doesn't need <code>query()</code> — it fetches a single record directly by sys_id.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="card" data-cat="gliderecord" data-id="4">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">04</div>
+        <div class="q-text">What is an encoded query and why would you use one?</div>
+        <span class="badge badge-gliderecord">gliderecord</span>
+        <div class="status-dot" id="dot-4"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-4" placeholder="What's an encoded query? Where do you get one?"></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(4)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(4)">Show Answer</button>
+              <button class="btn-reset" id="reset-4" onclick="resetCard(4)">↺ Reset</button>
+              <span class="hint-text-small">3 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-4">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-4-0"><span class="key-point-icon">○</span> A string representation of a filter — can copy from the list filter URL</div>
+            <div class="key-point" id="kp-4-1"><span class="key-point-icon">○</span> Use addEncodedQuery() to apply complex filters in one line</div>
+            <div class="key-point" id="kp-4-2"><span class="key-point-icon">○</span> Cleaner than chaining multiple addQuery calls for complex conditions</div>
+          </div>
+          <div class="full-answer" id="fa-4">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              An encoded query is a string representation of a filter condition. You can grab one from the ServiceNow list filter URL, or right-click the breadcrumb and choose "Copy query." It's useful for complex filters because it keeps your code clean:
+              <div class="code-block"><code><span class="keyword">var</span> gr = <span class="keyword">new</span> <span class="method">GlideRecord</span>(<span class="string">'incident'</span>);
+gr.<span class="method">addEncodedQuery</span>(<span class="string">'state=1^priority=1^assigned_toISNOTEMPTY'</span>);
+gr.<span class="method">query</span>();</code></div>
+              Instead of writing three separate <code>addQuery()</code> calls, you get it all in one line. It's also easier to test — just paste the encoded query string back into a list filter to verify it.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ BUSINESS RULES ============ -->
+    <div class="section-label">⚙️ Business Rules & Script Types</div>
+
+    <!-- Q5 -->
+    <div class="card" data-cat="rules" data-id="5">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">05</div>
+        <div class="q-text">What's the difference between Before and After business rules?</div>
+        <span class="badge badge-rules">rules</span>
+        <div class="status-dot" id="dot-5"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-5" placeholder="When does each run? What would you use each for?"></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(5)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(5)">Show Answer</button>
+              <button class="btn-reset" id="reset-5" onclick="resetCard(5)">↺ Reset</button>
+              <span class="hint-text-small">4 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-5">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-5-0"><span class="key-point-icon">○</span> Before = runs before the database write</div>
+            <div class="key-point" id="kp-5-1"><span class="key-point-icon">○</span> After = runs after the write is committed</div>
+            <div class="key-point" id="kp-5-2"><span class="key-point-icon">○</span> Before: set field values, validate — no need to call update()</div>
+            <div class="key-point" id="kp-5-3"><span class="key-point-icon">○</span> After: trigger events, create related records, send notifications</div>
+          </div>
+          <div class="full-answer" id="fa-5">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              A <strong>Before</strong> business rule runs before the record is written to the database. It's ideal for setting field values or validating data — and importantly, you don't need to call <code>update()</code> because the system hasn't saved yet, so your changes get included in the same write.
+              <br><br>
+              An <strong>After</strong> business rule runs after the commit. Use it for anything that depends on the record already existing — like triggering events, creating child records, or sending notifications.
+              <br><br>
+              There's also <strong>Async</strong> — runs after the write but in the background. Use it for heavy processing that shouldn't slow the user down.
+            </div>
+            <div class="gotcha">⚠ Classic trap: calling current.update() inside a Before rule — it causes a double-save and can trigger infinite loops.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="card" data-cat="rules" data-id="6">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">06</div>
+        <div class="q-text">What's the difference between current and previous?</div>
+        <span class="badge badge-rules">rules</span>
+        <div class="status-dot" id="dot-6"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-6" placeholder="What do current and previous represent in a Business Rule?"></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(6)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(6)">Show Answer</button>
+              <button class="btn-reset" id="reset-6" onclick="resetCard(6)">↺ Reset</button>
+              <span class="hint-text-small">3 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-6">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-6-0"><span class="key-point-icon">○</span> current = the record as it is now (with changes about to be saved)</div>
+            <div class="key-point" id="kp-6-1"><span class="key-point-icon">○</span> previous = the record values before the current change</div>
+            <div class="key-point" id="kp-6-2"><span class="key-point-icon">○</span> Use together to detect field changes: current.state != previous.state</div>
+          </div>
+          <div class="full-answer" id="fa-6">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              In a Business Rule, <code>current</code> represents the record being acted on — it contains the new values about to be saved. <code>previous</code> holds the values from before the change. Together they let you detect what changed:
+              <div class="code-block"><code><span class="keyword">if</span> (current.state != previous.state) {
+    gs.<span class="method">info</span>(<span class="string">'State changed from '</span> + previous.state + <span class="string">' to '</span> + current.state);
+}</code></div>
+              This is essential for writing business rules that only fire on specific field changes rather than on every update.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="card" data-cat="rules" data-id="7">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">07</div>
+        <div class="q-text">How do you prevent a record from being saved in a Business Rule?</div>
+        <span class="badge badge-rules">rules</span>
+        <div class="status-dot" id="dot-7"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-7" placeholder="What method stops a save? Which rule type must it be?"></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(7)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(7)">Show Answer</button>
+              <button class="btn-reset" id="reset-7" onclick="resetCard(7)">↺ Reset</button>
+              <span class="hint-text-small">3 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-7">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-7-0"><span class="key-point-icon">○</span> Use current.setAbortAction(true) to stop the save</div>
+            <div class="key-point" id="kp-7-1"><span class="key-point-icon">○</span> Must be in a Before business rule (data hasn't been written yet)</div>
+            <div class="key-point" id="kp-7-2"><span class="key-point-icon">○</span> Pair with gs.addErrorMessage() to tell the user why</div>
+          </div>
+          <div class="full-answer" id="fa-7">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              Use <code>current.setAbortAction(true)</code> in a <strong>Before</strong> business rule. Since it runs before the database write, you can cancel the operation entirely. Always pair it with an error message so the user knows what happened:
+              <div class="code-block"><code><span class="keyword">if</span> (!current.short_description) {
+    current.<span class="method">setAbortAction</span>(<span class="keyword">true</span>);
+    gs.<span class="method">addErrorMessage</span>(<span class="string">'Short description is required'</span>);
+}</code></div>
+            </div>
+            <div class="gotcha">⚠ This only works in Before rules — in an After rule the data is already committed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="card" data-cat="rules" data-id="8">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">08</div>
+        <div class="q-text">Name all the script types in ServiceNow and where each runs.</div>
+        <span class="badge badge-rules">rules</span>
+        <div class="status-dot" id="dot-8"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-8" placeholder="List the script types: where they run (server/client) and when they fire..."></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(8)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(8)">Show Answer</button>
+              <button class="btn-reset" id="reset-8" onclick="resetCard(8)">↺ Reset</button>
+              <span class="hint-text-small">5 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-8">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-8-0"><span class="key-point-icon">○</span> Business Rule — server, on insert/update/delete</div>
+            <div class="key-point" id="kp-8-1"><span class="key-point-icon">○</span> Client Script — browser, onLoad/onChange/onSubmit</div>
+            <div class="key-point" id="kp-8-2"><span class="key-point-icon">○</span> Script Include — server, on demand (reusable functions)</div>
+            <div class="key-point" id="kp-8-3"><span class="key-point-icon">○</span> Scheduled Job — server, time-based</div>
+            <div class="key-point" id="kp-8-4"><span class="key-point-icon">○</span> UI Action / UI Policy / Fix Script</div>
+          </div>
+          <div class="full-answer" id="fa-8">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              <strong>Server-side:</strong> Business Rules (before/after/async database operations), Script Includes (on-demand reusable functions), Scheduled Jobs (time-based), Fix Scripts (manual one-time runs), UI Actions (can be both — button/link clicks).
+              <br><br>
+              <strong>Client-side:</strong> Client Scripts (onLoad, onChange, onSubmit), UI Policies (condition-based form control — no code needed).
+              <br><br>
+              Knowing which runs where is critical — it tells you what APIs are available and what you can access.
+            </div>
+            <div class="think-box">💡 Quick rule: if it uses <code>g_form</code> it's client. If it uses <code>GlideRecord</code> or <code>current</code>, it's server.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ CLIENT-SIDE ============ -->
+    <div class="section-label">🖥️ Client-Side Scripting</div>
+
+    <!-- Q9 -->
+    <div class="card" data-cat="client" data-id="9">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">09</div>
+        <div class="q-text">Client Script vs UI Policy — when would you use each?</div>
+        <span class="badge badge-client">client</span>
+        <div class="status-dot" id="dot-9"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-9" placeholder="What can each do? When is one better than the other?"></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(9)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(9)">Show Answer</button>
+              <button class="btn-reset" id="reset-9" onclick="resetCard(9)">↺ Reset</button>
+              <span class="hint-text-small">4 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-9">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-9-0"><span class="key-point-icon">○</span> UI Policy = no-code, condition-based (show/hide, mandatory, read-only)</div>
+            <div class="key-point" id="kp-9-1"><span class="key-point-icon">○</span> Client Script = code-based, more flexibility (onLoad, onChange, onSubmit)</div>
+            <div class="key-point" id="kp-9-2"><span class="key-point-icon">○</span> Prefer UI Policy for simple form control — easier to maintain</div>
+            <div class="key-point" id="kp-9-3"><span class="key-point-icon">○</span> Client Script when you need logic, validation, or g_form methods beyond show/hide</div>
+          </div>
+          <div class="full-answer" id="fa-9">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              <strong>UI Policy</strong> is the no-code option — you set conditions and actions (show/hide fields, make mandatory, set read-only) without writing JavaScript. Use it when your logic is straightforward condition → action.
+              <br><br>
+              <strong>Client Script</strong> gives you full JavaScript control. Use it when you need custom logic, complex validation on submit, or need to call <code>g_form</code> methods that UI Policy doesn't cover (like <code>showFieldMsg</code> or <code>addErrorMessage</code>).
+              <br><br>
+              Rule of thumb: always try UI Policy first. It's easier to maintain, easier for other admins to understand, and less likely to break during upgrades.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="card" data-cat="client" data-id="10">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">10</div>
+        <div class="q-text">Name five g_form methods and what each does.</div>
+        <span class="badge badge-client">client</span>
+        <div class="status-dot" id="dot-10"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-10" placeholder="List g_form methods with what they do..."></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(10)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(10)">Show Answer</button>
+              <button class="btn-reset" id="reset-10" onclick="resetCard(10)">↺ Reset</button>
+              <span class="hint-text-small">5 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-10">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-10-0"><span class="key-point-icon">○</span> getValue() — get a field's value</div>
+            <div class="key-point" id="kp-10-1"><span class="key-point-icon">○</span> setValue() — set a field's value</div>
+            <div class="key-point" id="kp-10-2"><span class="key-point-icon">○</span> setVisible() — show or hide a field</div>
+            <div class="key-point" id="kp-10-3"><span class="key-point-icon">○</span> setMandatory() — make a field required</div>
+            <div class="key-point" id="kp-10-4"><span class="key-point-icon">○</span> setReadOnly() or addErrorMessage() or showFieldMsg()</div>
+          </div>
+          <div class="full-answer" id="fa-10">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              <div class="code-block"><code>g_form.<span class="method">getValue</span>(<span class="string">'state'</span>);                  <span class="comment">// Get field value</span>
+g_form.<span class="method">setValue</span>(<span class="string">'priority'</span>, <span class="string">1</span>);             <span class="comment">// Set field value</span>
+g_form.<span class="method">setVisible</span>(<span class="string">'notes'</span>, <span class="keyword">true</span>);          <span class="comment">// Show/hide field</span>
+g_form.<span class="method">setMandatory</span>(<span class="string">'notes'</span>, <span class="keyword">true</span>);       <span class="comment">// Make required</span>
+g_form.<span class="method">setReadOnly</span>(<span class="string">'caller_id'</span>, <span class="keyword">true</span>);   <span class="comment">// Make read-only</span>
+g_form.<span class="method">addErrorMessage</span>(<span class="string">'Fix errors'</span>);     <span class="comment">// Error on form</span>
+g_form.<span class="method">showFieldMsg</span>(<span class="string">'state'</span>, <span class="string">'Check'</span>, <span class="string">'info'</span>); <span class="comment">// Msg on field</span></code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q11 -->
+    <div class="card" data-cat="client" data-id="11">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">11</div>
+        <div class="q-text">Why should you never use GlideRecord on the client side?</div>
+        <span class="badge badge-client">client</span>
+        <div class="status-dot" id="dot-11"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-11" placeholder="What's the problem? What should you use instead?"></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(11)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(11)">Show Answer</button>
+              <button class="btn-reset" id="reset-11" onclick="resetCard(11)">↺ Reset</button>
+              <span class="hint-text-small">3 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-11">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-11-0"><span class="key-point-icon">○</span> Client-side GlideRecord makes synchronous HTTP calls — blocks the browser</div>
+            <div class="key-point" id="kp-11-1"><span class="key-point-icon">○</span> Bad UX: user sees freezing/lag while the call completes</div>
+            <div class="key-point" id="kp-11-2"><span class="key-point-icon">○</span> Use GlideAjax instead — it's asynchronous</div>
+          </div>
+          <div class="full-answer" id="fa-11">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              Using GlideRecord on the client side makes synchronous HTTP calls to the server. That means the browser freezes until the response comes back — terrible user experience, especially on slow networks. It also exposes table structures to the browser.
+              <br><br>
+              The correct approach is <strong>GlideAjax</strong> — it makes asynchronous calls to a Script Include on the server, gets the data you need, and returns it via a callback without blocking the UI.
+            </div>
+            <div class="think-box">💡 This is a very common interview question. The answer they want: "GlideAjax — always."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ GLIDEAJAX ============ -->
+    <div class="section-label">🔗 GlideAjax</div>
+
+    <!-- Q12 -->
+    <div class="card" data-cat="glideajax" data-id="12">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">12</div>
+        <div class="q-text">How does GlideAjax work? Walk me through both sides.</div>
+        <span class="badge badge-glideajax">glideajax</span>
+        <div class="status-dot" id="dot-12"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-12" placeholder="Describe the server-side Script Include and the client-side call..."></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(12)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(12)">Show Answer</button>
+              <button class="btn-reset" id="reset-12" onclick="resetCard(12)">↺ Reset</button>
+              <span class="hint-text-small">5 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-12">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-12-0"><span class="key-point-icon">○</span> Server side: Script Include extending AbstractAjaxProcessor</div>
+            <div class="key-point" id="kp-12-1"><span class="key-point-icon">○</span> Server function returns a value (the data you need)</div>
+            <div class="key-point" id="kp-12-2"><span class="key-point-icon">○</span> Client side: new GlideAjax('ScriptIncludeName')</div>
+            <div class="key-point" id="kp-12-3"><span class="key-point-icon">○</span> addParam('sysparm_name', 'functionName') to specify which method</div>
+            <div class="key-point" id="kp-12-4"><span class="key-point-icon">○</span> getXMLAnswer(callback) — asynchronous, use the callback</div>
+          </div>
+          <div class="full-answer" id="fa-12">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              GlideAjax is a two-part pattern — server + client:
+              <br><br>
+              <strong>Step 1 — Script Include (server):</strong>
+              <div class="code-block"><code><span class="keyword">var</span> MyAjax = Class.<span class="method">create</span>();
+MyAjax.prototype = Object.<span class="method">extendsObject</span>(
+    AbstractAjaxProcessor, {
+    getIncidentCount: <span class="keyword">function</span>() {
+        <span class="keyword">var</span> gr = <span class="keyword">new</span> <span class="method">GlideRecord</span>(<span class="string">'incident'</span>);
+        gr.<span class="method">addQuery</span>(<span class="string">'state'</span>, <span class="string">1</span>);
+        gr.<span class="method">query</span>();
+        <span class="keyword">return</span> gr.<span class="method">getRowCount</span>();
+    },
+    type: <span class="string">'MyAjax'</span>
+});</code></div>
+              <strong>Step 2 — Client Script (browser):</strong>
+              <div class="code-block"><code><span class="keyword">var</span> ga = <span class="keyword">new</span> <span class="method">GlideAjax</span>(<span class="string">'MyAjax'</span>);
+ga.<span class="method">addParam</span>(<span class="string">'sysparm_name'</span>, <span class="string">'getIncidentCount'</span>);
+ga.<span class="method">getXMLAnswer</span>(<span class="keyword">function</span>(answer) {
+    alert(<span class="string">'Count: '</span> + answer);
+});</code></div>
+            </div>
+            <div class="gotcha">⚠ GlideAjax is asynchronous — always use the callback. Never assume the answer is available on the next line.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q13 -->
+    <div class="card" data-cat="glideajax" data-id="13">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">13</div>
+        <div class="q-text">What does the Script Include need to extend for GlideAjax, and why?</div>
+        <span class="badge badge-glideajax">glideajax</span>
+        <div class="status-dot" id="dot-13"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-13" placeholder="What class does it extend? What does that give you?"></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(13)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(13)">Show Answer</button>
+              <button class="btn-reset" id="reset-13" onclick="resetCard(13)">↺ Reset</button>
+              <span class="hint-text-small">3 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-13">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-13-0"><span class="key-point-icon">○</span> Must extend AbstractAjaxProcessor</div>
+            <div class="key-point" id="kp-13-1"><span class="key-point-icon">○</span> This makes the Script Include callable from the client via AJAX</div>
+            <div class="key-point" id="kp-13-2"><span class="key-point-icon">○</span> "Client callable" checkbox must be ticked on the Script Include form</div>
+          </div>
+          <div class="full-answer" id="fa-13">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              The Script Include must extend <code>AbstractAjaxProcessor</code>. This base class provides the framework for receiving AJAX requests from the client side and returning data. Without it, the GlideAjax call from the browser wouldn't know how to route to your function.
+              <br><br>
+              You also need to tick the <strong>"Client callable"</strong> checkbox on the Script Include form — this is a security gate that explicitly allows client-side access.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ APIS ============ -->
+    <div class="section-label">🔧 Server & Client APIs</div>
+
+    <!-- Q14 -->
+    <div class="card" data-cat="api" data-id="14">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">14</div>
+        <div class="q-text">Name five common server-side APIs and what each does.</div>
+        <span class="badge badge-api">api</span>
+        <div class="status-dot" id="dot-14"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-14" placeholder="List gs methods and server-side APIs you'd use..."></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(14)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(14)">Show Answer</button>
+              <button class="btn-reset" id="reset-14" onclick="resetCard(14)">↺ Reset</button>
+              <span class="hint-text-small">5 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-14">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-14-0"><span class="key-point-icon">○</span> gs.info() — log to system log</div>
+            <div class="key-point" id="kp-14-1"><span class="key-point-icon">○</span> gs.getUser() — get current logged-in user</div>
+            <div class="key-point" id="kp-14-2"><span class="key-point-icon">○</span> gs.hasRole() — check user role</div>
+            <div class="key-point" id="kp-14-3"><span class="key-point-icon">○</span> gs.addInfoMessage() / gs.addErrorMessage() — blue/red banners</div>
+            <div class="key-point" id="kp-14-4"><span class="key-point-icon">○</span> current.setAbortAction(true) — stop save in Before rules</div>
+          </div>
+          <div class="full-answer" id="fa-14">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              <div class="code-block"><code>gs.<span class="method">info</span>(<span class="string">'message'</span>);              <span class="comment">// Log to system log</span>
+gs.<span class="method">getUser</span>().<span class="method">getFullName</span>();    <span class="comment">// Current user's name</span>
+gs.<span class="method">hasRole</span>(<span class="string">'admin'</span>);            <span class="comment">// Check user role</span>
+gs.<span class="method">addInfoMessage</span>(<span class="string">'Saved!'</span>);   <span class="comment">// Blue info banner</span>
+gs.<span class="method">addErrorMessage</span>(<span class="string">'Error!'</span>); <span class="comment">// Red error banner</span>
+current.<span class="method">setAbortAction</span>(<span class="keyword">true</span>); <span class="comment">// Stop save (Before rules)</span></code></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q15 -->
+    <div class="card" data-cat="api" data-id="15">
+      <div class="card-header" onclick="toggleCard(this.parentElement)">
+        <div class="q-number">15</div>
+        <div class="q-text">What's the difference between synchronous and asynchronous Business Rules?</div>
+        <span class="badge badge-api">api</span>
+        <div class="status-dot" id="dot-15"></div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="answer-area">
+            <textarea id="ans-15" placeholder="When does each run? What's the impact on the user?"></textarea>
+            <div class="answer-actions">
+              <button class="btn-check" onclick="checkAnswer(15)">Check Answer</button>
+              <button class="btn-reveal" onclick="revealAnswer(15)">Show Answer</button>
+              <button class="btn-reset" id="reset-15" onclick="resetCard(15)">↺ Reset</button>
+              <span class="hint-text-small">4 key points</span>
+            </div>
+          </div>
+          <div class="key-points" id="kp-15">
+            <div class="key-points-label">Key Points</div>
+            <div class="key-point" id="kp-15-0"><span class="key-point-icon">○</span> Synchronous (Before/After) = runs in the current transaction, user waits</div>
+            <div class="key-point" id="kp-15-1"><span class="key-point-icon">○</span> Asynchronous = runs in the background after the transaction completes</div>
+            <div class="key-point" id="kp-15-2"><span class="key-point-icon">○</span> Async is for heavy/slow processing that shouldn't block the user</div>
+            <div class="key-point" id="kp-15-3"><span class="key-point-icon">○</span> Async cannot abort actions or set field values on the current record</div>
+          </div>
+          <div class="full-answer" id="fa-15">
+            <div class="full-answer-label">💬 Full Answer</div>
+            <div class="full-answer-text">
+              <strong>Synchronous</strong> rules (Before and After) run within the same database transaction. The user has to wait for them to complete before the form reloads. Before rules can modify the record and abort the save; After rules can create related records and trigger events.
+              <br><br>
+              <strong>Asynchronous</strong> rules run in the background after the transaction is fully committed. They're queued as a separate job. Use them for heavy processing — like sending emails, making REST calls, or running large queries — so the user isn't stuck waiting.
+              <br><br>
+              Trade-off: Async rules can't modify the current record (it's already saved) and can't abort the transaction.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /cards -->
+
+  <div class="footer">type it, check it, learn it</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-emoji" id="modalEmoji"></div>
+    <div class="modal-title" id="modalTitle"></div>
+    <div class="modal-score" id="modalScore"></div>
+    <div class="modal-subtitle" id="modalSubtitle"></div>
+    <button class="modal-btn" onclick="closeModal(null, true)">Got it</button>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+// ============ QUESTION DATA ============
+const questions = {
+  1: {
+    keywords: [
+      ['gliderecord', 'server', 'api', 'table', 'query', 'record'],
+      ['new gliderecord', 'table_name', 'table name', 'instantiat'],
+      ['addquery', 'filter', 'add query'],
+      ['query()', '.query', 'execute'],
+      ['while', 'next()', 'loop', 'iterate', 'gr.next']
+    ]
+  },
+  2: {
+    keywords: [
+      ['sys_id', 'sysid', 'reference', 'store'],
+      ['dot-walk', 'dotwalk', 'dot walk', 'traverse', 'through reference'],
+      ['assigned_to.name', 'assignment_group.manager', 'field.field', '.name', '.email'],
+      ['chain', 'deep', 'multiple level', 'nested']
+    ]
+  },
+  3: {
+    keywords: [
+      ['initialize', 'insert', 'create'],
+      ['get(', 'read', 'sys_id'],
+      ['update()', 'set field', '.update'],
+      ['deleterecord', 'delete']
+    ]
+  },
+  4: {
+    keywords: [
+      ['string', 'filter', 'url', 'breadcrumb', 'copy query'],
+      ['addencodedquery', 'addencoded', 'encoded query'],
+      ['complex', 'one line', 'clean', 'multiple conditions']
+    ]
+  },
+  5: {
+    keywords: [
+      ['before', 'before the', 'before database', 'before write', 'before save'],
+      ['after', 'after the', 'after write', 'after commit', 'after save'],
+      ['set field', 'validate', 'no need to call update', 'no update()', 'don\'t need update'],
+      ['event', 'notification', 'related record', 'trigger', 'create record']
+    ]
+  },
+  6: {
+    keywords: [
+      ['current', 'record being', 'new value', 'about to be saved', 'current record'],
+      ['previous', 'before the change', 'old value', 'prior'],
+      ['current.state', 'previous.state', 'detect change', 'field change', '!=']
+    ]
+  },
+  7: {
+    keywords: [
+      ['setabortaction', 'abort', 'abort action'],
+      ['before', 'before rule', 'before business'],
+      ['adderrormessage', 'error message', 'tell the user', 'notify']
+    ]
+  },
+  8: {
+    keywords: [
+      ['business rule', 'server', 'insert', 'update', 'delete'],
+      ['client script', 'browser', 'onload', 'onchange', 'onsubmit'],
+      ['script include', 'reusable', 'on demand'],
+      ['scheduled job', 'time-based', 'scheduled', 'nightly'],
+      ['ui action', 'ui policy', 'fix script']
+    ]
+  },
+  9: {
+    keywords: [
+      ['ui policy', 'no-code', 'no code', 'condition', 'show', 'hide', 'mandatory', 'read-only'],
+      ['client script', 'code', 'javascript', 'onload', 'onchange', 'onsubmit'],
+      ['prefer ui policy', 'simpler', 'easier to maintain', 'try ui policy first'],
+      ['g_form', 'logic', 'validation', 'complex', 'more control']
+    ]
+  },
+  10: {
+    keywords: [
+      ['getvalue', 'get value'],
+      ['setvalue', 'set value'],
+      ['setvisible', 'show', 'hide', 'visible'],
+      ['setmandatory', 'mandatory', 'required'],
+      ['setreadonly', 'read-only', 'readonly', 'adderrormessage', 'showfieldmsg']
+    ]
+  },
+  11: {
+    keywords: [
+      ['synchronous', 'sync', 'blocks', 'blocking', 'http call', 'freezes'],
+      ['bad ux', 'slow', 'lag', 'user experience', 'performance'],
+      ['glideajax', 'ajax', 'asynchronous', 'async', 'use instead']
+    ]
+  },
+  12: {
+    keywords: [
+      ['script include', 'server side', 'server-side', 'abstractajaxprocessor', 'abstract ajax'],
+      ['function', 'return', 'method', 'getrowcount', 'server function'],
+      ['new glideajax', 'glideajax', 'client side', 'client-side'],
+      ['sysparm_name', 'addparam', 'add param'],
+      ['getxmlanswer', 'callback', 'asynchronous', 'async']
+    ]
+  },
+  13: {
+    keywords: [
+      ['abstractajaxprocessor', 'abstract ajax processor'],
+      ['callable', 'client callable', 'ajax', 'client side', 'client-side'],
+      ['checkbox', 'client callable checkbox', 'tick', 'security']
+    ]
+  },
+  14: {
+    keywords: [
+      ['gs.info', 'log', 'system log'],
+      ['gs.getuser', 'getuser', 'current user', 'logged in'],
+      ['gs.hasrole', 'hasrole', 'check role'],
+      ['addinfomessage', 'adderrormessage', 'banner', 'info message', 'error message'],
+      ['setabortaction', 'abort', 'stop save']
+    ]
+  },
+  15: {
+    keywords: [
+      ['synchronous', 'same transaction', 'user waits', 'in-line'],
+      ['asynchronous', 'async', 'background', 'separate job', 'queued'],
+      ['heavy', 'slow', 'email', 'rest call', 'performance', 'don\'t block'],
+      ['can\'t abort', 'cannot abort', 'can\'t modify', 'already saved', 'already committed']
+    ]
+  }
+};
+
+const totalQuestions = Object.keys(questions).length;
+let answered = {};
+
+// ============ CARD TOGGLE ============
+function toggleCard(card) {
+  const wasOpen = card.classList.contains('open');
+  // Close all
+  document.querySelectorAll('.card').forEach(c => {
+    c.classList.remove('open');
+    c.querySelector('.card-body').style.maxHeight = null;
+  });
+  if (!wasOpen) {
+    card.classList.add('open');
+    const body = card.querySelector('.card-body');
+    body.style.maxHeight = body.scrollHeight + 'px';
+    // Scroll into view on mobile
+    setTimeout(() => {
+      card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+}
+
+// ============ CHECK ANSWER ============
+function checkAnswer(id) {
+  const textarea = document.getElementById('ans-' + id);
+  const userAnswer = textarea.value.trim().toLowerCase();
+
+  if (!userAnswer) return;
+
+  const q = questions[id];
+  const keyPointGroups = q.keywords;
+  let hits = 0;
+  const total = keyPointGroups.length;
+
+  keyPointGroups.forEach((group, i) => {
+    const el = document.getElementById('kp-' + id + '-' + i);
+    const icon = el.querySelector('.key-point-icon');
+    const matched = group.some(kw => userAnswer.includes(kw.toLowerCase()));
+    if (matched) {
+      hits++;
+      el.classList.add('hit');
+      el.classList.remove('miss');
+      icon.textContent = '✓';
+    } else {
+      el.classList.add('miss');
+      el.classList.remove('hit');
+      icon.textContent = '✗';
+    }
+  });
+
+  // Show key points
+  document.getElementById('kp-' + id).classList.add('visible');
+
+  // Update card body max-height
+  const card = textarea.closest('.card');
+  const body = card.querySelector('.card-body');
+  body.style.maxHeight = body.scrollHeight + 2000 + 'px';
+
+  // Score
+  const pct = hits / total;
+  const dot = document.getElementById('dot-' + id);
+
+  if (pct >= 0.7) {
+    card.classList.add('answered-correct');
+    card.classList.remove('answered-partial');
+    dot.classList.add('correct');
+    dot.classList.remove('partial');
+    showModal('🎯', 'Solid!', hits + ' / ' + total + ' key points', 'You covered the core concepts. Check the full answer for anything extra.', 'great');
+  } else if (pct >= 0.4) {
+    card.classList.add('answered-partial');
+    card.classList.remove('answered-correct');
+    dot.classList.add('partial');
+    dot.classList.remove('correct');
+    showModal('🔶', 'Getting there', hits + ' / ' + total + ' key points', 'You got the basics — review the missed points and try again.', 'ok');
+  } else {
+    card.classList.remove('answered-correct', 'answered-partial');
+    dot.classList.remove('correct', 'partial');
+    showModal('📖', 'Review this one', hits + ' / ' + total + ' key points', 'Hit "Show Answer" to study the full explanation, then try from memory.', 'miss');
+  }
+
+  answered[id] = true;
+  document.getElementById('reset-' + id).classList.add('visible');
+  updateProgress();
+}
+
+// ============ REVEAL ANSWER ============
+function revealAnswer(id) {
+  const card = document.querySelector('[data-id="' + id + '"]');
+  document.getElementById('kp-' + id).classList.add('visible');
+  document.getElementById('fa-' + id).classList.add('visible');
+
+  // Mark all key points as shown
+  const q = questions[id];
+  q.keywords.forEach((group, i) => {
+    const el = document.getElementById('kp-' + id + '-' + i);
+    const icon = el.querySelector('.key-point-icon');
+    el.classList.remove('hit', 'miss');
+    icon.textContent = '○';
+  });
+
+  // Update max-height
+  const body = card.querySelector('.card-body');
+  body.style.maxHeight = body.scrollHeight + 2000 + 'px';
+  // Show reset button
+  document.getElementById('reset-' + id).classList.add('visible');
+}
+
+// ============ MODAL ============
+function showModal(emoji, title, score, subtitle, scoreClass) {
+  document.getElementById('modalEmoji').textContent = emoji;
+  document.getElementById('modalTitle').textContent = title;
+  const scoreEl = document.getElementById('modalScore');
+  scoreEl.textContent = score;
+  scoreEl.className = 'modal-score ' + scoreClass;
+  document.getElementById('modalSubtitle').textContent = subtitle;
+  document.getElementById('modal').classList.add('show');
+}
+
+function closeModal(event, force) {
+  if (force || (event && event.target === document.getElementById('modal'))) {
+    document.getElementById('modal').classList.remove('show');
+  }
+}
+
+// ============ PROGRESS ============
+function updateProgress() {
+  const count = Object.keys(answered).length;
+  document.getElementById('progressLabel').textContent = count + ' / ' + totalQuestions + ' attempted';
+  document.getElementById('progressFill').style.width = (count / totalQuestions * 100) + '%';
+}
+
+// ============ FILTER ============
+function filterCards(cat) {
+  // Update active tab
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+
+  // Show/hide
+  document.querySelectorAll('.card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  // Show/hide section labels
+  document.querySelectorAll('.section-label').forEach(label => {
+    if (cat === 'all') {
+      label.style.display = '';
+    } else {
+      label.style.display = 'none';
+    }
+  });
+}
+
+// ============ RESET ============
+function resetCard(id) {
+  // Clear textarea
+  document.getElementById('ans-' + id).value = '';
+  // Hide key points and full answer
+  document.getElementById('kp-' + id).classList.remove('visible');
+  document.getElementById('fa-' + id).classList.remove('visible');
+  // Reset key point icons
+  const q = questions[id];
+  q.keywords.forEach((group, i) => {
+    const el = document.getElementById('kp-' + id + '-' + i);
+    el.classList.remove('hit', 'miss');
+    el.querySelector('.key-point-icon').textContent = '○';
+  });
+  // Reset card styling
+  const card = document.querySelector('[data-id="' + id + '"]');
+  card.classList.remove('answered-correct', 'answered-partial');
+  // Reset status dot
+  const dot = document.getElementById('dot-' + id);
+  dot.classList.remove('correct', 'partial');
+  // Hide reset button
+  document.getElementById('reset-' + id).classList.remove('visible');
+  // Remove from answered and update progress
+  delete answered[id];
+  updateProgress();
+  // Recalculate card body height
+  const body = card.querySelector('.card-body');
+  if (card.classList.contains('open')) {
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+function resetAll() {
+  if (!confirm('Reset all answers?')) return;
+  Object.keys(questions).forEach(id => resetCard(Number(id)));
+}
+
+// Close modal on Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal(null, true);
+});
+</script>
+
+</body>
+</html>
