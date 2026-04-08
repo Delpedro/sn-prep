@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genesys Interview Prep</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0f0f0f;
+    --surface: #1a1a1a;
+    --surface2: #222222;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #f0f0f0;
+    --text2: #a0a0a0;
+    --text3: #666;
+    --blue: #4a9eff;
+    --teal: #2dd4a0;
+    --amber: #f5a623;
+    --coral: #ff6b6b;
+    --purple: #a78bfa;
+    --green: #6bcf7f;
+    --blue-dim: rgba(74,158,255,0.12);
+    --teal-dim: rgba(45,212,160,0.12);
+    --amber-dim: rgba(245,166,35,0.12);
+    --coral-dim: rgba(255,107,107,0.12);
+    --purple-dim: rgba(167,139,250,0.12);
+    --green-dim: rgba(107,207,127,0.12);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  header {
+    padding: 28px 20px 20px;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .header-title {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    margin-bottom: 4px;
+  }
+
+  h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  .btn {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 7px 14px;
+    border-radius: 8px;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    color: var(--text2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn:hover { background: var(--surface2); color: var(--text); }
+
+  main { padding: 0 16px; max-width: 900px; margin: 0 auto; }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text3);
+    padding: 28px 4px 10px;
+  }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 10px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .card:hover { border-color: var(--border2); }
+
+  .card-header {
+    padding: 14px 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .card-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+
+  .q-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text3);
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+  .badge-core { background: var(--blue-dim); color: var(--blue); }
+  .badge-new { background: var(--amber-dim); color: var(--amber); }
+  .badge-you { background: var(--teal-dim); color: var(--teal); }
+
+  .q-title { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.4; }
+
+  .chevron {
+    font-size: 10px;
+    color: var(--text3);
+    transition: transform 0.25s;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+  .chevron.open { transform: rotate(180deg); }
+
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .card-body.open { max-height: 1000px; }
+
+  .card-inner { padding: 0 16px 16px; border-top: 1px solid var(--border); padding-top: 14px; }
+
+  .sub-label {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text3);
+    margin-bottom: 10px;
+  }
+
+  .bullet {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 8px;
+    align-items: flex-start;
+  }
+
+  .dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+  .dot-blue { background: var(--blue); }
+  .dot-teal { background: var(--teal); }
+  .dot-amber { background: var(--amber); }
+  .dot-coral { background: var(--coral); }
+  .dot-purple { background: var(--purple); }
+  .dot-green { background: var(--green); }
+
+  .bullet-text { font-size: 13px; color: var(--text2); line-height: 1.55; }
+  .hl { color: var(--text); font-weight: 500; }
+
+  .divider { border: none; border-top: 1px solid var(--border); margin: 12px 0; }
+
+  .box {
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--surface2);
+    margin-bottom: 8px;
+  }
+  .box:last-child { margin-bottom: 0; }
+
+  .box-label {
+    font-size: 10px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 5px;
+  }
+
+  .box-upgrade { border-left: 2px solid var(--teal); }
+  .box-upgrade .box-label { color: var(--teal); }
+
+  .box-avoid { border-left: 2px solid var(--coral); }
+  .box-avoid .box-label { color: var(--coral); }
+
+  .box-tip { border-left: 2px solid var(--blue); }
+  .box-tip .box-label { color: var(--blue); }
+
+  .box p { font-size: 12px; color: var(--text2); line-height: 1.55; }
+  .box p em { font-style: italic; }
+
+  .listen-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+  }
+  .listen-card p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .reality-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 10px;
+  }
+  .reality-title { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+  .reality-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+  }
+  .reality-icon { font-size: 13px; flex-shrink: 0; margin-top: 1px; }
+  .reality-text { font-size: 13px; color: var(--text2); line-height: 1.5; }
+  .reality-text strong { color: var(--text); font-weight: 500; }
+
+  footer {
+    text-align: center;
+    padding: 40px 20px 20px;
+    font-size: 11px;
+    color: var(--text3);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-top">
+    <div>
+      <div class="header-title">Interview Prep</div>
+      <h1>Genesys — Vanessa Lynch</h1>
+    </div>
+    <div class="header-actions">
+      <button class="btn" onclick="toggleAll(true)">Expand all</button>
+      <button class="btn" onclick="toggleAll(false)">Collapse all</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div id="root"></div>
+
+  <div class="section-label">Final reality check</div>
+  <div class="reality-card">
+    <div class="reality-title">This is what actually gets you through</div>
+    <div class="reality-item"><span class="reality-icon">✓</span><span class="reality-text"><strong>Speak clearly.</strong> Slower than you think you need to.</span></div>
+    <div class="reality-item"><span class="reality-icon">✓</span><span class="reality-text"><strong>Don't ramble.</strong> Your biggest risk. Land the point, stop.</span></div>
+    <div class="reality-item"><span class="reality-icon">✓</span><span class="reality-text"><strong>Show you're easy to work with.</strong> Documentation, training, ownership — you already do this.</span></div>
+    <div class="reality-item"><span class="reality-icon">✓</span><span class="reality-text"><strong>Don't try to impress.</strong> Be safe, solid, and easy to move forward.</span></div>
+    <div class="reality-item"><span class="reality-icon">✗</span><span class="reality-text"><strong>Avoid:</strong> "I'd be curious to…" / repeating the same examples / buzzwords.</span></div>
+  </div>
+</main>
+
+<footer>Good luck today. You've done the prep — trust it.</footer>
+
+<script>
+const sections = [
+  {
+    title: "Her questions — core (you're covered)",
+    cards: [
+      {
+        n: "Q1", q: "What do you know about Genesys?", badge: "core", color: "blue",
+        points: [
+          "Cloud platform for <span class='hl'>customer experience</span> — voice, chat, email, all channels in one place",
+          "AI is core to how they operate",
+          "<span class='hl'>8,000+ organisations</span> globally — serious scale",
+          "Galway office = ex-Altocloud, acquired 2018",
+          "Grown from ~20 to <span class='hl'>300+ staff</span>, mostly software engineers in AI & cloud CX",
+        ],
+        upgrade: "Close with: <em>\"Given my background, I'd be especially focused on how ServiceNow supports your internal operations and integrations here in Galway.\"</em> — sounds like a contributor, not just curious.",
+        avoid: null, tip: null
+      },
+      {
+        n: "Q2", q: "Talk me through your experience", badge: "core", color: "teal",
+        points: [
+          "Fitness instructor → fire engineer → <span class='hl'>deliberate move into IT</span> (mature student, Computer Science)",
+          "Joined Version 1 ~9 years ago — infrastructure first",
+          "<span class='hl'>First person on the Engage team</span> — built ServiceNow practice from scratch",
+          "SLAs, service catalogue, CMDB, portals, SSO, user management",
+          "Grew into senior role: UAT, CAB, training, knowledge articles & videos",
+          "Client-facing across multiple orgs simultaneously",
+          "Made redundant July — <span class='hl'>restructure, not performance</span> — deliberately chose next move",
+        ],
+        upgrade: "End with: <em>\"Over time I moved into a position where I wasn't just working on the platform — I was helping shape how the team used it and supported others around me.\"</em> — signals seniority without saying the word.",
+        avoid: null, tip: "Keep to ~90 seconds. Hit the milestones, don't go deep on each one yet."
+      },
+      {
+        n: "Q3", q: "Why did you leave?", badge: "core", color: "coral",
+        points: [
+          "Role made redundant — <span class='hl'>restructure, not performance-related</span>",
+          "Took time to be deliberate about next move",
+          "Looking for the right fit, not just the first thing",
+        ],
+        upgrade: null, avoid: null, tip: "Perfect as-is. Short and confident — don't over-explain."
+      },
+      {
+        n: "Q4", q: "Why Genesys?", badge: "core", color: "purple",
+        points: [
+          "Main driver is the <span class='hl'>role itself</span> and how my experience fits",
+          "Years in ServiceNow — interested in how it integrates here and the roadmap",
+          "Looking to <span class='hl'>contribute quickly and keep developing</span>",
+        ],
+        upgrade: "Add: <em>\"At this stage I'm looking for a role where I can contribute quickly but also continue developing — and from what I've heard so far, this seems like that kind of environment.\"</em>",
+        avoid: null, tip: null
+      },
+      {
+        n: "Q5", q: "How does your experience relate?", badge: "core", color: "teal",
+        points: [
+          "Two ServiceNow implementations — built platform from ground up",
+          "User/access management, SLAs, service catalog, CMDB, configuration",
+          "Upgrades, testing, UAT, CAB changes, day-to-day support",
+          "Documentation, knowledge articles, team training",
+          "<span class='hl'>Comfortable contributing across the platform from day one</span>",
+        ],
+        upgrade: null,
+        avoid: "Don't repeat the full module list — you've already covered it in Q2. Reference it briefly: <em>\"As I mentioned, I've worked across implementations and upgrades…\"</em> then move to what's new.",
+        tip: null
+      },
+      {
+        n: "Q6", q: "Tell me about a problem you solved", badge: "core", color: "amber",
+        points: [
+          "<span class='hl'>S:</span> Sensitive data (passwords) added to wrong tickets — no process existed",
+          "<span class='hl'>T:</span> Resolve safely and stop it requiring escalation every time",
+          "<span class='hl'>A:</span> Took ownership — worked with ServiceNow, tested in dev/test, resolved in prod, documented, trained Service Desk, recorded video + ran full team session",
+          "<span class='hl'>R:</span> Shifted left — team could handle it without me, solution properly embedded",
+        ],
+        upgrade: "Start faster: <em>\"One issue that came up a few times was sensitive information being added to the wrong tickets…\"</em> — get to the point, then build.",
+        avoid: null, tip: "Your strongest answer. Don't rush it — don't pad it either."
+      },
+      {
+        n: "Q7", q: "How do you troubleshoot?", badge: "core", color: "blue",
+        points: [
+          "Check <span class='hl'>old tickets first</span> — likely happened before",
+          "Knowledge base next",
+          "Dive into logs — use available tools to narrow down root cause",
+          "Lean on colleagues — no ego about asking for help (goes both ways)",
+          "Raise a <span class='hl'>HI case with ServiceNow</span> if needed",
+          "Always document the outcome — next person doesn't start from zero",
+        ],
+        upgrade: null,
+        avoid: "Avoid <em>\"use AI to find the needle in the haystack\"</em> — risks sounding buzzwordy. Say <em>\"logs and available tools\"</em> instead.",
+        tip: null
+      },
+      {
+        n: "Q8", q: "How do you prioritise work?", badge: "core", color: "teal",
+        points: [
+          "Priority + urgency first — aligned with team lead",
+          "Quick wins tackled early — clears noise, keeps momentum",
+          "<span class='hl'>Communication is key</span> — if something's delayed, it goes up the chain straight away",
+          "Never go quiet — team lead needs to manage expectations",
+        ],
+        upgrade: "Add a closer: <em>\"Ultimately it's about balancing quick wins with higher priority work without losing visibility.\"</em>",
+        avoid: null, tip: null
+      },
+      {
+        n: "Q9", q: "You don't have the CSA yet — what's your plan?", badge: "core", color: "amber",
+        points: [
+          "Heavy workload at V1 kept pushing it — but <span class='hl'>training is complete</span>",
+          "It's formalising what I already do day to day",
+          "Plan to <span class='hl'>sit the exam within first 3 months</span>",
+        ],
+        upgrade: "Phrase it as: <em>\"I've already completed the training, so it's really just formalising what I'm already doing day to day.\"</em>",
+        avoid: null, tip: "Confident, not defensive. The cert is paperwork at this point."
+      },
+      {
+        n: "Q10", q: "Are you comfortable with the €60k?", badge: "core", color: "coral",
+        points: [
+          "Yes — comfortable with it",
+          "<span class='hl'>Role and environment matter more</span> than salary alone right now",
+          "This role lines up well with what I'm looking for",
+          "Happy to grow over time",
+        ],
+        upgrade: null, avoid: null, tip: "Say it once, cleanly. Don't hedge."
+      },
+    ]
+  },
+  {
+    title: "Her questions — likely extras",
+    cards: [
+      {
+        n: "Q11", q: "Why are you looking now?", badge: "new", color: "purple",
+        points: [
+          "Slightly different from 'why did you leave' — this is about <span class='hl'>motivation and mindset</span>",
+          "Took time since the redundancy to be deliberate",
+          "Now focused on finding the <span class='hl'>right role to contribute and grow long term</span>",
+        ],
+        upgrade: "Say: <em>\"I've taken some time since the redundancy to be deliberate, and now I'm focused on finding the right role where I can contribute and grow long term.\"</em>",
+        avoid: null, tip: null
+      },
+      {
+        n: "Q12", q: "What are you looking for in your next role?", badge: "new", color: "teal",
+        points: [
+          "Stay <span class='hl'>hands-on with ServiceNow</span>",
+          "Contribute to a team and keep developing",
+          "Environment where <span class='hl'>knowledge sharing and collaboration</span> matter",
+        ],
+        upgrade: "Strong version: <em>\"A role where I can stay hands-on with ServiceNow, contribute to a team, and continue developing — ideally somewhere where knowledge sharing and collaboration are part of how the team operates.\"</em>",
+        avoid: "Don't make it sound like anything will do — show you have a direction.",
+        tip: null
+      },
+      {
+        n: "Q13", q: "Availability / notice period?", badge: "new", color: "green",
+        points: [
+          "<span class='hl'>Available to start immediately</span>",
+          "No notice period — role was made redundant",
+        ],
+        upgrade: null, avoid: null, tip: "Simple and clear. No need to elaborate."
+      },
+      {
+        n: "Q14", q: "Location / hybrid / on-site?", badge: "new", color: "green",
+        points: [
+          "Confirm you're comfortable with <span class='hl'>Galway commute / setup</span>",
+          "Be clear on hybrid expectations if you have any",
+        ],
+        upgrade: null, avoid: null, tip: "They may just be checking — have a clear, confident answer ready."
+      },
+    ]
+  },
+  {
+    title: "The section where you just listen",
+    listen: true,
+    desc: "Vanessa will explain the team structure, responsibilities, and tools. You don't need to prepare answers here — just listen carefully, nod along, and pick up keywords she uses. You can reflect them back later in your questions.",
+  },
+  {
+    title: "Questions you ask her",
+    cards: [
+      {
+        n: "→1", q: "What does a typical week look like for someone in this role?", badge: "you", color: "blue",
+        points: [
+          "Sounds like natural curiosity about the role",
+          "Actually tells you about <span class='hl'>real workload and pace</span>",
+          "Listen for: rushed tone, vague answers, 'fast-paced environment' — those are signals",
+        ],
+        upgrade: null, avoid: null, tip: "This is your best intel question. Ask it naturally."
+      },
+      {
+        n: "→2", q: "How does the team handle incidents or urgent issues?", badge: "you", color: "teal",
+        points: [
+          "Tells you whether there's <span class='hl'>on-call or out-of-hours expectations</span>",
+          "Tells you if the team is stretched or well-resourced",
+          "Listen for mention of rotas, escalation chains, or 'everyone chips in'",
+        ],
+        upgrade: null, avoid: null, tip: "Pair this with the 'typical week' question if conversation flows naturally."
+      },
+      {
+        n: "→3", q: "How is ServiceNow currently used within the team?", badge: "you", color: "purple",
+        points: [
+          "Shows you're <span class='hl'>already thinking about the role</span>, not just the job title",
+          "Gives you useful context for next stage interviews",
+          "Alternatively: <em>\"Where does ServiceNow sit within your overall ecosystem here in Galway?\"</em>",
+        ],
+        upgrade: null, avoid: null, tip: "Strong standalone question if you only ask one."
+      },
+      {
+        n: "→4", q: "How long has the team been structured this way?", badge: "you", color: "amber",
+        points: [
+          "Sounds like you're interested in team history",
+          "Actually tells you about <span class='hl'>stability, turnover, and growth</span>",
+          "High turnover or recent restructures = red flag worth noting",
+        ],
+        upgrade: null, avoid: null, tip: "Good for reading between the lines without asking directly."
+      },
+      {
+        n: "→5", q: "What does success look like in the first 3 months?", badge: "you", color: "teal",
+        points: [
+          "Shows you're thinking about <span class='hl'>contributing, not just landing the job</span>",
+          "Gives you a benchmark to reference in future interviews",
+        ],
+        upgrade: null, avoid: null, tip: "Good backup if other questions get answered during her role explanation."
+      },
+      {
+        n: "→6", q: "What are the next steps from here?", badge: "you", color: "green",
+        points: [
+          "Always worth asking — shows you're <span class='hl'>interested and organised</span>",
+          "Gives you a clear timeline to follow up against",
+        ],
+        upgrade: null, avoid: null, tip: "Ask this at the very end, regardless of what else you asked."
+      },
+    ]
+  }
+];
+
+const badgeMap = { core: ["badge-core","core"], new: ["badge-new","likely extra"], you: ["badge-you","you ask"] };
+const dotMap = { blue:"dot-blue", teal:"dot-teal", amber:"dot-amber", coral:"dot-coral", purple:"dot-purple", green:"dot-green" };
+
+const root = document.getElementById("root");
+let idx = 0;
+
+sections.forEach(section => {
+  const sl = document.createElement("div");
+  sl.className = "section-label";
+  sl.textContent = section.title;
+  root.appendChild(sl);
+
+  if (section.listen) {
+    const lc = document.createElement("div");
+    lc.className = "listen-card";
+    lc.innerHTML = `<p>${section.desc}</p>`;
+    root.appendChild(lc);
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "grid";
+
+  section.cards.forEach(item => {
+    const i = idx++;
+    const [bc, bt] = badgeMap[item.badge] || ["badge-core","core"];
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const hdr = document.createElement("div");
+    hdr.className = "card-header";
+    hdr.innerHTML = `<div style="flex:1"><div class="card-meta"><span class="q-num">${item.n}</span><span class="badge ${bc}">${bt}</span></div><div class="q-title">${item.q}</div></div><span class="chevron" id="c${i}">▾</span>`;
+
+    const body = document.createElement("div");
+    body.className = "card-body";
+    body.id = "b" + i;
+
+    let html = `<div class="card-inner"><div class="sub-label">Key points</div>`;
+    item.points.forEach(t => {
+      html += `<div class="bullet"><div class="dot ${dotMap[item.color]||'dot-blue'}"></div><div class="bullet-text">${t}</div></div>`;
+    });
+
+    const extras = [
+      item.upgrade ? `<div class="box box-upgrade"><div class="box-label">Upgrade</div><p>${item.upgrade}</p></div>` : "",
+      item.avoid   ? `<div class="box box-avoid"><div class="box-label">Avoid</div><p>${item.avoid}</p></div>` : "",
+      item.tip     ? `<div class="box box-tip"><div class="box-label">Note</div><p>${item.tip}</p></div>` : "",
+    ].filter(Boolean).join("");
+
+    if (extras) html += `<div class="divider"></div>${extras}`;
+    html += `</div>`;
+    body.innerHTML = html;
+
+    hdr.addEventListener("click", () => {
+      const open = body.classList.toggle("open");
+      document.getElementById("c"+i).classList.toggle("open", open);
+    });
+
+    card.appendChild(hdr);
+    card.appendChild(body);
+    grid.appendChild(card);
+  });
+
+  root.appendChild(grid);
+});
+
+function toggleAll(open) {
+  document.querySelectorAll(".card-body").forEach((b,i) => {
+    b.classList.toggle("open", open);
+    const c = document.getElementById("c"+i);
+    if (c) c.classList.toggle("open", open);
+  });
+}
+</script>
+</body>
+</html>
