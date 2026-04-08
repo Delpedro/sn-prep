@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServiceNow Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f8f9fb;
+    color: #1e293b;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.2rem;
+  }
+
+  .container {
+    max-width: 600px;
+    width: 100%;
+    text-align: center;
+  }
+
+  header { margin-bottom: 3rem; }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #10b981, #3b82f6);
+    margin: 1.2rem auto 0;
+    border-radius: 2px;
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2rem 1.8rem;
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+    gap: 1.4rem;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    text-align: left;
+  }
+
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+
+  .card-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .icon-screening { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .icon-technical { background: linear-gradient(135deg, #10b981, #3b82f6); }
+  .icon-scripting { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
+
+  .card-content { flex: 1; }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 0.3rem;
+  }
+
+  .card-desc {
+    font-size: 1rem;
+    color: #64748b;
+    line-height: 1.5;
+  }
+
+  .card-arrow {
+    font-size: 1.3rem;
+    color: #94a3b8;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover .card-arrow {
+    transform: translateX(4px);
+    color: #475569;
+  }
+
+  .card-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .coming-soon {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #94a3b8;
+    background: #f1f5f9;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    margin-left: 0.5rem;
+  }
+
+  .footer {
+    margin-top: 2.5rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+  }
+
+  @media (max-width: 500px) {
+    h1 { font-size: 1.5rem; }
+    .card { padding: 1.4rem 1.2rem; }
+    .card-title { font-size: 1.1rem; }
+    .card-icon { width: 44px; height: 44px; font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>ServiceNow Interview Prep</h1>
+    <p class="subtitle">Genesys — Platform Administrator</p>
+  </header>
+
+  <div class="cards">
+
+    <a href="screening.html" class="card">
+      <div class="card-icon icon-screening">📋</div>
+      <div class="card-content">
+        <div class="card-title">Screening Interview</div>
+        <div class="card-desc">Vanessa Lynch — core questions, extras, and questions to ask</div>
+      </div>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a href="technical.html" class="card">
+      <div class="card-icon icon-technical">⚙️</div>
+      <div class="card-content">
+        <div class="card-title">Technical Interview</div>
+        <div class="card-desc">Platform admin questions — quick notes, gotchas, and full answers</div>
+      </div>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a href="scripting.html" class="card">
+      <div class="card-icon icon-scripting">💻</div>
+      <div class="card-content">
+        <div class="card-title">Scripting Guide</div>
+        <div class="card-desc">GlideRecord, Business Rules, Client Scripts, GlideAjax — type & check</div>
+      </div>
+      <div class="card-arrow">→</div>
+    </a>
+
+  </div>
+
+  <div class="footer">Tap to reveal • don't memorise, remember</div>
+</div>
+
+</body>
+</html>
