@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Genesys Screening Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f8f9fb;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 2.5rem 1.2rem;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+    margin: 1.2rem auto 0;
+    border-radius: 2px;
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .role-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    color: #d97706;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.85rem;
+    margin-top: 2.5rem;
+  }
+
+  .section-label:first-of-type { margin-top: 0; }
+
+  .card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .card:hover { border-color: #3b82f6; }
+
+  .card.open {
+    border-color: #f59e0b;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.1);
+  }
+
+  .card-header {
+    padding: 1.3rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .card-header:hover { background: #f8fafc; }
+
+  .q-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .qn-core { background: linear-gradient(135deg, #3b82f6, #2563eb); }
+  .qn-extra { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .qn-you { background: linear-gradient(135deg, #10b981, #059669); }
+  .qn-listen { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
+
+  .q-text {
+    flex: 1;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.45;
+  }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.15rem 0.55rem;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+
+  .badge-core { background: rgba(59,130,246,0.08); color: #2563eb; border: 1px solid rgba(59,130,246,0.2); }
+  .badge-extra { background: rgba(245,158,11,0.08); color: #d97706; border: 1px solid rgba(245,158,11,0.2); }
+  .badge-you { background: rgba(16,185,129,0.08); color: #059669; border: 1px solid rgba(16,185,129,0.2); }
+
+  .toggle-icon {
+    font-size: 1.4rem;
+    color: #94a3b8;
+    transition: transform 0.3s ease, color 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .card.open .toggle-icon { transform: rotate(45deg); color: #f59e0b; }
+
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .card-body-inner { padding: 0 1.5rem 1.5rem 1.5rem; }
+
+  .divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin-bottom: 1.3rem;
+  }
+
+  .hint {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.9rem;
+    align-items: flex-start;
+  }
+
+  .hint-icon {
+    font-size: 1rem;
+    margin-top: 3px;
+    flex-shrink: 0;
+    color: #94a3b8;
+  }
+
+  .hint-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #475569;
+  }
+
+  .hint-text strong {
+    color: #0f172a;
+    font-weight: 600;
+  }
+
+  .box-upgrade {
+    margin-top: 0.8rem;
+    padding: 0.85rem 1.1rem;
+    background: rgba(16, 185, 129, 0.05);
+    border-left: 3px solid #10b981;
+    border-radius: 0 8px 8px 0;
+    font-size: 1.05rem;
+    color: #047857;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .box-avoid {
+    margin-top: 0.7rem;
+    padding: 0.85rem 1.1rem;
+    background: rgba(239, 68, 68, 0.05);
+    border-left: 3px solid #ef4444;
+    border-radius: 0 8px 8px 0;
+    font-size: 1.05rem;
+    color: #b91c1c;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .box-tip {
+    margin-top: 0.7rem;
+    padding: 0.85rem 1.1rem;
+    background: rgba(59, 130, 246, 0.05);
+    border-left: 3px solid #3b82f6;
+    border-radius: 0 8px 8px 0;
+    font-size: 1.05rem;
+    color: #1d4ed8;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .box-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.4rem;
+  }
+
+  .box-upgrade .box-label { color: #059669; }
+  .box-avoid .box-label { color: #dc2626; }
+  .box-tip .box-label { color: #2563eb; }
+
+  .box-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #475569;
+  }
+
+  .listen-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-left: 3px solid #8b5cf6;
+    border-radius: 14px;
+    padding: 1.3rem 1.5rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .listen-card p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #475569;
+    font-style: italic;
+  }
+
+  @media (max-width: 500px) {
+    body { padding: 1.2rem 0.8rem; }
+    .card-header { padding: 1.1rem; }
+    .card-body-inner { padding: 0 1.1rem 1.1rem; }
+    h1 { font-size: 1.5rem; }
+    .q-text { font-size: 1.05rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Genesys Screening Prep</h1>
+    <p class="subtitle">Vanessa Lynch</p>
+    <span class="role-tag">Tap to reveal • don't memorise, remember</span>
+  </header>
+
+  <div id="root"></div>
+</div>
+
+<script>
+const sections = [
+  {
+    title: "Her questions — core (you're covered)",
+    cards: [
+      {
+        n: "Q1", q: "What do you know about Genesys?", type: "core",
+        points: [
+          "Cloud platform for <strong>customer experience</strong> — voice, chat, email, all channels in one place",
+          "AI is core to how they operate",
+          "<strong>8,000+ organisations</strong> globally — serious scale",
+          "Galway office = ex-Altocloud, acquired 2018",
+          "Grown from ~20 to <strong>300+ staff</strong>, mostly software engineers in AI & cloud CX",
+        ],
+        upgrade: "Close with: <em>\"Given my background, I'd be especially focused on how ServiceNow supports your internal operations and integrations here in Galway.\"</em> — sounds like a contributor, not just curious.",
+        avoid: null, tip: null
+      },
+      {
+        n: "Q2", q: "Talk me through your experience", type: "core",
+        points: [
+          "Start with <strong>most recent role</strong> and work backwards",
+          "Focus on <strong>ServiceNow-specific work</strong> — admin, config, support",
+          "Mention team size, environment, tools used",
+          "Keep it to <strong>2-3 minutes max</strong> — don't ramble",
+        ],
+        upgrade: "End with: <em>\"That's the summary — happy to go deeper on any of that.\"</em> Gives them control.",
+        avoid: null, tip: "Practice this out loud once. Timing matters."
+      },
+      {
+        n: "Q3", q: "Why did you leave?", type: "core",
+        points: [
+          "Role was <strong>made redundant</strong> — simple, factual",
+          "No bitterness — frame it as a reset",
+          "Pivot to: <em>\"It gave me the chance to be deliberate about what's next\"</em>",
+        ],
+        upgrade: null,
+        avoid: "Don't badmouth previous employer. Don't over-explain. One sentence and move on.",
+        tip: null
+      },
+      {
+        n: "Q4", q: "Why Genesys?", type: "core",
+        points: [
+          "Galway-based, <strong>growing company</strong> with serious tech pedigree",
+          "ServiceNow team is <strong>new</strong> — chance to shape it",
+          "Interested in the <strong>Genesys Cloud + ServiceNow integration</strong> space",
+          "Role aligns with your experience — not a step sideways",
+        ],
+        upgrade: "Add: <em>\"I like that the ServiceNow team is still being built — that's where I do my best work, getting stuck in early.\"</em>",
+        avoid: null, tip: null
+      },
+      {
+        n: "Q5", q: "How does your experience relate?", type: "core",
+        points: [
+          "Day-to-day admin: <strong>forms, business rules, ACLs, catalog items</strong> — all in the job spec",
+          "Worked across <strong>dev, test, prod</strong> environments with update sets",
+          "Incident resolution, documentation, working with global teams",
+          "ITSM processes — not just theory, <strong>lived it</strong>",
+        ],
+        upgrade: null, avoid: null, tip: "Mirror the job spec language back. Shows you've read it carefully."
+      },
+      {
+        n: "Q6", q: "Tell me about a problem you solved", type: "core",
+        points: [
+          "Pick something <strong>specific and recent</strong>",
+          "Structure: <strong>Situation → Action → Result</strong>",
+          "Include what you learned or what you'd do differently",
+          "Keep it under 2 minutes",
+        ],
+        upgrade: null, avoid: "Don't pick something trivial. Don't make it sound like you were the only hero.",
+        tip: "Have 2 stories ready — one technical, one about process/people."
+      },
+      {
+        n: "Q7", q: "How do you troubleshoot?", type: "core",
+        points: [
+          "Check <strong>old tickets first</strong> — likely happened before",
+          "Knowledge base next",
+          "Dive into logs — use available tools to narrow down root cause",
+          "Lean on colleagues — <strong>no ego about asking for help</strong> (goes both ways)",
+          "Raise a <strong>HI case with ServiceNow</strong> if needed",
+          "Always document the outcome — next person doesn't start from zero",
+        ],
+        upgrade: null,
+        avoid: "Avoid <em>\"use AI to find the needle in the haystack\"</em> — risks sounding buzzwordy. Say <em>\"logs and available tools\"</em> instead.",
+        tip: null
+      },
+      {
+        n: "Q8", q: "How do you prioritise work?", type: "core",
+        points: [
+          "Priority + urgency first — <strong>aligned with team lead</strong>",
+          "Quick wins tackled early — clears noise, keeps momentum",
+          "<strong>Communication is key</strong> — if something's delayed, it goes up the chain straight away",
+          "Never go quiet — team lead needs to manage expectations",
+        ],
+        upgrade: "Add a closer: <em>\"Ultimately it's about balancing quick wins with higher priority work without losing visibility.\"</em>",
+        avoid: null, tip: null
+      },
+      {
+        n: "Q9", q: "You don't have the CSA yet — what's your plan?", type: "core",
+        points: [
+          "Heavy workload at previous role kept pushing it — but <strong>training is complete</strong>",
+          "It's formalising what I already do day to day",
+          "Plan to <strong>sit the exam within first 3 months</strong>",
+        ],
+        upgrade: "Phrase it as: <em>\"I've already completed the training, so it's really just formalising what I'm already doing day to day.\"</em>",
+        avoid: null, tip: "Confident, not defensive. The cert is paperwork at this point."
+      },
+      {
+        n: "Q10", q: "Are you comfortable with the €60k?", type: "core",
+        points: [
+          "Yes — comfortable with it",
+          "<strong>Role and environment matter more</strong> than salary alone right now",
+          "This role lines up well with what I'm looking for",
+          "Happy to grow over time",
+        ],
+        upgrade: null, avoid: null, tip: "Say it once, cleanly. Don't hedge."
+      },
+    ]
+  },
+  {
+    title: "Her questions — likely extras",
+    cards: [
+      {
+        n: "Q11", q: "Why are you looking now?", type: "extra",
+        points: [
+          "Slightly different from 'why did you leave' — this is about <strong>motivation and mindset</strong>",
+          "Took time since the redundancy to be deliberate",
+          "Now focused on finding the <strong>right role to contribute and grow long term</strong>",
+        ],
+        upgrade: "Say: <em>\"I've taken some time since the redundancy to be deliberate, and now I'm focused on finding the right role where I can contribute and grow long term.\"</em>",
+        avoid: null, tip: null
+      },
+      {
+        n: "Q12", q: "What are you looking for in your next role?", type: "extra",
+        points: [
+          "Stay <strong>hands-on with ServiceNow</strong>",
+          "Contribute to a team and keep developing",
+          "Environment where <strong>knowledge sharing and collaboration</strong> matter",
+        ],
+        upgrade: "Strong version: <em>\"A role where I can stay hands-on with ServiceNow, contribute to a team, and continue developing — ideally somewhere where knowledge sharing and collaboration are part of how the team operates.\"</em>",
+        avoid: "Don't make it sound like anything will do — show you have a direction.",
+        tip: null
+      },
+      {
+        n: "Q13", q: "Availability / notice period?", type: "extra",
+        points: [
+          "<strong>Available to start immediately</strong>",
+          "No notice period — role was made redundant",
+        ],
+        upgrade: null, avoid: null, tip: "Simple and clear. No need to elaborate."
+      },
+      {
+        n: "Q14", q: "Location / hybrid / on-site?", type: "extra",
+        points: [
+          "Confirm you're comfortable with <strong>Galway commute / setup</strong>",
+          "Be clear on hybrid expectations if you have any",
+        ],
+        upgrade: null, avoid: null, tip: "They may just be checking — have a clear, confident answer ready."
+      },
+    ]
+  },
+  {
+    title: "The section where you just listen",
+    listen: true,
+    desc: "Vanessa will explain the team structure, responsibilities, and tools. You don't need to prepare answers here — just listen carefully, nod along, and pick up keywords she uses. You can reflect them back later in your questions.",
+  },
+  {
+    title: "Questions you ask her",
+    cards: [
+      {
+        n: "→1", q: "What does a typical week look like for someone in this role?", type: "you",
+        points: [
+          "Sounds like natural curiosity about the role",
+          "Actually tells you about <strong>real workload and pace</strong>",
+          "Listen for: rushed tone, vague answers, 'fast-paced environment' — those are signals",
+        ],
+        upgrade: null, avoid: null, tip: "This is your best intel question. Ask it naturally."
+      },
+      {
+        n: "→2", q: "How does the team handle incidents or urgent issues?", type: "you",
+        points: [
+          "Tells you whether there's <strong>on-call or out-of-hours expectations</strong>",
+          "Tells you if the team is stretched or well-resourced",
+          "Listen for mention of rotas, escalation chains, or 'everyone chips in'",
+        ],
+        upgrade: null, avoid: null, tip: "Pair this with the 'typical week' question if conversation flows naturally."
+      },
+      {
+        n: "→3", q: "How is ServiceNow currently used within the team?", type: "you",
+        points: [
+          "Shows you're <strong>already thinking about the role</strong>, not just the job title",
+          "Gives you useful context for next stage interviews",
+          "Alternatively: <em>\"Where does ServiceNow sit within your overall ecosystem here in Galway?\"</em>",
+        ],
+        upgrade: null, avoid: null, tip: "Strong standalone question if you only ask one."
+      },
+      {
+        n: "→4", q: "How long has the team been structured this way?", type: "you",
+        points: [
+          "Sounds like you're interested in team history",
+          "Actually tells you about <strong>stability, turnover, and growth</strong>",
+          "High turnover or recent restructures = red flag worth noting",
+        ],
+        upgrade: null, avoid: null, tip: "Good for reading between the lines without asking directly."
+      },
+      {
+        n: "→5", q: "What does success look like in the first 3 months?", type: "you",
+        points: [
+          "Shows you're thinking about <strong>contributing, not just landing the job</strong>",
+          "Gives you a benchmark to reference in future interviews",
+        ],
+        upgrade: null, avoid: null, tip: "Good backup if other questions get answered during her role explanation."
+      },
+      {
+        n: "→6", q: "What are the next steps from here?", type: "you",
+        points: [
+          "Always worth asking — shows you're <strong>interested and organised</strong>",
+          "Gives you a clear timeline to follow up against",
+        ],
+        upgrade: null, avoid: null, tip: "Ask this at the very end, regardless of what else you asked."
+      },
+    ]
+  }
+];
+
+const typeConfig = {
+  core:  { numClass: "qn-core",  badgeClass: "badge-core",  badgeText: "core" },
+  extra: { numClass: "qn-extra", badgeClass: "badge-extra", badgeText: "likely extra" },
+  you:   { numClass: "qn-you",   badgeClass: "badge-you",   badgeText: "you ask" },
+};
+
+const root = document.getElementById("root");
+
+function toggle(card) {
+  const wasOpen = card.classList.contains('open');
+  document.querySelectorAll('.card').forEach(c => {
+    c.classList.remove('open');
+    c.querySelector('.card-body').style.maxHeight = null;
+  });
+  if (!wasOpen) {
+    card.classList.add('open');
+    const body = card.querySelector('.card-body');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+sections.forEach(section => {
+  const label = document.createElement("div");
+  label.className = "section-label";
+  label.textContent = section.title;
+  root.appendChild(label);
+
+  if (section.listen) {
+    const lc = document.createElement("div");
+    lc.className = "listen-card";
+    lc.innerHTML = `<p>${section.desc}</p>`;
+    root.appendChild(lc);
+    return;
+  }
+
+  section.cards.forEach(item => {
+    const cfg = typeConfig[item.type] || typeConfig.core;
+
+    const card = document.createElement("div");
+    card.className = "card";
+    card.onclick = function() { toggle(this); };
+
+    // Header
+    let headerHTML = `
+      <div class="card-header">
+        <div class="q-number ${cfg.numClass}">${item.n}</div>
+        <div class="q-text">${item.q}</div>
+        <span class="badge ${cfg.badgeClass}">${cfg.badgeText}</span>
+        <div class="toggle-icon">+</div>
+      </div>`;
+
+    // Body
+    let bodyHTML = '<div class="card-body"><div class="card-body-inner"><div class="divider"></div>';
+
+    item.points.forEach(p => {
+      bodyHTML += `<div class="hint"><span class="hint-icon">→</span><span class="hint-text">${p}</span></div>`;
+    });
+
+    if (item.upgrade) {
+      bodyHTML += `<div class="box-upgrade"><div class="box-label">✅ Upgrade</div><div class="box-text">${item.upgrade}</div></div>`;
+    }
+    if (item.avoid) {
+      bodyHTML += `<div class="box-avoid"><div class="box-label">🚫 Avoid</div><div class="box-text">${item.avoid}</div></div>`;
+    }
+    if (item.tip) {
+      bodyHTML += `<div class="box-tip"><div class="box-label">💡 Note</div><div class="box-text">${item.tip}</div></div>`;
+    }
+
+    bodyHTML += '</div></div>';
+
+    card.innerHTML = headerHTML + bodyHTML;
+    root.appendChild(card);
+  });
+});
+</script>
+
+</body>
+</html>
