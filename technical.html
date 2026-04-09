@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ServiceNow Technical Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f8f9fb;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 2.5rem 1.2rem;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: #10b981; }
+
+  header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #10b981, #3b82f6);
+    margin: 1.2rem auto 0;
+    border-radius: 2px;
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .role-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    color: #059669;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .interview-meta {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: rgba(16, 185, 129, 0.04);
+    border: 1px solid rgba(16, 185, 129, 0.15);
+    border-radius: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.7;
+  }
+
+  .interview-meta strong { color: #0f172a; }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.85rem;
+  }
+
+  .questions-label { margin-top: 2.5rem; }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .filter-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .filter-tab:hover { border-color: #10b981; color: #059669; }
+
+  .filter-tab.active {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.4);
+    color: #059669;
+    font-weight: 600;
+  }
+
+  .card, .note-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .card:hover { border-color: #3b82f6; }
+  .note-card:hover { border-color: #8b5cf6; }
+
+  .card.open {
+    border-color: #10b981;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.1);
+  }
+
+  .note-card.open {
+    border-color: #8b5cf6;
+    box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1);
+  }
+
+  .card-header {
+    padding: 1.3rem 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .card-header:hover { background: #f8fafc; }
+
+  .q-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #10b981, #3b82f6);
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .note-card .q-number {
+    background: linear-gradient(135deg, #a78bfa, #6366f1);
+    font-size: 0.9rem;
+  }
+
+  .q-text {
+    flex: 1;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1.45;
+  }
+
+  .badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 0.15rem 0.5rem;
+    border-radius: 20px;
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .badge-admin { background: rgba(59,130,246,0.08); color: #2563eb; border: 1px solid rgba(59,130,246,0.2); }
+  .badge-config { background: rgba(16,185,129,0.08); color: #059669; border: 1px solid rgba(16,185,129,0.2); }
+  .badge-itsm { background: rgba(245,158,11,0.08); color: #d97706; border: 1px solid rgba(245,158,11,0.2); }
+  .badge-health { background: rgba(239,68,68,0.08); color: #dc2626; border: 1px solid rgba(239,68,68,0.2); }
+  .badge-reporting { background: rgba(139,92,246,0.08); color: #7c3aed; border: 1px solid rgba(139,92,246,0.2); }
+
+  .toggle-icon {
+    font-size: 1.4rem;
+    color: #94a3b8;
+    transition: transform 0.3s ease, color 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .card.open .toggle-icon { transform: rotate(45deg); color: #10b981; }
+  .note-card.open .toggle-icon { transform: rotate(45deg); color: #8b5cf6; }
+
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+
+  .card-body-inner { padding: 0 1.5rem 1.5rem 1.5rem; }
+
+  .divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin-bottom: 1.3rem;
+  }
+
+  .hint {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 0.9rem;
+    align-items: flex-start;
+  }
+
+  .hint-icon {
+    font-size: 1rem;
+    margin-top: 3px;
+    flex-shrink: 0;
+    color: #94a3b8;
+  }
+
+  .hint-text {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #475569;
+  }
+
+  .hint-text strong {
+    color: #0f172a;
+    font-weight: 600;
+  }
+
+  .keyword {
+    display: inline-block;
+    padding: 0.12rem 0.5rem;
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    color: #2563eb;
+  }
+
+  .keyword.green {
+    background: rgba(16, 185, 129, 0.08);
+    border-color: rgba(16, 185, 129, 0.25);
+    color: #059669;
+  }
+
+  .keyword.amber {
+    background: rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.25);
+    color: #d97706;
+  }
+
+  .keyword.purple {
+    background: rgba(139, 92, 246, 0.08);
+    border-color: rgba(139, 92, 246, 0.2);
+    color: #7c3aed;
+  }
+
+  .think-box {
+    margin-top: 0.8rem;
+    padding: 0.85rem 1.1rem;
+    background: rgba(16, 185, 129, 0.05);
+    border-left: 3px solid #10b981;
+    border-radius: 0 8px 8px 0;
+    font-size: 1.05rem;
+    color: #047857;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .gotcha {
+    margin-top: 0.7rem;
+    padding: 0.85rem 1.1rem;
+    background: rgba(245, 158, 11, 0.05);
+    border-left: 3px solid #f59e0b;
+    border-radius: 0 8px 8px 0;
+    font-size: 1.05rem;
+    color: #b45309;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .note-detail {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #475569;
+    margin-bottom: 0.8rem;
+  }
+
+  .note-detail strong { color: #0f172a; }
+
+  .note-subhead {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.95rem;
+    color: #7c3aed;
+    margin-top: 1.2rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .full-answer {
+    margin-top: 1.3rem;
+    padding: 1.1rem 1.3rem;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 10px;
+  }
+
+  .full-answer-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: #0284c7;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.7rem;
+  }
+
+  .full-answer-text {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: #334155;
+    font-style: italic;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+  }
+
+  @media (max-width: 500px) {
+    body { padding: 1.2rem 0.8rem; }
+    .card-header { padding: 1.1rem; }
+    .card-body-inner { padding: 0 1.1rem 1.1rem; }
+    h1 { font-size: 1.5rem; }
+    .q-text { font-size: 1.05rem; }
+    .badge { font-size: 0.62rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="index.html" class="back-link">← back</a>
+
+  <header>
+    <h1>Technical Interview Prep</h1>
+    <p class="subtitle">Platform Administrator</p>
+    <span class="role-tag">Tap to reveal • don't memorise, remember</span>
+  </header>
+
+  <div class="interview-meta">
+    <strong>Daniel Hammons</strong> — Staff Enterprise Platform Engineer<br>
+    Thu 16 Apr • 2pm • ~45 min • Zoom<br>
+    "Collaborative conversation" — talk through your thinking
+  </div>
+
+  <div class="filter-tabs">
+    <div class="filter-tab active" onclick="filterCards('all')">All</div>
+    <div class="filter-tab" onclick="filterCards('admin')">Admin</div>
+    <div class="filter-tab" onclick="filterCards('config')">Config</div>
+    <div class="filter-tab" onclick="filterCards('itsm')">ITSM</div>
+    <div class="filter-tab" onclick="filterCards('health')">Health</div>
+    <div class="filter-tab" onclick="filterCards('reporting')">Reporting</div>
+  </div>
+
+  <!-- ============ DANIEL FOCUS ============ -->
+  <div class="section-label">🔍 Technical Interview Focus</div>
+
+  <div class="note-card" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">⚙️</div>
+      <div class="q-text">What Daniel Will Ask About</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="note-detail"><em>From Vanessa's email — the five focus areas:</em></div>
+        <div class="hint"><span class="hint-icon">1.</span><span class="hint-text"><strong>Platform Administration Fundamentals</strong> — managing users, roles, groups, ACLs, core system configurations</span></div>
+        <div class="hint"><span class="hint-icon">2.</span><span class="hint-text"><strong>Configuration & Customization</strong> — forms, UI policies, business rules, service catalog items, basic scripting</span></div>
+        <div class="hint"><span class="hint-icon">3.</span><span class="hint-text"><strong>ITSM & Process Alignment</strong> — ITSM processes and how ServiceNow supports operational workflows</span></div>
+        <div class="hint"><span class="hint-icon">4.</span><span class="hint-text"><strong>Platform Health & Governance</strong> — upgrades, patches, system health checks, security and compliance</span></div>
+        <div class="hint"><span class="hint-icon">5.</span><span class="hint-text"><strong>Reporting & Visibility</strong> — dashboards and reports to drive operational insights</span></div>
+        <div class="think-box">💡 Vanessa said: "We approach technical interviews as collaborative conversations. We're interested not only in your hands-on experience, but also in how you think through platform decisions." — Talk through your reasoning, don't just give final answers.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ NOTES ============ -->
+  <div class="notes-section">
+    <div class="section-label">📌 Notes</div>
+
+    <div class="note-card" onclick="toggle(this)">
+      <div class="card-header">
+        <div class="q-number">📎</div>
+        <div class="q-text">Genesys Cloud CX + ServiceNow CSM Integration</div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="note-detail">Genesys and ServiceNow have a co-built product called <strong>"Unified Experience"</strong> — it integrates <span class="keyword purple">Genesys Cloud CX</span> with <span class="keyword purple">ServiceNow CSM</span> into a single agent desktop.</div>
+          <div class="note-subhead">The partnership is massive</div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>ServiceNow invested $750M in Genesys</strong> (July 2025) — Salesforce matched it. $1.5B total investment.</span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">At <strong>Xperience 2025</strong>, they announced <strong>Agent2Agent (A2A) orchestration</strong> — AI agents collaborating autonomously across both platforms</span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Unified Experience is <strong>expanding from CSM into ITSM</strong> — help desk agents, not just customer service. Directly relevant to your role.</span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Genesys Cloud ARR hit <strong>~$2.2B</strong>, growing 35% YoY — the company is scaling fast</span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Genesys is presenting at <strong>ServiceNow Knowledge 2026</strong> right now — the partnership is deepening</span></div>
+          <div class="note-subhead">What Unified Experience does</div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Centralises <strong>voice, chat &amp; digital messaging</strong> routing through Genesys Cloud into ServiceNow</span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Agents get <strong>native call controls</strong> directly inside the ServiceNow Agent Workspace — no switching between systems</span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>AI-powered Agent Copilot</strong> embedded as a custom component within ServiceNow</span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Queue mapping &amp; presence sync</strong> — agent statuses stay aligned across both platforms</span></div>
+          <div class="note-subhead">Admin-relevant setup</div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">OAuth JWT authentication with <strong>self-signed certificates</strong></span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>OpenFrame configuration</strong> in ServiceNow connects to Genesys Cloud</span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Integration user creation, Application Registry setup, wrap-up code admin</span></div>
+          <div class="think-box">💡 Drop this casually: "I saw ServiceNow invested $750M in Genesys and the Unified Experience is expanding into ITSM — that's exciting because it means the platform admin role sits right at the centre of that growth." Shows you've done homework beyond the job spec.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-card" onclick="toggle(this)">
+      <div class="card-header">
+        <div class="q-number">📎</div>
+        <div class="q-text">Team Structure &amp; GDPR Context</div>
+        <div class="toggle-icon">+</div>
+      </div>
+      <div class="card-body">
+        <div class="card-body-inner">
+          <div class="divider"></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">ServiceNow team is <strong>new</strong> at Genesys — manager in <span class="keyword purple">Brazil</span>, rest of team in <span class="keyword purple">USA</span></span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Hiring a <strong>Senior Engineer</strong> + <strong>Sys Admin</strong> in Ireland</span></div>
+          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Irish hires likely needed for <strong>GDPR compliance</strong> — only EU-based staff can view certain customer data</span></div>
+          <div class="gotcha">⚠ Tip: In the manager/director round, show awareness of data residency and why having EU-based admins matters for compliance</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 1. PLATFORM ADMIN FUNDAMENTALS ============ -->
+  <div class="section-label questions-label">1️⃣ Platform Administration Fundamentals</div>
+
+  <div class="card" data-cat="admin" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">01</div>
+      <div class="q-text">What's the difference between an ACL and a Role, and how do they work together?</div>
+      <span class="badge badge-admin">admin</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>ACL</strong> = the <span class="keyword">rule</span> — controls <strong>what</strong> can be done (read / write / create / delete) at table, field, or row level</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Role</strong> = the <span class="keyword green">label</span> — controls <strong>who</strong> — means nothing until referenced by an ACL</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Together:</strong> ACL says "only users with <em>this role</em> can read <em>this table</em>"</span></div>
+        <div class="think-box">💡 Think: "ACL is the <strong>lock</strong>, Role is the <strong>key</strong>"</div>
+        <div class="gotcha">⚠ Gotcha: If no ACL exists for a resource, access is <strong>denied</strong> by default</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">ACLs define what can be done — read, write, create, delete — and at what level: table, field, or even row. Roles define who someone is. On their own, roles don't actually restrict anything — they're just a label assigned to users or groups. They become powerful when an ACL references them. So for example, I could create an ACL that says "only users with the 'customer_viewer' role can read this table" — and then layer on a second ACL that prevents write or delete access entirely. That gives you real defence in depth: the ACL sets the rule, the role determines who the rule applies to. It's also worth knowing that ServiceNow denies access by default if no ACL exists — so you're building permissions up, not locking things down after the fact.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="admin" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">02</div>
+      <div class="q-text">How do you manage users and groups in ServiceNow?</div>
+      <span class="badge badge-admin">admin</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Users</strong> live in <span class="keyword">sys_user</span> — can be created manually, imported via CSV, or synced via <strong>LDAP/SSO</strong></span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Groups</strong> live in <span class="keyword">sys_user_group</span> — used for assignment, approvals, notifications, and role inheritance</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Roles assigned to a <strong>group</strong> automatically cascade to all members — cleaner than per-user assignment</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Group nesting</strong> — child groups inherit parent roles, useful for org hierarchy</span></div>
+        <div class="think-box">💡 In practice: always assign roles to groups, not individual users. Easier to audit, easier to manage when people move teams.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Users are stored in the sys_user table and can be provisioned in several ways — manually for one-offs, CSV import for bulk onboarding, or ideally through LDAP or SSO integration for automated provisioning and deprovisioning. Groups in sys_user_group serve multiple purposes: they're used for assignment routing, approval workflows, notification subscriptions, and importantly, role inheritance. My approach is to always assign roles at the group level rather than to individual users. It's much cleaner from an audit perspective, and when someone moves teams, you just change their group membership instead of hunting down individual role assignments. Groups can also be nested — child groups inherit the parent's roles, which maps well to organisational hierarchies.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="admin" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">03</div>
+      <div class="q-text">What are Update Sets and why are they important?</div>
+      <span class="badge badge-admin">admin</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">A <strong>wrapper</strong> that captures <span class="keyword green">configuration changes</span> (customer updates) in a dev instance</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Promotion path: <span class="keyword">Dev</span> → <span class="keyword">Test (UAT)</span> → <span class="keyword amber">Prod</span> — never skip</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Not everything</strong> is auto-captured (data changes, some form changes) — dev must verify</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Can batch update sets, but <strong>keeping them separate = cleaner audit trail</strong></span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Only captures <strong>customisations</strong> (customer updates), not base system / upgrade changes</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Can be <strong>backed out</strong> if issues arise post-commit</span></div>
+        <div class="think-box">💡 Think: "Update sets = <strong>version control</strong> for ServiceNow config"</div>
+        <div class="gotcha">⚠ Gotcha: Never commit directly to prod without UAT sign-off. Good hygiene: proper naming, descriptions, dates filled in.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Update sets are essentially a wrapper that captures all your configuration changes in a development instance. Say you have dev, test, and prod — you spin up an update set with proper naming conventions, select it as your current set, and any changes you make get recorded as customer updates. It's important to know that not everything is automatically captured — some form changes need to be manually added, and data changes aren't included at all, so you need to be aware of that. Once the developer is happy with their work and has done functional testing in dev, they promote the update set into the test instance for proper UAT. If the tester finds issues, the dev spins up an additional update set, makes the fixes, and promotes again. You can batch update sets together, but personally I prefer keeping them separate — it gives you a cleaner audit trail and makes it easier to back out specific changes if something goes wrong. Good hygiene is key: fill in all fields on the update set form, use consistent naming like "GEN-001 - Adding field to incident form," populate dates, and add descriptions. Only once UAT is passed should an update set ever be committed to production. And the beauty is, if something does go wrong, update sets can be backed out.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="admin" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">04</div>
+      <div class="q-text">Explain the difference between a baseline role like itil, admin, and snc_internal.</div>
+      <span class="badge badge-admin">admin</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword">itil</span> = the standard <strong>fulfilment/agent</strong> role — lets users work incidents, problems, changes, etc.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword amber">admin</span> = <strong>full platform access</strong> — bypasses most ACLs, can modify anything. Use sparingly.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword green">snc_internal</span> = internal ServiceNow employee role — <strong>you'll never assign this</strong>, but know it exists</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Best practice: create <strong>custom roles</strong> for specific needs rather than handing out itil or admin broadly</span></div>
+        <div class="gotcha">⚠ Gotcha: admin role should be tightly controlled. In a mature org, even platform admins might use elevated custom roles instead of blanket admin access.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">The itil role is the baseline for anyone who needs to work within ITSM modules — incident, problem, change, and so on. It grants access to fulfiller views and actions. The admin role is the most powerful — it bypasses most ACLs and gives unrestricted access to configure the platform. In practice, you want to limit who holds admin and for how long. Some orgs use time-boxed admin access or elevated custom roles for day-to-day work. snc_internal is a ServiceNow internal role — you wouldn't assign it, but you'll see it referenced in base system ACLs. The key principle is least privilege: give people exactly the access they need, nothing more. If someone only needs to manage catalog items, build a role for that rather than giving them itil or admin.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 2. CONFIGURATION & CUSTOMIZATION ============ -->
+  <div class="section-label questions-label">2️⃣ Configuration & Customization</div>
+
+  <div class="card" data-cat="config" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">05</div>
+      <div class="q-text">What's the difference between a Business Rule and a UI Policy?</div>
+      <span class="badge badge-config">config</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>UI Policy</strong> = <span class="keyword green">client-side</span> — controls the <strong>form experience</strong> (hide/show, mandatory, read-only)</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Business Rule</strong> = <span class="keyword">server-side</span> — runs on <strong>database operations</strong> (before / after / insert / update / delete)</span></div>
+        <div class="think-box">💡 Think: "Am I affecting the <strong>form</strong> or the <strong>data</strong>?"</div>
+        <div class="gotcha">⚠ Gotcha: UI Policies <em>can</em> run server-side (checkbox) — but discouraged for performance</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">A UI Policy is client-side — I'd use it to control the form experience, like hiding or showing fields, or making something mandatory based on what a user selects. A Business Rule is server-side and runs on database operations. It gives me more control over data integrity — for example, I can use a 'before' rule to validate or transform data before it's saved, or an 'after' rule to trigger downstream actions like notifications. The way I think about it is: if I need to affect what the user sees on the form, it's a UI Policy. If I need to affect what happens to the actual data, it's a Business Rule. Worth noting — UI Policies do have a server-side checkbox, but it's generally discouraged because it can cause performance issues.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="config" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">06</div>
+      <div class="q-text">What's the difference between a Catalog Item and a Record Producer?</div>
+      <span class="badge badge-config">config</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Catalog Item</strong> = creates a <span class="keyword">Requested Item (RITM)</span> + associated tasks — used for standard service requests (laptop, software, access)</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Record Producer</strong> = creates a record on a <span class="keyword green">specific target table</span> — like an incident, change, or custom table record</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Both live in the <strong>Service Catalog</strong> and look the same to the end user</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Key difference: Catalog Item goes through the <strong>request → RITM → task</strong> fulfilment model. Record Producer <strong>skips that</strong> and writes directly.</span></div>
+        <div class="think-box">💡 Think: "Catalog Item = ordering something. Record Producer = reporting something."</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Both sit in the Service Catalog and look identical to the end user — they fill in a form and submit. The difference is what happens behind the scenes. A Catalog Item creates a Requested Item (RITM) and associated catalog tasks, following the standard request fulfilment model. It's designed for ordering things — a laptop, software access, a new hire setup. A Record Producer creates a record directly on a target table — like an incident or a change request. So if you want users to raise an incident through the portal without seeing the incident form, you'd use a Record Producer that writes to the incident table. The choice depends on whether you want the fulfilment workflow (Catalog Item) or a direct record creation (Record Producer).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="config" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">07</div>
+      <div class="q-text">How do you customize a form, and what's the difference between form layout and form design?</div>
+      <span class="badge badge-config">config</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Form Layout</strong> (Configure → Form Layout) = drag-and-drop field arrangement into <strong>sections and columns</strong>. Available per view.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Form Designer</strong> = a more modern visual interface — does the same thing but also lets you configure <strong>field properties</strong> inline</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Views</strong> allow different form layouts for different roles or use cases (e.g., an "itil" view vs a "self-service" view)</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Form changes are captured in update sets — but <strong>verify</strong> they were actually picked up</span></div>
+        <div class="gotcha">⚠ Gotcha: Form layout changes can be view-specific. If you change the "Default" view, it won't affect other named views. Always check which view you're editing.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">There are a few ways to customize forms. Form Layout is the classic approach — you go to Configure → Form Layout and drag fields into sections and columns. It's quick and straightforward. Form Designer is the more modern version — it's visual, lets you see the form as you build it, and you can configure field properties like read-only or mandatory right there. Both achieve the same result. The key thing to understand is views — you can have multiple form layouts for the same table. So the itil view might show different fields than what a self-service user sees. When customizing, always double-check which view you're editing. And while form changes should be captured in your update set, it's good practice to verify, because not all form-level changes are automatically tracked.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="config" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">08</div>
+      <div class="q-text">What's the difference between configuration and customization in ServiceNow?</div>
+      <span class="badge badge-config">config</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword green">Configuration</span> = using <strong>built-in tools</strong> — form layout, UI policies, workflows, system properties. <strong>Upgrade-safe.</strong></span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword amber">Customization</span> = writing <strong>custom code</strong> or modifying <strong>base system</strong> files. Can break during upgrades.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">ServiceNow's philosophy: <strong>configure first, customize only when necessary</strong></span></div>
+        <div class="think-box">💡 This is a values question. Daniel wants to hear that you lean towards out-of-the-box solutions and only write code when configuration can't do the job.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Configuration is using the platform's built-in tools to tailor it to your needs — things like form layouts, UI policies, workflows, system properties. These are upgrade-safe because ServiceNow knows about them and can preserve them through upgrades. Customization means writing custom code or modifying out-of-the-box components — things like custom business rules, script includes, or modifying base system scripts. These can break during upgrades because ServiceNow might change the underlying code you've modified. My approach is always configure first. If the platform gives me a way to do it without code, I'll use that. I only move to scripting when there's no configuration option that meets the requirement. And when I do customize, I document it thoroughly so the team knows what's been changed and why.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 3. ITSM & PROCESS ALIGNMENT ============ -->
+  <div class="section-label questions-label">3️⃣ ITSM & Process Alignment</div>
+
+  <div class="card" data-cat="itsm" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">09</div>
+      <div class="q-text">Walk me through the ITSM modules and how they relate to each other.</div>
+      <span class="badge badge-itsm">itsm</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword">Incident</span> = something is <strong>broken</strong> — restore service ASAP</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword">Problem</span> = <strong>root cause</strong> investigation — why did it break? Prevent recurrence.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword green">Change</span> = planned modification — proper approval, risk assessment, implementation plan</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword amber">Request</span> = user needs something — standard service through the catalog</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Flow:</strong> multiple incidents → problem created → root cause found → change raised to fix → change implemented → problem resolved</span></div>
+        <div class="think-box">💡 Daniel will want to hear you understand the <strong>flow between modules</strong>, not just what each does in isolation.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">The core ITSM modules are Incident, Problem, Change, and Request — and the power is in how they connect. Incident management is about restoring service as quickly as possible when something breaks. If you start seeing patterns — say the same incident keeps coming up — that's when you raise a Problem to investigate root cause. Once you've identified the fix, you raise a Change to implement it properly, with risk assessment and approvals. Requests are separate — they're for standard service needs like "I need access to this application" or "I need a new laptop." Those go through the Service Catalog and follow the request fulfilment process. The relationships matter too — incidents can be linked to problems, problems generate changes, and the CMDB ties it all together by showing what infrastructure is affected.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="itsm" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">10</div>
+      <div class="q-text">What's the difference between an Incident and a Problem?</div>
+      <span class="badge badge-itsm">itsm</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Incident</strong> = <span class="keyword">symptom</span> — "the service is down, fix it now"</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Problem</strong> = <span class="keyword green">root cause</span> — "why does this keep happening?"</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Incident goal: <strong>restore service</strong>. Problem goal: <strong>prevent recurrence</strong>.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Multiple incidents can be <strong>linked to one problem</strong> — shows the scope of impact</span></div>
+        <div class="gotcha">⚠ Common mistake: treating every incident as a problem. Problems should only be raised when there's a pattern or an unknown root cause worth investigating.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">An incident is a symptom — something is broken or degraded and we need to restore service as fast as possible. A problem is the underlying cause. The classic example: ten users report they can't access email — that's ten incidents. The fact that the mail server ran out of disk space — that's the problem. You can apply a workaround to the incidents while the problem is being investigated. Once you identify root cause, you raise a change to fix it permanently. Not every incident needs a problem — you only raise one when there's a pattern, an unknown root cause, or a major incident that warrants deeper investigation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="itsm" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">11</div>
+      <div class="q-text">Explain the Change Management process. What are the different change types?</div>
+      <span class="badge badge-itsm">itsm</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword green">Standard</span> = pre-approved, low-risk, repeatable — no CAB needed (e.g., password reset script)</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword">Normal</span> = needs assessment and approval — goes through CAB or peer review</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword amber">Emergency</span> = critical fix needed now — expedited approval, documented after the fact</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">All changes should have: <strong>risk assessment</strong>, <strong>implementation plan</strong>, <strong>backout plan</strong>, <strong>testing evidence</strong></span></div>
+        <div class="think-box">💡 Show Daniel you understand governance — changes need documentation, approval, and a backout plan. No cowboy deployments.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Change management in ServiceNow supports three types. Standard changes are pre-approved and repeatable — things like scheduled maintenance or routine deployments that follow a known, low-risk process. Normal changes require proper assessment — you fill in the risk, impact, implementation plan, backout plan, and it goes through an approval flow, often a CAB or peer review. Emergency changes are for urgent fixes — something is broken in production and needs to be fixed immediately. The approval is expedited but still documented, and you do a proper review after the fact. Regardless of type, every change should answer: what are we doing, why, what's the risk, how do we test it, and how do we back it out if something goes wrong.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="itsm" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">12</div>
+      <div class="q-text">What is the CMDB and why is it important?</div>
+      <span class="badge badge-itsm">itsm</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>CMDB</strong> = Configuration Management Database — stores <span class="keyword">Configuration Items (CIs)</span> and their <strong>relationships</strong></span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">CIs = servers, applications, databases, network devices, business services — anything that supports a service</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Relationships</strong> are key — "this application runs on this server" / "this server depends on this database"</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Feeds into <strong>impact analysis</strong> — when a CI goes down, you can see what else is affected</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Links to incidents, changes, and problems — "which CIs are affected by this incident?"</span></div>
+        <div class="gotcha">⚠ A CMDB is only valuable if it's <strong>accurate and maintained</strong>. Stale data is worse than no data — it leads to wrong decisions.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">The CMDB is the Configuration Management Database — it's essentially a map of your IT infrastructure. It stores Configuration Items (CIs) — servers, applications, databases, network devices, business services — and crucially, the relationships between them. The real power isn't just knowing what you have, it's knowing how things connect. If a server goes down, the CMDB tells you which applications are affected, which business services are impacted, and who needs to be notified. It ties directly into ITSM processes: incidents are linked to affected CIs, changes reference what they're modifying, and problem management can use it to identify patterns across infrastructure. The catch is that a CMDB is only useful if it's accurate. Data quality is everything — so you need processes around discovery, reconciliation, and regular audits to keep it healthy.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 4. PLATFORM HEALTH & GOVERNANCE ============ -->
+  <div class="section-label questions-label">4️⃣ Platform Health & Governance</div>
+
+  <div class="card" data-cat="health" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">13</div>
+      <div class="q-text">How do you approach a ServiceNow upgrade?</div>
+      <span class="badge badge-health">health</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Step 1:</strong> Review the <span class="keyword">release notes</span> — what's new, what's deprecated, what's changed</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Step 2:</strong> Run the upgrade on a <span class="keyword green">sub-production instance</span> first (clone prod → upgrade clone)</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Step 3:</strong> Run <strong>Instance Scan</strong> and review <strong>skipped records</strong> — these are customisations that conflict with the upgrade</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Step 4:</strong> Thorough <strong>UAT</strong> — test all critical workflows, integrations, and custom scripts</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Step 5:</strong> Schedule a <strong>maintenance window</strong>, upgrade prod, validate, monitor</span></div>
+        <div class="gotcha">⚠ Skipped records are the biggest risk — they're where your customisations clash with ServiceNow's updates. Review every single one.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Upgrades need a structured approach. First, I'd review the release notes to understand what's changing — new features, deprecations, and breaking changes. Then I'd clone production into a sub-production instance and run the upgrade there. After the upgrade, the critical step is reviewing skipped records — these are places where your customisations conflict with ServiceNow's updated versions. Each one needs a decision: take theirs, keep ours, or merge. I'd then run Instance Scan to check for best practice violations and any health issues introduced by the upgrade. From there, it's thorough UAT — testing critical workflows, integrations, scheduled jobs, and any custom scripts. Once the team is confident, you schedule the production upgrade during a maintenance window, execute it, validate, and monitor closely for the first few days.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="health" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">14</div>
+      <div class="q-text">What is Instance Scan and how do you use it?</div>
+      <span class="badge badge-health">health</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">A built-in tool that checks your instance against ServiceNow <span class="keyword green">best practices</span></span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Scans for: <strong>performance issues</strong>, <strong>manageability concerns</strong>, <strong>upgrade risks</strong>, and <strong>security vulnerabilities</strong></span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Produces a report with <strong>findings</strong> — each one rated by severity with remediation guidance</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Should be run <strong>regularly</strong> (not just before upgrades) and findings tracked to resolution</span></div>
+        <div class="think-box">💡 Mentioning Instance Scan proactively shows Daniel you think about platform hygiene, not just firefighting.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Instance Scan is a built-in health check tool that evaluates your instance against ServiceNow's best practices. It scans for things like performance issues — say a business rule that's doing expensive queries — manageability concerns, potential upgrade risks, and security vulnerabilities. It produces a findings report where each issue is categorised by severity and comes with remediation guidance. I'd use it regularly as part of platform governance, not just before upgrades. You can also create custom scan checks if your organisation has specific standards. The findings should be triaged and tracked like any other work — assigned to someone, prioritised, and resolved.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="health" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">15</div>
+      <div class="q-text">How do you monitor platform health day-to-day?</div>
+      <span class="badge badge-health">health</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword">System Diagnostics</span> (stats.do) — shows node health, memory, active transactions, semaphores</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword green">Scheduled Jobs</span> — monitor for failures, long-running jobs, stuck jobs</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Performance Analytics</strong> / <strong>System Logs</strong> — track trends, slow queries, error rates</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Email logs</strong> — notifications are a lifeline; if they stop, check the mail queue</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Instance Scan</strong> on a regular cadence — not just reactive</span></div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Day-to-day, I'd keep an eye on a few key areas. System diagnostics — stats.do is a quick pulse check on node health, memory usage, active transactions, and semaphores. Scheduled jobs need monitoring for failures, long-running jobs that might indicate performance issues, and stuck jobs that need restarting. System logs and slow query logs help you spot trends before they become incidents. Email is another one — notifications are critical for workflows, so monitoring the email queue and outbound mail logs catches issues early. I'd also set up a dashboard that surfaces these metrics in one view so the team can see platform health at a glance without having to dig through individual modules.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="health" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">16</div>
+      <div class="q-text">How do you ensure governance and compliance on the platform?</div>
+      <span class="badge badge-health">health</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Change management:</strong> everything goes through Dev → Test → Prod. No direct prod changes.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Role hygiene:</strong> regular audits of who has admin / elevated access. Least privilege.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Update set discipline:</strong> proper naming, descriptions, no "Default" update set for real work</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Instance Scan:</strong> regular checks, findings tracked and resolved</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Documentation:</strong> every customisation documented — what, why, when, who</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>GDPR / data residency:</strong> relevant for Genesys — EU data handled by EU-based staff</span></div>
+        <div class="think-box">💡 Tie this back to Genesys: with a new team across Brazil, USA, and Ireland, strong governance is essential from day one. Show you'd help <strong>build</strong> the processes, not just follow them.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Governance starts with process discipline. Every configuration change goes through proper change management — dev to test to prod, no exceptions. Update sets need proper naming conventions and descriptions, and nobody should be making real changes in the Default update set. Role and access governance is ongoing — regular audits of who has admin or elevated roles, removing access that's no longer needed, applying least privilege. Instance Scan should be run on a regular cadence with findings tracked like any other backlog item. Documentation is non-negotiable — every customisation should be documented with what was changed, why, when, and who did it. For Genesys specifically, with the team being new and distributed across three regions, building strong governance habits early will pay off massively as the platform matures. And the GDPR angle is important — with EU customer data, you need clear controls around who can access what, which is where ACLs, data policies, and having EU-based admins come into play.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 5. REPORTING & VISIBILITY ============ -->
+  <div class="section-label questions-label">5️⃣ Reporting & Visibility</div>
+
+  <div class="card" data-cat="reporting" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">17</div>
+      <div class="q-text">How do you create reports and dashboards in ServiceNow?</div>
+      <span class="badge badge-reporting">reporting</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Reports</strong> = individual visualisations (bar, pie, trend, list) built from a <span class="keyword">table + filter</span></span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Dashboards</strong> = a collection of reports arranged in a <span class="keyword green">layout with widgets</span></span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Reports can be <strong>scheduled</strong> to email on a cadence (daily/weekly to stakeholders)</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Performance Analytics</strong> = more advanced — tracks KPIs over time with indicators and breakdowns</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Always ask: <strong>"What decision does this report help someone make?"</strong> — don't build vanity dashboards</span></div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">Reports are built by selecting a table, applying filters, choosing a chart type, and grouping or trending the data. You can do bar charts, pie charts, trend lines, lists, and more. Dashboards collect multiple reports into a single view — you arrange them in a grid layout and can add different widget types. Reports can be scheduled for automated delivery — really useful for giving stakeholders a weekly summary without them having to log in. For more advanced needs, Performance Analytics lets you define KPIs and track them over time with indicators, breakdowns, and targets. The most important principle is intentionality — every report should help someone make a decision. If a dashboard doesn't drive action, it's just noise.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-cat="reporting" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">18</div>
+      <div class="q-text">What reports would you set up for a new ServiceNow deployment?</div>
+      <span class="badge badge-reporting">reporting</span>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Incident:</strong> open vs resolved trend, MTTR, incidents by priority/category/assignment group</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Change:</strong> changes by type, success/failure rate, change calendar view</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Request:</strong> catalog item popularity, fulfilment time, open requests by group</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Platform health:</strong> scheduled job failures, update set activity, user login trends</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>SLA:</strong> SLA attainment by priority — this is the one leadership always asks about</span></div>
+        <div class="think-box">💡 This is a great question to show initiative. Daniel's building a new team — showing you'd set up visibility from day one is exactly what they need.</div>
+        <div class="full-answer">
+          <div class="full-answer-label">💬 Full Answer</div>
+          <div class="full-answer-text">For a new deployment, I'd start with the reports that give the team immediate visibility. For incidents: open vs resolved over time, mean time to resolution, and breakdowns by priority, category, and assignment group — this tells you where the pain is. For changes: a trend of changes by type, success and failure rates, and a change calendar so teams know what's happening when. For requests: catalog item popularity helps you optimise what you offer, and fulfilment time shows where bottlenecks are. SLA attainment is critical — leadership will always want to know if you're meeting your service targets. And for platform health, I'd track scheduled job failures, update set activity, and user adoption metrics. I'd bundle these into role-specific dashboards — one for the ops team, one for management, and one for the platform admin team.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">Tap to reveal • don't memorise, remember</div>
+
+<script>
+function toggle(card) {
+  const wasOpen = card.classList.contains('open');
+  document.querySelectorAll('.card, .note-card').forEach(c => {
+    c.classList.remove('open');
+    c.querySelector('.card-body').style.maxHeight = null;
+  });
+  if (!wasOpen) {
+    card.classList.add('open');
+    const body = card.querySelector('.card-body');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+function filterCards(cat) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('.card[data-cat]').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+  document.querySelectorAll('.section-label.questions-label').forEach(label => {
+    label.style.display = (cat === 'all') ? '' : 'none';
+  });
+  // Always show notes section
+  document.querySelectorAll('.note-card').forEach(n => n.style.display = '');
+  const notesLabel = document.querySelector('.notes-section .section-label');
+  if (notesLabel) notesLabel.style.display = (cat === 'all') ? '' : 'none';
+  document.querySelector('.notes-section').style.display = (cat === 'all') ? '' : 'none';
+}
+</script>
+
+</body>
+</html>
