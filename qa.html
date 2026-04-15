@@ -1320,11 +1320,12 @@ function restoreState() {
     const dot = document.getElementById('dot-' + id);
     const card = document.querySelector(`[data-id="${id}"]`);
     const resetBtn = document.getElementById('reset-' + id);
+    if (!dot || !card || !resetBtn) return;
     dot.classList.add(rating);
     card.classList.add('status-' + rating);
     resetBtn.style.display = 'inline-block';
-    if (rating === 'good') document.querySelector(`[data-id="${id}"] .btn-good`).classList.add('selected');
-    if (rating === 'revisit') document.querySelector(`[data-id="${id}"] .btn-revisit`).classList.add('selected');
+    document.querySelector(`[data-id="${id}"] .btn-good`)?.classList.toggle('selected', rating === 'good');
+    document.querySelector(`[data-id="${id}"] .btn-revisit`)?.classList.toggle('selected', rating === 'revisit');
   });
   updateProgress();
 }
