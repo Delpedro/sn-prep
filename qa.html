@@ -1312,7 +1312,7 @@
 
 <script>
 const TOTAL = 18;
-const state = {}; // id -> 'good' | 'revisit'
+const state = JSON.parse(localStorage.getItem('qa_state') || '{}');
 
 
 
@@ -1453,6 +1453,7 @@ function rateCard(id, rating) {
 
 // ============ PROGRESS ============
 function updateProgress() {
+  localStorage.setItem('qa_state', JSON.stringify(state));
   const answered = Object.keys(state).length;
   const good = Object.values(state).filter(v => v === 'good').length;
   const revisit = Object.values(state).filter(v => v === 'revisit').length;
