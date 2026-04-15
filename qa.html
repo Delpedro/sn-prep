@@ -1314,27 +1314,7 @@
 const TOTAL = 18;
 const state = {}; // id -> 'good' | 'revisit'
 
-// Model answer text for AI context
-const modelAnswers = {
-  1: "ACLs define what can be done (read/write/create/delete) at table, field or row level. Roles are just labels assigned to users or groups — they mean nothing until referenced by an ACL. Together: the ACL is the lock, the role is the key. ServiceNow denies access by default if no ACL exists.",
-  2: "Users in sys_user — provisioned manually, CSV, or LDAP/SSO. Groups in sys_user_group — used for assignment, approvals, notifications, role inheritance. Always assign roles to groups not individuals. Groups can be nested so child groups inherit parent roles.",
-  3: "Update sets capture configuration changes (customer updates) in dev. Think version control for config. Promote through Dev → Test (UAT) → Prod, never skip. Not everything auto-captured (data changes, some form changes). Can be backed out if issues arise.",
-  4: "itil = baseline fulfiller role for ITSM modules. admin = full platform access, bypasses most ACLs, use sparingly. snc_internal = ServiceNow internal role, never assign. Principle: least privilege — give people exactly what they need.",
-  5: "UI Policy = client-side, controls form experience (show/hide, mandatory, read-only). Business Rule = server-side, runs on database operations (before/after/insert/update/delete). UI Policy affects the form, Business Rule affects the data.",
-  6: "Catalog Item creates a Requested Item (RITM) + tasks — for ordering things (laptop, access). Record Producer creates a record directly on a target table (like an incident) — for reporting/raising things. Both look the same to the user.",
-  7: "Form Layout = classic drag-and-drop (Configure → Form Layout). Form Designer = modern visual interface with inline field properties. Both do the same thing. Views let you have different layouts for different roles. Always check which view you're editing.",
-  8: "Configuration = using built-in tools, upgrade-safe. Customization = custom code or modifying base system, can break during upgrades. Always configure first, only customize when there's no other way. Document all customisations.",
-  9: "Incident = restore service ASAP. Problem = root cause investigation. Change = implement fix with approvals. Request = standard service through catalog. Flow: incidents → problem → root cause found → change raised → problem resolved. CMDB ties it all together.",
-  10: "Incident = symptom (something broken, restore service). Problem = underlying cause (prevent recurrence). 10 users can't access email = 10 incidents. Mail server out of disk space = the problem. Not every incident needs a problem.",
-  11: "Standard = pre-approved, repeatable, no CAB needed. Normal = needs assessment and CAB approval. Emergency = urgent fix, expedited approval, documented after. Every change needs: risk assessment, implementation plan, backout plan, testing evidence.",
-  12: "CMDB = Configuration Management Database — maps IT infrastructure. Stores CIs (servers, apps, databases) and their relationships. Feeds impact analysis. Ties into incidents, changes, problems. Only valuable if accurate — stale data leads to wrong decisions.",
-  13: "1. Review release notes. 2. Clone prod, run upgrade on clone. 3. Review skipped records (customisation conflicts). 4. Run Instance Scan. 5. Thorough UAT. 6. Schedule maintenance window, upgrade prod, validate, monitor.",
-  14: "Built-in health check against ServiceNow best practices. Scans for performance issues, manageability concerns, upgrade risks, security vulnerabilities. Produces findings report with severity and remediation guidance. Run regularly, not just before upgrades. Track findings like a backlog.",
-  15: "stats.do for node health/memory/transactions. Scheduled jobs for failures/stuck jobs. System logs and slow query logs for trends. Email queue for notification health. Instance Scan on regular cadence. Surface in a health dashboard.",
-  16: "Change management: Dev → Test → Prod always. Update set hygiene: proper naming, no Default set. Role audits: regular review, least privilege. Instance Scan cadence. Documentation: every customisation documented. GDPR: EU customer data needs clear access controls.",
-  17: "Reports = table + filter + chart type. Dashboards = multiple reports in a grid. Schedule reports for automated email delivery. Performance Analytics for KPI tracking over time. Every report should help someone make a decision — no vanity dashboards.",
-  18: "Incidents: open vs resolved trend, MTTR, by priority/category/group. Changes: by type, success/failure rate, change calendar. Requests: catalog popularity, fulfilment time. SLA attainment by priority (leadership always asks). Platform health: scheduled jobs, update sets, user adoption. Role-specific dashboards."
-};
+
 
 // ============ CARD TOGGLE ============
 function toggleCard(card) {
@@ -1358,70 +1338,65 @@ function recalcHeight(id) {
     body.style.maxHeight = body.scrollHeight + 1000 + 'px';
   }
 }
+const keywords = {
+  1: [['acl','access control'],['role','label'],['lock','key'],['deny','denied by default']],
+  2: [['sys_user'],['sys_user_group','group'],['ldap','sso'],['nest','inherit']],
+  3: [['update set','wrapper'],['dev','test','prod'],['capture','customer update'],['back out','backed out']],
+  4: [['itil'],['admin','bypass'],['least privilege','least access'],['snc_internal']],
+  5: [['client','client-side'],['server','server-side'],['form'],['database','db operation']],
+  6: [['ritm','requested item'],['record producer'],['catalog'],['target table']],
+  7: [['form layout'],['form designer'],['view'],['update set']],
+  8: [['configuration','configure'],['customization','custom code'],['upgrade'],['document']],
+  9: [['incident'],['problem'],['change'],['request','catalog']],
+  10: [['incident','symptom'],['problem','root cause'],['restore'],['recurrence','prevent']],
+  11: [['standard'],['normal','cab'],['emergency'],['backout','back out']],
+  12: [['cmdb','configuration management'],['ci','configuration item'],['relationship'],['accurate','data quality']],
+  13: [['release notes'],['clone','sub-production'],['skipped records'],['uat','maintenance window']],
+  14: [['best practice'],['performance','security'],['findings','severity'],['regularly','cadence']],
+  15: [['stats.do','diagnostics'],['scheduled job'],['log','slow query'],['email','mail queue']],
+  16: [['dev','test','prod'],['least privilege','role audit'],['update set','naming'],['gdpr','compliance']],
+  17: [['table','filter'],['dashboard'],['scheduled','email'],['performance analytics']],
+  18: [['incident','mttr'],['sla'],['change','calendar'],['platform health','scheduled job']]
+};
 
 // ============ CHECK ANSWER (AI) ============
 async function checkAnswer(id) {
   const textarea = document.getElementById('ans-' + id);
-  const userAnswer = textarea.value.trim();
+  const userAnswer = textarea.value.trim().toLowerCase();
   if (!userAnswer) return;
 
   const fbBox = document.getElementById('fb-' + id);
   const fbText = document.getElementById('fb-text-' + id);
-  const spinner = document.getElementById('spin-' + id);
   const rateDiv = document.getElementById('rate-' + id);
   const showModelBtn = document.getElementById('show-model-' + id);
   const resetBtn = document.getElementById('reset-' + id);
 
   fbBox.classList.add('visible');
-  spinner.classList.add('visible');
-  fbText.textContent = '';
-  rateDiv.classList.remove('visible');
-  recalcHeight(id);
 
-  const question = document.querySelector(`[data-id="${id}"] .q-text`).textContent.trim();
-  const modelAnswer = modelAnswers[id];
+  const hits = keywords[id].filter(kw => 
+    kw.some(variant => userAnswer.includes(variant.toLowerCase()))
+  );
+  const total = keywords[id].length;
+  const missed = keywords[id].filter(kw => 
+    !kw.some(variant => userAnswer.includes(variant.toLowerCase()))
+  );
 
-  const prompt = `You are a friendly, encouraging study buddy helping someone prep for a ServiceNow Platform Administrator interview tomorrow. They wrote an answer to a practice question. Give them warm, honest, conversational feedback in 2-4 sentences — like a knowledgeable friend, not a formal examiner. Tell them what they got right, and if they missed anything important, tell them what it is clearly but kindly. Don't be vague. Don't use bullet points. Keep it concise and natural.
-
-Question: ${question}
-
-Model answer (for your reference only, don't quote it back word for word): ${modelAnswer}
-
-Their answer: ${userAnswer}
-
-Give feedback now:`;
-
-  try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
-
-    const data = await response.json();
-    const feedback = data.content?.[0]?.text || "Couldn't get feedback right now — check the model answer below.";
-
-    spinner.classList.remove('visible');
-    fbText.textContent = feedback;
-    rateDiv.classList.add('visible');
-    showModelBtn.classList.add('visible');
-    resetBtn.style.display = 'inline-block';
-    textarea.disabled = true;
-    document.querySelector(`[data-id="${id}"] .btn-check`).disabled = true;
-    recalcHeight(id);
-
-  } catch (err) {
-    spinner.classList.remove('visible');
-    fbText.textContent = "Couldn't reach the AI right now. Check the model answer below and rate yourself.";
-    rateDiv.classList.add('visible');
-    showModelBtn.classList.add('visible');
-    resetBtn.style.display = 'inline-block';
-    recalcHeight(id);
+  let feedback = '';
+  if (hits.length === total) {
+    feedback = `Solid — you covered all ${total} key concepts. Check the model answer for how to phrase it in the interview.`;
+  } else if (hits.length >= Math.ceil(total * 0.6)) {
+    feedback = `Good foundation — you got ${hits.length}/${total} concepts. You missed: ${missed.map(kw => kw[0]).join(', ')}.`;
+  } else {
+    feedback = `You got ${hits.length}/${total} — worth reviewing. Missing: ${missed.map(kw => kw[0]).join(', ')}.`;
   }
+
+  fbText.textContent = feedback;
+  rateDiv.classList.add('visible');
+  showModelBtn.classList.add('visible');
+  resetBtn.style.display = 'inline-block';
+  textarea.disabled = true;
+  document.querySelector(`[data-id="${id}"] .btn-check`).disabled = true;
+  recalcHeight(id);
 }
 
 // ============ SKIP TO ANSWER ============
