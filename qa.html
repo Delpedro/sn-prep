@@ -1314,6 +1314,23 @@
 const TOTAL = 18;
 const state = JSON.parse(localStorage.getItem('qa_state') || '{}');
 
+function restoreState() {
+  Object.entries(state).forEach(([id, rating]) => {
+    id = parseInt(id);
+    const dot = document.getElementById('dot-' + id);
+    const card = document.querySelector(`[data-id="${id}"]`);
+    const resetBtn = document.getElementById('reset-' + id);
+    dot.classList.add(rating);
+    card.classList.add('status-' + rating);
+    resetBtn.style.display = 'inline-block';
+    if (rating === 'good') document.querySelector(`[data-id="${id}"] .btn-good`).classList.add('selected');
+    if (rating === 'revisit') document.querySelector(`[data-id="${id}"] .btn-revisit`).classList.add('selected');
+  });
+  updateProgress();
+}
+
+document.addEventListener('DOMContentLoaded', restoreState);
+
 
 
 // ============ CARD TOGGLE ============
