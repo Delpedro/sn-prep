@@ -93,6 +93,7 @@
   .icon-technical { background: linear-gradient(135deg, #10b981, #3b82f6); }
   .icon-scripting { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
   .icon-jobspec { background: linear-gradient(135deg, #3b82f6, #0ea5e9); }
+  .icon-qa { background: linear-gradient(135deg, #10b981, #059669); }
 
   .card-content { flex: 1; }
 
@@ -149,6 +150,7 @@
     .card-title { font-size: 1.1rem; }
     .card-icon { width: 44px; height: 44px; font-size: 1.3rem; }
   }
+
   .hide-toggle-bar {
     display: flex;
     align-items: center;
@@ -191,14 +193,9 @@
     transition: background 0.2s;
   }
 
-  .hide-toggle-bar.showing .done-dot {
-    background: #f59e0b;
-  }
+  .hide-toggle-bar.showing .done-dot { background: #f59e0b; }
 
-  .card-hidden {
-    display: none !important;
-  }
-
+  .card-hidden { display: none !important; }
 </style>
 </head>
 <body>
@@ -234,6 +231,15 @@
       <div class="card-content">
         <div class="card-title">Technical Interview</div>
         <div class="card-desc">Platform admin questions — quick notes, gotchas, and full answers</div>
+      </div>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a href="qa.html" class="card">
+      <div class="card-icon icon-qa">✏️</div>
+      <div class="card-content">
+        <div class="card-title">Interview Q&A Practice</div>
+        <div class="card-desc">Write your answers, get AI feedback, rate yourself — all 18 questions</div>
       </div>
       <div class="card-arrow">→</div>
     </a>
