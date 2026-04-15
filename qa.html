@@ -1321,6 +1321,8 @@ function restoreState() {
     const card = document.querySelector(`[data-id="${id}"]`);
     const resetBtn = document.getElementById('reset-' + id);
     if (!dot || !card || !resetBtn) return;
+    const savedAnswer = localStorage.getItem('qa_ans_' + id);
+    if (savedAnswer) document.getElementById('ans-' + id).value = savedAnswer;
     dot.classList.add(rating);
     card.classList.add('status-' + rating);
     resetBtn.style.display = 'inline-block';
@@ -1445,6 +1447,8 @@ function showModel(id) {
 
 // ============ RATE CARD ============
 function rateCard(id, rating) {
+  function rateCard(id, rating) {
+  localStorage.setItem('qa_ans_' + id, document.getElementById('ans-' + id).value);
   state[id] = rating;
   const dot = document.getElementById('dot-' + id);
   const card = document.querySelector(`[data-id="${id}"]`);
@@ -1519,6 +1523,7 @@ function resetCard(id) {
   document.querySelector(`[data-id="${id}"] .btn-revisit`).classList.remove('selected');
   document.querySelector(`[data-id="${id}"]`).classList.remove('status-good', 'status-revisit');
   delete state[id];
+  localStorage.removeItem('qa_ans_' + id);
   updateProgress();
   recalcHeight(id);
 }
