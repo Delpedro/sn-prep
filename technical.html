@@ -407,13 +407,13 @@
     <div class="card-body">
       <div class="card-body-inner">
         <div class="divider"></div>
-        <div class="note-detail"><em>From Vanessa's email — the five focus areas:</em></div>
+        <div class="note-detail"><em>Five focus areas:</em></div>
         <div class="hint"><span class="hint-icon">1.</span><span class="hint-text"><strong>Platform Administration Fundamentals</strong> — managing users, roles, groups, ACLs, core system configurations</span></div>
         <div class="hint"><span class="hint-icon">2.</span><span class="hint-text"><strong>Configuration & Customization</strong> — forms, UI policies, business rules, service catalog items, basic scripting</span></div>
         <div class="hint"><span class="hint-icon">3.</span><span class="hint-text"><strong>ITSM & Process Alignment</strong> — ITSM processes and how ServiceNow supports operational workflows</span></div>
         <div class="hint"><span class="hint-icon">4.</span><span class="hint-text"><strong>Platform Health & Governance</strong> — upgrades, patches, system health checks, security and compliance</span></div>
         <div class="hint"><span class="hint-icon">5.</span><span class="hint-text"><strong>Reporting & Visibility</strong> — dashboards and reports to drive operational insights</span></div>
-        <div class="think-box">💡 Vanessa said: "We approach technical interviews as collaborative conversations. We're interested not only in your hands-on experience, but also in how you think through platform decisions." — Talk through your reasoning, don't just give final answers.</div>
+        <div class="think-box">💡 Expect a conversational interview focused on how you reason through platform decisions, not just final answers.</div>
       </div>
     </div>
   </div>
@@ -448,23 +448,6 @@
           <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>OpenFrame configuration</strong> in ServiceNow connects to Genesys Cloud</span></div>
           <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Integration user creation, Application Registry setup, wrap-up code admin</span></div>
           <div class="think-box">💡 Drop this casually: "I saw ServiceNow invested $750M in Genesys and the Unified Experience is expanding into ITSM — that's exciting because it means the platform admin role sits right at the centre of that growth." Shows you've done homework beyond the job spec.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="note-card" onclick="toggle(this)">
-      <div class="card-header">
-        <div class="q-number">📎</div>
-        <div class="q-text">Team Structure &amp; GDPR Context</div>
-        <div class="toggle-icon">+</div>
-      </div>
-      <div class="card-body">
-        <div class="card-body-inner">
-          <div class="divider"></div>
-          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">ServiceNow team is <strong>new</strong> at Genesys — manager in <span class="keyword purple">Brazil</span>, rest of team in <span class="keyword purple">USA</span></span></div>
-          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Hiring a <strong>Senior Engineer</strong> + <strong>Sys Admin</strong> in Ireland</span></div>
-          <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Irish hires likely needed for <strong>GDPR compliance</strong> — only EU-based staff can view certain customer data</span></div>
-          <div class="gotcha">⚠ Tip: In the manager/director round, show awareness of data residency and why having EU-based admins matters for compliance</div>
         </div>
       </div>
     </div>
@@ -846,11 +829,11 @@
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Update set discipline:</strong> proper naming, descriptions, no "Default" update set for real work</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Instance Scan:</strong> regular checks, findings tracked and resolved</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Documentation:</strong> every customisation documented — what, why, when, who</span></div>
-        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>GDPR / data residency:</strong> relevant for Genesys — EU data handled by EU-based staff</span></div>
-        <div class="think-box">💡 Tie this back to Genesys: with a new team across Brazil, USA, and Ireland, strong governance is essential from day one. Show you'd help <strong>build</strong> the processes, not just follow them.</div>
+        <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>GDPR / data residency:</strong> apply clear controls around who can access what and where sensitive data is handled</span></div>
+        <div class="think-box">💡 Strong governance starts with consistent process, least privilege, clear documentation, and treating platform health as ongoing work rather than a cleanup job.</div>
         <div class="full-answer">
           <div class="full-answer-label">💬 Full Answer</div>
-          <div class="full-answer-text">Governance starts with process discipline. Every configuration change goes through proper change management — dev to test to prod, no exceptions. Update sets need proper naming conventions and descriptions, and nobody should be making real changes in the Default update set. Role and access governance is ongoing — regular audits of who has admin or elevated roles, removing access that's no longer needed, applying least privilege. Instance Scan should be run on a regular cadence with findings tracked like any other backlog item. Documentation is non-negotiable — every customisation should be documented with what was changed, why, when, and who did it. For Genesys specifically, with the team being new and distributed across three regions, building strong governance habits early will pay off massively as the platform matures. And the GDPR angle is important — with EU customer data, you need clear controls around who can access what, which is where ACLs, data policies, and having EU-based admins come into play.</div>
+          <div class="full-answer-text">Governance starts with process discipline. Every configuration change goes through proper change management — dev to test to prod, no exceptions. Update sets need proper naming conventions and descriptions, and nobody should be making real changes in the Default update set. Role and access governance is ongoing — regular audits of who has admin or elevated roles, removing access that's no longer needed, applying least privilege. Instance Scan should be run on a regular cadence with findings tracked like any other backlog item. Documentation is non-negotiable — every customisation should be documented with what was changed, why, when, and who did it. Compliance also means being clear about access controls, data handling, and auditability, especially where sensitive or regulated data is involved.</div>
         </div>
       </div>
     </div>
@@ -933,7 +916,6 @@ function filterCards(cat) {
   document.querySelectorAll('.section-label.questions-label').forEach(label => {
     label.style.display = (cat === 'all') ? '' : 'none';
   });
-  // Always show notes section
   document.querySelectorAll('.note-card').forEach(n => n.style.display = '');
   const notesLabel = document.querySelector('.notes-section .section-label');
   if (notesLabel) notesLabel.style.display = (cat === 'all') ? '' : 'none';
