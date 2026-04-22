@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSA Exam Prep — ServiceNow</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f8f9fb;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 2.5rem 1.2rem;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: #f59e0b; }
+
+  header { text-align: center; margin-bottom: 2.5rem; }
+  header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+    margin: 1.2rem auto 0;
+    border-radius: 2px;
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .role-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(245,158,11,0.08);
+    border: 1px solid rgba(245,158,11,0.25);
+    border-radius: 20px;
+    font-size: 0.88rem;
+    color: #d97706;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Progress */
+  .progress-wrap { margin-bottom: 1.8rem; }
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .progress-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #94a3b8;
+  }
+  .progress-counts {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    display: flex;
+    gap: 0.8rem;
+  }
+  .count-correct { color: #10b981; }
+  .count-review  { color: #f59e0b; }
+  .progress-bar {
+    background: #e2e8f0;
+    border-radius: 20px;
+    height: 6px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #f59e0b, #ef4444);
+    border-radius: 20px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  /* Filter tabs */
+  .filter-tabs {
+    display: flex;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  .filter-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.28rem 0.65rem;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .filter-tab:hover { border-color: #f59e0b; color: #d97706; }
+  .filter-tab.active {
+    background: rgba(245,158,11,0.08);
+    border-color: rgba(245,158,11,0.4);
+    color: #d97706;
+    font-weight: 600;
+  }
+
+  /* Top actions */
+  .top-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+  }
+  .page-info {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #94a3b8;
+  }
+  .btn-reset-all {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #fff;
+    color: #94a3b8;
+    transition: all 0.2s;
+  }
+  .btn-reset-all:hover { border-color: #ef4444; color: #dc2626; }
+
+  /* Question card */
+  .q-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1.4rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    transition: border-color 0.25s;
+  }
+  .q-card.status-correct { border-color: #10b981; }
+  .q-card.status-review  { border-color: #f59e0b; }
+
+  .q-card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    margin-bottom: 0.9rem;
+  }
+  .q-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #94a3b8;
+    flex-shrink: 0;
+  }
+  .multi-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.1rem 0.45rem;
+    border-radius: 20px;
+    background: rgba(99,102,241,0.08);
+    color: #4f46e5;
+    border: 1px solid rgba(99,102,241,0.2);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    flex-shrink: 0;
+    margin-left: auto;
+    transition: background 0.25s;
+  }
+  .status-dot.dot-correct { background: #10b981; }
+  .status-dot.dot-review  { background: #f59e0b; }
+
+  /* Domain badges */
+  .domain-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    font-weight: 600;
+    padding: 0.12rem 0.5rem;
+    border-radius: 20px;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .domain-ui-navigation { background: rgba(59,130,246,0.07);  color: #2563eb; border-color: rgba(59,130,246,0.22); }
+  .domain-collaboration  { background: rgba(139,92,246,0.07);  color: #7c3aed; border-color: rgba(139,92,246,0.22); }
+  .domain-database-admin { background: rgba(245,158,11,0.07);  color: #d97706; border-color: rgba(245,158,11,0.22); }
+  .domain-self-service   { background: rgba(16,185,129,0.07);  color: #059669; border-color: rgba(16,185,129,0.22); }
+  .domain-dev-intro      { background: rgba(239,68,68,0.07);   color: #dc2626; border-color: rgba(239,68,68,0.22); }
+  .domain-untagged       { background: rgba(148,163,184,0.07); color: #94a3b8; border-color: rgba(148,163,184,0.22); }
+
+  /* Question text */
+  .q-text {
+    font-size: 1.02rem;
+    font-weight: 500;
+    color: #0f172a;
+    line-height: 1.65;
+    margin-bottom: 1.1rem;
+  }
+
+  /* Options */
+  .q-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    margin-bottom: 1rem;
+  }
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-size: 0.93rem;
+    color: #334155;
+    background: #fafafa;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  /* Hover — only when not yet revealed */
+  .option:not(.revealed):not(.opt-selected):hover {
+    border-color: #f59e0b;
+    background: rgba(245,158,11,0.04);
+    color: #0f172a;
+  }
+  .option.revealed { cursor: default; }
+
+  /* Pre-reveal selection (multi-select only) */
+  .option.opt-selected {
+    border-color: #6366f1;
+    background: rgba(99,102,241,0.06);
+    color: #3730a3;
+  }
+  .option.opt-selected .opt-letter { color: #4f46e5; }
+
+  /* Post-reveal states */
+  .option.opt-correct {
+    border-color: #10b981;
+    background: rgba(16,185,129,0.07);
+    color: #064e3b;
+  }
+  .option.opt-wrong {
+    border-color: #ef4444;
+    background: rgba(239,68,68,0.06);
+    color: #7f1d1d;
+  }
+  .q-options.options-revealed .option:not(.opt-correct):not(.opt-wrong) {
+    opacity: 0.55;
+  }
+
+  .opt-letter {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #94a3b8;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .option.opt-correct .opt-letter { color: #059669; }
+  .option.opt-wrong .opt-letter   { color: #dc2626; }
+  .opt-text { flex: 1; line-height: 1.5; }
+  .opt-icon {
+    font-size: 0.8rem;
+    flex-shrink: 0;
+    margin-left: auto;
+    padding-left: 0.4rem;
+  }
+
+  /* Reveal / action row */
+  .reveal-row { display: flex; gap: 0.5rem; align-items: center; }
+  .btn-reveal {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    padding: 0.5rem 1.1rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    cursor: pointer;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.2s;
+  }
+  .btn-reveal:hover {
+    border-color: #f59e0b;
+    color: #d97706;
+    background: rgba(245,158,11,0.04);
+  }
+  .select-hint {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #94a3b8;
+  }
+
+  /* Answer reveal footer */
+  .answer-reveal {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+    padding-top: 0.85rem;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 0.2rem;
+  }
+  .correct-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: #059669;
+    background: rgba(16,185,129,0.08);
+    border: 1px solid rgba(16,185,129,0.2);
+    border-radius: 8px;
+    padding: 0.28rem 0.65rem;
+    white-space: nowrap;
+  }
+  .correct-badge strong { font-weight: 700; }
+  .community-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: #94a3b8;
+  }
+  .rating-buttons { display: flex; gap: 0.45rem; margin-left: auto; }
+
+  .btn-got-it {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.38rem 0.85rem;
+    border: 1px solid rgba(16,185,129,0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgba(16,185,129,0.08);
+    color: #059669;
+    transition: all 0.2s;
+  }
+  .btn-got-it:hover,
+  .btn-got-it.selected { background: #10b981; color: #fff; border-color: #10b981; }
+
+  .btn-review-again {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.38rem 0.85rem;
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 8px;
+    cursor: pointer;
+    background: rgba(245,158,11,0.08);
+    color: #d97706;
+    transition: all 0.2s;
+  }
+  .btn-review-again:hover,
+  .btn-review-again.selected { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+
+  /* Empty / error states */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    color: #94a3b8;
+    line-height: 1.9;
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    gap: 0.3rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .page-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    padding: 0.38rem 0.65rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #fff;
+    color: #64748b;
+    transition: all 0.2s;
+    min-width: 34px;
+    text-align: center;
+  }
+  .page-btn:hover:not(:disabled) { border-color: #f59e0b; color: #d97706; }
+  .page-btn.active { background: #f59e0b; color: #fff; border-color: #f59e0b; font-weight: 600; }
+  .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .page-ellipsis {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    padding: 0 0.1rem;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 3rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+  }
+
+  @media (max-width: 500px) {
+    body { padding: 1.2rem 0.8rem; }
+    h1 { font-size: 1.5rem; }
+    .q-card { padding: 1rem; }
+    .q-text { font-size: 0.95rem; }
+    .option { padding: 0.6rem 0.75rem; font-size: 0.88rem; }
+    .domain-badge { display: none; }
+    .rating-buttons { margin-left: 0; margin-top: 0.5rem; width: 100%; }
+    .answer-reveal { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <a href="index.html" class="back-link">← back</a>
+
+  <header>
+    <h1>CSA Exam Prep</h1>
+    <p class="subtitle">Certified System Administrator</p>
+    <span class="role-tag">200 questions · reveal answers · track weak spots</span>
+  </header>
+
+  <div class="progress-wrap">
+    <div class="progress-meta">
+      <span class="progress-label" id="progressLabel">0 / 0 seen</span>
+      <div class="progress-counts">
+        <span class="count-correct" id="countCorrect">✓ 0 got it</span>
+        <span class="count-review"  id="countReview">↺ 0 to review</span>
+      </div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+
+  <div class="filter-tabs">
+    <div class="filter-tab active"            onclick="setDomain('all',            this)">All</div>
+    <div class="filter-tab"                   onclick="setDomain('ui-navigation',  this)">UI &amp; Nav</div>
+    <div class="filter-tab"                   onclick="setDomain('collaboration',  this)">Collaboration</div>
+    <div class="filter-tab"                   onclick="setDomain('database-admin', this)">Database</div>
+    <div class="filter-tab"                   onclick="setDomain('self-service',   this)">Self-Service</div>
+    <div class="filter-tab"                   onclick="setDomain('dev-intro',      this)">Development</div>
+    <div class="filter-tab filter-tab-review" onclick="setDomain('review',         this)">↺ Needs Review</div>
+  </div>
+
+  <div class="top-actions">
+    <span class="page-info" id="pageInfo"></span>
+    <button type="button" class="btn-reset-all" onclick="resetAll()">↺ Reset Progress</button>
+  </div>
+
+  <div id="questions-container"></div>
+  <div class="pagination" id="pagination"></div>
+
+</div>
+
+<div class="footer">study · reveal · rate · repeat</div>
+
+<script src="csa_data.js"></script>
+<script>
+// ─── Constants ────────────────────────────────────────────
+const PER_PAGE = 10;
+
+const DOMAINS = {
+  'ui-navigation':  'UI & Navigation',
+  'collaboration':  'Collaboration',
+  'database-admin': 'Database Admin',
+  'self-service':   'Self-Service & Automation',
+  'dev-intro':      'Development'
+};
+
+// ─── State ────────────────────────────────────────────────
+// progress[id] = { status: 'correct'|'review', guessed: string|string[] }
+const progress = JSON.parse(localStorage.getItem('csa_progress') || '{}');
+
+// pendingSelections[id] = Set of letters chosen before reveal (multi-select only)
+const pendingSelections = {};
+
+let currentDomain = 'all';
+let currentPage   = 1;
+
+// ─── Persistence ──────────────────────────────────────────
+function saveProgress() {
+  localStorage.setItem('csa_progress', JSON.stringify(progress));
+}
+
+// ─── Helpers ──────────────────────────────────────────────
+function getQuestions() {
+  return (typeof CSA_QUESTIONS !== 'undefined') ? CSA_QUESTIONS : [];
+}
+
+function isMulti(q) {
+  return Array.isArray(q.answer);
+}
+
+function getFiltered() {
+  const qs = getQuestions();
+  if (currentDomain === 'review') return qs.filter(q => progress[q.id]?.status === 'review');
+  if (currentDomain === 'all')    return qs;
+  return qs.filter(q => q.domain === currentDomain);
+}
+
+function getTotalPages() {
+  return Math.max(1, Math.ceil(getFiltered().length / PER_PAGE));
+}
+
+// ─── Render ───────────────────────────────────────────────
+function render() {
+  renderStats();
+  renderQuestions();
+  renderPagination();
+}
+
+function renderStats() {
+  const total   = getQuestions().length;
+  const seen    = Object.keys(progress).length;
+  const correct = Object.values(progress).filter(p => p.status === 'correct').length;
+  const review  = Object.values(progress).filter(p => p.status === 'review').length;
+
+  document.getElementById('progressLabel').textContent = seen + ' / ' + total + ' seen';
+  document.getElementById('progressFill').style.width  = total ? (seen / total * 100) + '%' : '0%';
+  document.getElementById('countCorrect').textContent  = '✓ ' + correct + ' got it';
+  document.getElementById('countReview').textContent   = '↺ ' + review  + ' to review';
+}
+
+function renderQuestions() {
+  const container = document.getElementById('questions-container');
+
+  if (!getQuestions().length) {
+    container.innerHTML = '<div class="empty-state">No questions loaded.<br>Make sure csa_data.js is in the same folder.</div>';
+    document.getElementById('pageInfo').textContent = '';
+    return;
+  }
+
+  const filtered = getFiltered();
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty-state">No questions match this filter.</div>';
+    document.getElementById('pageInfo').textContent = '';
+    return;
+  }
+
+  const total = getTotalPages();
+  if (currentPage > total) currentPage = total;
+
+  const start = (currentPage - 1) * PER_PAGE;
+  container.innerHTML = filtered.slice(start, start + PER_PAGE).map(renderQuestion).join('');
+
+  document.getElementById('pageInfo').textContent =
+    'Page ' + currentPage + ' of ' + total + ' · ' + filtered.length + ' questions';
+}
+
+function renderQuestion(q) {
+  const p        = progress[q.id];
+  const revealed = p !== undefined;
+  const status   = p?.status  || '';
+  const guessed  = p?.guessed ?? null;     // string or array after reveal
+  const multi    = isMulti(q);
+  const pending  = pendingSelections[q.id] || new Set();
+
+  const domainLabel = DOMAINS[q.domain] || 'Untagged';
+  const domainClass = q.domain ? 'domain-' + q.domain : 'domain-untagged';
+  const cardClass   = status ? ' status-' + status : '';
+  const dotClass    = status === 'correct' ? ' dot-correct' : status === 'review' ? ' dot-review' : '';
+
+  const multiHint = multi
+    ? '<span class="multi-tag">Select ' + q.answer.length + '</span>'
+    : '';
+
+  const letters = ['A', 'B', 'C', 'D'];
+
+  const optionsHtml = letters.map((letter, i) => {
+    const text = q.opts[i] || '';
+    let cls  = 'option';
+    let icon = '';
+
+    if (revealed) {
+      cls += ' revealed';
+      const correctSet = multi ? q.answer : [q.answer];
+      const guessedArr = multi ? (guessed || []) : (guessed ? [guessed] : []);
+
+      if (correctSet.includes(letter)) {
+        cls  += ' opt-correct';
+        icon  = '<span class="opt-icon">✓</span>';
+      } else if (guessedArr.includes(letter)) {
+        cls  += ' opt-wrong';
+        icon  = '<span class="opt-icon">✗</span>';
+      }
+    } else if (multi && pending.has(letter)) {
+      cls  += ' opt-selected';
+      icon  = '<span class="opt-icon" style="color:#4f46e5">✓</span>';
+    }
+
+    return (
+      '<div class="' + cls + '" onclick="handleOptionClick(' + q.id + ',\'' + letter + '\')">' +
+        '<span class="opt-letter">' + letter + '</span>' +
+        '<span class="opt-text">' + text + '</span>' +
+        icon +
+      '</div>'
+    );
+  }).join('');
+
+  const optWrapClass = 'q-options' + (revealed ? ' options-revealed' : '');
+
+  let bottomHtml;
+  if (revealed) {
+    const correctDisplay = multi ? q.answer.join(', ') : q.answer;
+    const communityHtml  = q.community
+      ? '<span class="community-text">' + q.community + '</span>' : '';
+    bottomHtml =
+      '<div class="answer-reveal">' +
+        '<div class="correct-badge">Correct: <strong>' + correctDisplay + '</strong></div>' +
+        communityHtml +
+        '<div class="rating-buttons">' +
+          '<button class="btn-got-it'      + (status === 'correct' ? ' selected' : '') + '" onclick="handleRating(' + q.id + ',\'correct\')">✓ Got it</button>' +
+          '<button class="btn-review-again' + (status === 'review'  ? ' selected' : '') + '" onclick="handleRating(' + q.id + ',\'review\')">↺ Review Again</button>' +
+        '</div>' +
+      '</div>';
+  } else {
+    const hint = multi
+      ? '<span class="select-hint">Click options then reveal</span>'
+      : '';
+    bottomHtml =
+      '<div class="reveal-row">' +
+        '<button class="btn-reveal" onclick="handleReveal(' + q.id + ')">Reveal Answer</button>' +
+        hint +
+      '</div>';
+  }
+
+  return (
+    '<div class="q-card' + cardClass + '">' +
+      '<div class="q-card-top">' +
+        '<span class="q-num">Q.' + q.id + '</span>' +
+        multiHint +
+        '<span class="domain-badge ' + domainClass + '">' + domainLabel + '</span>' +
+        '<span class="status-dot' + dotClass + '"></span>' +
+      '</div>' +
+      '<div class="q-text">' + q.q + '</div>' +
+      '<div class="' + optWrapClass + '">' + optionsHtml + '</div>' +
+      bottomHtml +
+    '</div>'
+  );
+}
+
+function renderPagination() {
+  const el    = document.getElementById('pagination');
+  const total = getTotalPages();
+  if (total <= 1) { el.innerHTML = ''; return; }
+
+  const DELTA = 2;
+  let html = '<button class="page-btn" onclick="goPage(' + (currentPage-1) + ')" ' + (currentPage===1?'disabled':'') + '>← Prev</button>';
+  let prev = -1;
+
+  for (let i = 1; i <= total; i++) {
+    if (i === 1 || i === total || Math.abs(i - currentPage) <= DELTA) {
+      if (prev !== -1 && i - prev > 1) html += '<span class="page-ellipsis">…</span>';
+      html += '<button class="page-btn' + (i===currentPage?' active':'') + '" onclick="goPage(' + i + ')">' + i + '</button>';
+      prev = i;
+    }
+  }
+
+  html += '<button class="page-btn" onclick="goPage(' + (currentPage+1) + ')" ' + (currentPage===total?'disabled':'') + '>Next →</button>';
+  el.innerHTML = html;
+}
+
+// ─── Interactions ─────────────────────────────────────────
+function handleOptionClick(id, letter) {
+  if (progress[id]) return; // already revealed
+  const q = getQuestions().find(q => q.id === id);
+  if (!q) return;
+
+  if (isMulti(q)) {
+    // Toggle pre-reveal selection
+    if (!pendingSelections[id]) pendingSelections[id] = new Set();
+    if (pendingSelections[id].has(letter)) pendingSelections[id].delete(letter);
+    else pendingSelections[id].add(letter);
+    render();
+    return;
+  }
+
+  // Single-select: reveal immediately on click
+  progress[id] = {
+    status:  letter === q.answer ? 'correct' : 'review',
+    guessed: letter
+  };
+  saveProgress();
+  render();
+}
+
+function handleReveal(id) {
+  if (progress[id]) return;
+  const q = getQuestions().find(q => q.id === id);
+  if (!q) return;
+
+  if (isMulti(q)) {
+    const selected  = pendingSelections[id] ? [...pendingSelections[id]] : [];
+    const correct   = q.answer;
+    const isCorrect = selected.length === correct.length &&
+                      selected.every(s => correct.includes(s));
+    progress[id] = { status: isCorrect ? 'correct' : 'review', guessed: selected };
+  } else {
+    progress[id] = { status: 'review', guessed: null };
+  }
+
+  saveProgress();
+  render();
+}
+
+function handleRating(id, rating) {
+  if (!progress[id]) progress[id] = { status: rating, guessed: null };
+  else progress[id].status = rating;
+  saveProgress();
+  render();
+}
+
+// ─── Navigation ───────────────────────────────────────────
+function goPage(page) {
+  const total = getTotalPages();
+  if (page < 1 || page > total) return;
+  currentPage = page;
+  render();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function setDomain(domain, el) {
+  currentDomain = domain;
+  currentPage   = 1;
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  render();
+}
+
+function resetAll() {
+  if (!confirm('Reset all progress? This cannot be undone.')) return;
+  Object.keys(progress).forEach(k => delete progress[k]);
+  Object.keys(pendingSelections).forEach(k => delete pendingSelections[k]);
+  saveProgress();
+  currentPage = 1;
+  render();
+}
+
+window.addEventListener('load', render);
+</script>
+</body>
+</html>

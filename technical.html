@@ -381,7 +381,7 @@
   </header>
 
   <div class="interview-meta">
-    <strong>Daniel Hammons</strong> — Staff Enterprise Platform Engineer<br>
+    <strong>Platform Engineer</strong> — Staff Enterprise Platform Engineer<br>
     Thu 16 Apr • 2pm • ~45 min • Zoom<br>
     "Collaborative conversation" — talk through your thinking
   </div>
@@ -395,13 +395,13 @@
     <div class="filter-tab" onclick="filterCards('reporting')">Reporting</div>
   </div>
 
-  <!-- ============ DANIEL FOCUS ============ -->
+  <!-- ============ Platform Engineer FOCUS ============ -->
   <div class="section-label">🔍 Technical Interview Focus</div>
 
   <div class="note-card" onclick="toggle(this)">
     <div class="card-header">
       <div class="q-number">⚙️</div>
-      <div class="q-text">What Daniel Will Ask About</div>
+      <div class="q-text">What Platform Engineer Will Ask About</div>
       <div class="toggle-icon">+</div>
     </div>
     <div class="card-body">
@@ -652,7 +652,7 @@
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword green">Configuration</span> = using <strong>built-in tools</strong> — form layout, UI policies, workflows, system properties. <strong>Upgrade-safe.</strong></span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword amber">Customization</span> = writing <strong>custom code</strong> or modifying <strong>base system</strong> files. Can break during upgrades.</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text">ServiceNow's philosophy: <strong>configure first, customize only when necessary</strong></span></div>
-        <div class="think-box">💡 This is a values question. Daniel wants to hear that you lean towards out-of-the-box solutions and only write code when configuration can't do the job.</div>
+        <div class="think-box">💡 This is a values question. Platform Engineer wants to hear that you lean towards out-of-the-box solutions and only write code when configuration can't do the job.</div>
         <div class="full-answer">
           <div class="full-answer-label">💬 Full Answer</div>
           <div class="full-answer-text">Configuration is using the platform's built-in tools to tailor it to your needs — things like form layouts, UI policies, workflows, system properties. These are upgrade-safe because ServiceNow knows about them and can preserve them through upgrades. Customization means writing custom code or modifying out-of-the-box components — things like custom business rules, script includes, or modifying base system scripts. These can break during upgrades because ServiceNow might change the underlying code you've modified. My approach is always configure first. If the platform gives me a way to do it without code, I'll use that. I only move to scripting when there's no configuration option that meets the requirement. And when I do customize, I document it thoroughly so the team knows what's been changed and why.</div>
@@ -679,7 +679,7 @@
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword green">Change</span> = planned modification — proper approval, risk assessment, implementation plan</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword amber">Request</span> = user needs something — standard service through the catalog</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Flow:</strong> multiple incidents → problem created → root cause found → change raised to fix → change implemented → problem resolved</span></div>
-        <div class="think-box">💡 Daniel will want to hear you understand the <strong>flow between modules</strong>, not just what each does in isolation.</div>
+        <div class="think-box">💡 Platform Engineer will want to hear you understand the <strong>flow between modules</strong>, not just what each does in isolation.</div>
         <div class="full-answer">
           <div class="full-answer-label">💬 Full Answer</div>
           <div class="full-answer-text">The core ITSM modules are Incident, Problem, Change, and Request — and the power is in how they connect. Incident management is about restoring service as quickly as possible when something breaks. If you start seeing patterns — say the same incident keeps coming up — that's when you raise a Problem to investigate root cause. Once you've identified the fix, you raise a Change to implement it properly, with risk assessment and approvals. Requests are separate — they're for standard service needs like "I need access to this application" or "I need a new laptop." Those go through the Service Catalog and follow the request fulfilment process. The relationships matter too — incidents can be linked to problems, problems generate changes, and the CMDB ties it all together by showing what infrastructure is affected.</div>
@@ -725,7 +725,7 @@
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword">Normal</span> = needs assessment and approval — goes through CAB or peer review</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><span class="keyword amber">Emergency</span> = critical fix needed now — expedited approval, documented after the fact</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text">All changes should have: <strong>risk assessment</strong>, <strong>implementation plan</strong>, <strong>backout plan</strong>, <strong>testing evidence</strong></span></div>
-        <div class="think-box">💡 Show Daniel you understand governance — changes need documentation, approval, and a backout plan. No cowboy deployments.</div>
+        <div class="think-box">💡 Show Platform Engineer you understand governance — changes need documentation, approval, and a backout plan. No cowboy deployments.</div>
         <div class="full-answer">
           <div class="full-answer-label">💬 Full Answer</div>
           <div class="full-answer-text">Change management in ServiceNow supports three types. Standard changes are pre-approved and repeatable — things like scheduled maintenance or routine deployments that follow a known, low-risk process. Normal changes require proper assessment — you fill in the risk, impact, implementation plan, backout plan, and it goes through an approval flow, often a CAB or peer review. Emergency changes are for urgent fixes — something is broken in production and needs to be fixed immediately. The approval is expedited but still documented, and you do a proper review after the fact. Regardless of type, every change should answer: what are we doing, why, what's the risk, how do we test it, and how do we back it out if something goes wrong.</div>
@@ -799,7 +799,7 @@
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Scans for: <strong>performance issues</strong>, <strong>manageability concerns</strong>, <strong>upgrade risks</strong>, and <strong>security vulnerabilities</strong></span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Produces a report with <strong>findings</strong> — each one rated by severity with remediation guidance</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text">Should be run <strong>regularly</strong> (not just before upgrades) and findings tracked to resolution</span></div>
-        <div class="think-box">💡 Mentioning Instance Scan proactively shows Daniel you think about platform hygiene, not just firefighting.</div>
+        <div class="think-box">💡 Mentioning Instance Scan proactively shows Platform Engineer you think about platform hygiene, not just firefighting.</div>
         <div class="full-answer">
           <div class="full-answer-label">💬 Full Answer</div>
           <div class="full-answer-text">Instance Scan is a built-in health check tool that evaluates your instance against ServiceNow's best practices. It scans for things like performance issues — say a business rule that's doing expensive queries — manageability concerns, potential upgrade risks, and security vulnerabilities. It produces a findings report where each issue is categorised by severity and comes with remediation guidance. I'd use it regularly as part of platform governance, not just before upgrades. You can also create custom scan checks if your organisation has specific standards. The findings should be triaged and tracked like any other work — assigned to someone, prioritised, and resolved.</div>
@@ -897,7 +897,7 @@
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Request:</strong> catalog item popularity, fulfilment time, open requests by group</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>Platform health:</strong> scheduled job failures, update set activity, user login trends</span></div>
         <div class="hint"><span class="hint-icon">→</span><span class="hint-text"><strong>SLA:</strong> SLA attainment by priority — this is the one leadership always asks about</span></div>
-        <div class="think-box">💡 This is a great question to show initiative. Daniel's building a new team — showing you'd set up visibility from day one is exactly what they need.</div>
+        <div class="think-box">💡 This is a great question to show initiative. Platform Engineer's building a new team — showing you'd set up visibility from day one is exactly what they need.</div>
         <div class="full-answer">
           <div class="full-answer-label">💬 Full Answer</div>
           <div class="full-answer-text">For a new deployment, I'd start with the reports that give the team immediate visibility. For incidents: open vs resolved over time, mean time to resolution, and breakdowns by priority, category, and assignment group — this tells you where the pain is. For changes: a trend of changes by type, success and failure rates, and a change calendar so teams know what's happening when. For requests: catalog item popularity helps you optimise what you offer, and fulfilment time shows where bottlenecks are. SLA attainment is critical — leadership will always want to know if you're meeting your service targets. And for platform health, I'd track scheduled job failures, update set activity, and user adoption metrics. I'd bundle these into role-specific dashboards — one for the ops team, one for management, and one for the platform admin team.</div>
