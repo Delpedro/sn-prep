@@ -1,4 +1,10 @@
 {
+  "_comments": [
+    "HOW TO USE:",
+    "  Run dev server (live reload): npm start",
+    "  Install dependencies first:   npm install  (only needed if node_modules is missing)",
+    "  Site runs at:                 http://localhost:3000"
+  ],
   "name": "sn-prep",
   "private": true,
   "scripts": {
