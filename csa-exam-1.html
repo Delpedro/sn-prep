@@ -1,4 +1,155 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock Exam 1 Review</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:'DM Sans',sans-serif;
+background:#f8f9fb;
+color:#1e293b;
+padding:2.5rem 1.2rem;
+}
+.container{max-width:900px;margin:0 auto}
+.back-link{
+font-family:'JetBrains Mono',monospace;
+font-size:.85rem;
+text-decoration:none;
+color:#94a3b8;
+margin-bottom:2rem;
+display:inline-block;
+}
+header{text-align:center;margin-bottom:2.5rem}
+header::after{
+content:'';
+display:block;
+width:60px;
+height:3px;
+background:linear-gradient(90deg,#f59e0b,#ef4444);
+margin:1rem auto 0;
+}
+h1{
+font-family:'JetBrains Mono',monospace;
+font-size:2rem;
+margin-bottom:.6rem;
+}
+.subtitle{
+font-family:'JetBrains Mono',monospace;
+color:#64748b;
+}
+.stats{
+display:flex;
+gap:1rem;
+justify-content:center;
+margin-top:1.3rem;
+flex-wrap:wrap;
+}
+.stat{
+background:#fff;
+border:1px solid #e2e8f0;
+padding:.7rem 1rem;
+border-radius:12px;
+font-family:'JetBrains Mono',monospace;
+font-size:.75rem;
+}
+.filters{
+display:flex;
+gap:.5rem;
+flex-wrap:wrap;
+margin-bottom:1.5rem;
+}
+.filter{
+font-family:'JetBrains Mono',monospace;
+font-size:.72rem;
+padding:.35rem .75rem;
+border-radius:20px;
+border:1px solid #e2e8f0;
+background:#fff;
+}
+.card{
+background:#fff;
+border:1px solid #e2e8f0;
+border-radius:16px;
+margin-bottom:1rem;
+overflow:hidden;
+box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+.card-header{
+padding:1.2rem 1.4rem;
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:1rem;
+}
+.card-title{
+font-size:1.05rem;
+font-weight:600;
+line-height:1.5;
+}
+.card-meta{
+display:flex;
+gap:.5rem;
+flex-wrap:wrap;
+margin-bottom:.7rem;
+}
+.badge{
+font-family:'JetBrains Mono',monospace;
+font-size:.65rem;
+padding:.18rem .45rem;
+border-radius:20px;
+border:1px solid;
+}
+.orange{background:rgba(245,158,11,.08);color:#d97706;border-color:rgba(245,158,11,.25)}
+.green{background:rgba(16,185,129,.08);color:#059669;border-color:rgba(16,185,129,.25)}
+.blue{background:rgba(59,130,246,.08);color:#2563eb;border-color:rgba(59,130,246,.25)}
+.card-body{
+display:none;
+padding:0 1.4rem 1.4rem;
+}
+.card.open .card-body{display:block}
+.divider{height:1px;background:#e2e8f0;margin-bottom:1rem}
+.section{
+margin-bottom:1rem;
+padding:1rem;
+border-radius:12px;
+}
+.answer{background:#f8fafc;border:1px solid #e2e8f0}
+.trap{background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.12)}
+.memory{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.12)}
+.label{
+font-family:'JetBrains Mono',monospace;
+font-size:.72rem;
+margin-bottom:.6rem;
+letter-spacing:1px;
+color:#64748b;
+}
+.section p{line-height:1.7;color:#475569}
+.toggle{font-size:1.3rem;color:#94a3b8}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="csa.html" class="back-link">← back to CSA exams</a>
+
+<header>
+<h1>Mock Exam 1 Review</h1>
+<p class="subtitle">22 wrong questions • grouped by CSA domains</p>
+
+<div class="stats">
+<div class="stat">Database & Security: 8</div>
+<div class="stat">Automation: 7</div>
+<div class="stat">Navigation: 2</div>
+</div>
+</header>
+
+<div class="filters">
+<div class="filter">All</div>
+<div class="filter">Platform Navigation</div>
+<div class="filter">Database & Security</div>
 <div class="filter">Automation</div>
 <div class="filter">Collaboration</div>
 </div>
