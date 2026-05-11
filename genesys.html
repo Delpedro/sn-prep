@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ServiceNow Interview Prep</title>
+<title>Genesys Interview Prep</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -25,6 +25,20 @@
     text-align: center;
   }
 
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+  }
+
+  .back-link:hover { color: #3b82f6; }
+
   header { margin-bottom: 3rem; }
 
   header::after {
@@ -32,7 +46,7 @@
     display: block;
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, #10b981, #3b82f6);
+    background: linear-gradient(90deg, #3b82f6, #0ea5e9);
     margin: 1.2rem auto 0;
     border-radius: 2px;
   }
@@ -49,6 +63,18 @@
     font-size: 1.1rem;
     color: #64748b;
     margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .role-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(59,130,246,0.08);
+    border: 1px solid rgba(59,130,246,0.22);
+    border-radius: 20px;
+    font-size: 0.88rem;
+    color: #2563eb;
     font-family: 'JetBrains Mono', monospace;
   }
 
@@ -89,10 +115,10 @@
     flex-shrink: 0;
   }
 
-  .icon-genesys { background: linear-gradient(135deg, #3b82f6, #0ea5e9); }
-  .icon-csa { background: linear-gradient(135deg, #f59e0b, #ef4444); }
-  .icon-scripting { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
-  .icon-future { background: linear-gradient(135deg, #94a3b8, #64748b); }
+  .icon-jobspec { background: linear-gradient(135deg, #3b82f6, #0ea5e9); }
+  .icon-screening { background: linear-gradient(135deg, #f59e0b, #d97706); }
+  .icon-technical { background: linear-gradient(135deg, #10b981, #3b82f6); }
+  .icon-qa { background: linear-gradient(135deg, #10b981, #059669); }
 
   .card-content { flex: 1; }
 
@@ -121,21 +147,6 @@
     color: #475569;
   }
 
-  .card-disabled {
-    opacity: 0.55;
-    pointer-events: none;
-  }
-
-  .coming-soon {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: #94a3b8;
-    background: #f1f5f9;
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    margin-left: 0.5rem;
-  }
-
   .footer {
     margin-top: 2.5rem;
     font-family: 'JetBrains Mono', monospace;
@@ -154,52 +165,55 @@
 <body>
 
 <div class="container">
+  <a href="index.html" class="back-link">← back to home</a>
+
   <header>
-    <h1>ServiceNow Interview Prep</h1>
-    <p class="subtitle">Platform Administrator</p>
+    <h1>Genesys</h1>
+    <p class="subtitle">Interview prep archive</p>
+    <span class="role-tag">Platform Administrator / Platform Engineer prep</span>
   </header>
 
   <div class="cards">
 
-    <a href="genesys.html" class="card">
-      <div class="card-icon icon-genesys">🏢</div>
+    <a href="jobspec.html" class="card">
+      <div class="card-icon icon-jobspec">📄</div>
       <div class="card-content">
-        <div class="card-title">Genesys</div>
-        <div class="card-desc">Archived prep pack — job spec, screening, technical interview, and Q&A practice</div>
+        <div class="card-title">Job Spec</div>
+        <div class="card-desc">Role notes, company overview, panel details, benefits, and positioning</div>
       </div>
       <div class="card-arrow">→</div>
     </a>
 
-    <a href="csa.html" class="card">
-      <div class="card-icon icon-csa">🎓</div>
+    <a href="screening.html" class="card">
+      <div class="card-icon icon-screening">📋</div>
       <div class="card-content">
-        <div class="card-title">CSA Exam Prep</div>
-        <div class="card-desc">Mock exam practice, weak-area review, explanations, and certification prep</div>
+        <div class="card-title">Screening Interview</div>
+        <div class="card-desc">Recruiter call prep — core questions, extras, and questions to ask</div>
       </div>
       <div class="card-arrow">→</div>
     </a>
 
-    <a href="scripting.html" class="card">
-      <div class="card-icon icon-scripting">🛠️</div>
+    <a href="technical.html" class="card">
+      <div class="card-icon icon-technical">⚙️</div>
       <div class="card-content">
-        <div class="card-title">Scripting Guide</div>
-        <div class="card-desc">GlideRecord, Business Rules, Client Scripts, GlideAjax, APIs, and common patterns</div>
+        <div class="card-title">Technical Interview</div>
+        <div class="card-desc">Platform admin questions — notes, gotchas, and full answers</div>
       </div>
       <div class="card-arrow">→</div>
     </a>
 
-    <a href="#" class="card card-disabled" aria-disabled="true">
-      <div class="card-icon icon-future">➕</div>
+    <a href="qa.html" class="card">
+      <div class="card-icon icon-qa">✏️</div>
       <div class="card-content">
-        <div class="card-title">Next Interview <span class="coming-soon">template</span></div>
-        <div class="card-desc">Add a new company tile here when the next role or interview lands</div>
+        <div class="card-title">Interview Q&A Practice</div>
+        <div class="card-desc">Write answers, get feedback, self-rate, and revisit weak answers</div>
       </div>
       <div class="card-arrow">→</div>
     </a>
 
   </div>
 
-  <div class="footer">Job-hunt hub • Interview prep • CSA prep</div>
+  <div class="footer">Archived interview pack • Keep the lessons • Move on cleanly</div>
 </div>
 
 </body>
