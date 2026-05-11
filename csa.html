@@ -4,19 +4,35 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CSA Exam Prep — ServiceNow</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
+  :root {
+    --bg: #f8f9fb;
+    --card: #ffffff;
+    --text: #0f172a;
+    --muted: #64748b;
+    --soft: #94a3b8;
+    --line: #e2e8f0;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --green: #10b981;
+    --blue: #3b82f6;
+    --purple: #8b5cf6;
+    --shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
+    --shadow-hover: 0 10px 28px rgba(15, 23, 42, 0.09);
+  }
+
   body {
     font-family: 'DM Sans', sans-serif;
-    background: #f8f9fb;
+    background: var(--bg);
     color: #1e293b;
     min-height: 100vh;
     padding: 2.5rem 1.2rem;
   }
 
-  .container { max-width: 760px; margin: 0 auto; }
+  .container { max-width: 940px; margin: 0 auto; }
 
   .back-link {
     display: inline-flex;
@@ -24,36 +40,36 @@
     gap: 0.4rem;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
-    color: #94a3b8;
+    color: var(--soft);
     text-decoration: none;
     margin-bottom: 1.5rem;
     transition: color 0.2s;
   }
-  .back-link:hover { color: #f59e0b; }
+  .back-link:hover { color: var(--orange); }
 
-  header { text-align: center; margin-bottom: 2.5rem; }
+  header { text-align: center; margin-bottom: 2rem; }
   header::after {
     content: '';
     display: block;
     width: 60px;
     height: 3px;
-    background: linear-gradient(90deg, #f59e0b, #ef4444);
+    background: linear-gradient(90deg, var(--orange), var(--red));
     margin: 1.2rem auto 0;
     border-radius: 2px;
   }
 
   h1 {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 2rem;
-    font-weight: 600;
-    color: #0f172a;
-    letter-spacing: -0.5px;
+    font-size: clamp(1.55rem, 3vw, 2.2rem);
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.6px;
   }
 
   .subtitle {
     font-size: 1.05rem;
-    color: #64748b;
-    margin-top: 0.5rem;
+    color: var(--muted);
+    margin-top: 0.55rem;
     font-family: 'JetBrains Mono', monospace;
   }
 
@@ -64,717 +80,724 @@
     background: rgba(245,158,11,0.08);
     border: 1px solid rgba(245,158,11,0.25);
     border-radius: 20px;
-    font-size: 0.88rem;
+    font-size: 0.82rem;
     color: #d97706;
     font-family: 'JetBrains Mono', monospace;
   }
 
-  /* Progress */
-  .progress-wrap { margin-bottom: 1.8rem; }
-  .progress-meta {
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.5rem;
-  }
-  .progress-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
-    color: #94a3b8;
-  }
-  .progress-counts {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    display: flex;
-    gap: 0.8rem;
-  }
-  .count-correct { color: #10b981; }
-  .count-review  { color: #f59e0b; }
-  .progress-bar {
-    background: #e2e8f0;
-    border-radius: 20px;
-    height: 6px;
-    overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #f59e0b, #ef4444);
-    border-radius: 20px;
-    transition: width 0.4s ease;
-    width: 0%;
-  }
-
-  /* Filter tabs */
-  .filter-tabs {
-    display: flex;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
+    gap: 1rem;
+    margin: 0 0 1.4rem;
     flex-wrap: wrap;
   }
-  .filter-tab {
+
+  .small-link, .ghost-btn {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    padding: 0.28rem 0.65rem;
-    border-radius: 20px;
-    border: 1px solid #e2e8f0;
-    background: #fff;
-    color: #64748b;
+    font-size: 0.78rem;
+    color: var(--soft);
+    background: none;
+    border: none;
     cursor: pointer;
-    transition: all 0.2s;
-    -webkit-user-select: none;
-    user-select: none;
+    text-decoration: none;
   }
-  .filter-tab:hover { border-color: #f59e0b; color: #d97706; }
-  .filter-tab.active {
-    background: rgba(245,158,11,0.08);
-    border-color: rgba(245,158,11,0.4);
-    color: #d97706;
-    font-weight: 600;
+  .small-link:hover, .ghost-btn:hover { color: var(--orange); }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.84rem;
+    color: var(--soft);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 2rem 0 0.8rem;
   }
 
-  /* Top actions */
-  .top-actions {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .panel, .exam-card, .question-card, .stat-card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+  }
+
+  .panel { padding: 1.3rem; margin-bottom: 1rem; }
+
+  .exam-card {
+    padding: 1.3rem;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+  .exam-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(245,158,11,0.45); }
+
+  .exam-head {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.2rem;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
   }
-  .page-info {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: #94a3b8;
-  }
-  .btn-reset-all {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    padding: 0.35rem 0.75rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 10px;
-    cursor: pointer;
-    background: #fff;
-    color: #94a3b8;
-    transition: all 0.2s;
-  }
-  .btn-reset-all:hover { border-color: #ef4444; color: #dc2626; }
 
-  /* Question card */
-  .q-card {
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    border-radius: 14px;
-    padding: 1.4rem 1.5rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    transition: border-color 0.25s;
-  }
-  .q-card.status-correct { border-color: #10b981; }
-  .q-card.status-review  { border-color: #f59e0b; }
-
-  .q-card-top {
-    display: flex;
-    align-items: center;
-    gap: 0.7rem;
-    margin-bottom: 0.9rem;
-  }
-  .q-num {
+  .exam-kicker {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
-    font-weight: 600;
-    color: #94a3b8;
-    flex-shrink: 0;
+    color: var(--soft);
+    margin-bottom: 0.25rem;
   }
-  .multi-tag {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.65rem;
-    font-weight: 600;
-    padding: 0.1rem 0.45rem;
-    border-radius: 20px;
-    background: rgba(99,102,241,0.08);
-    color: #4f46e5;
-    border: 1px solid rgba(99,102,241,0.2);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #e2e8f0;
-    flex-shrink: 0;
-    margin-left: auto;
-    transition: background 0.25s;
-  }
-  .status-dot.dot-correct { background: #10b981; }
-  .status-dot.dot-review  { background: #f59e0b; }
 
-  /* Domain badges */
-  .domain-badge {
+  .exam-title {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.35;
+  }
+
+  .badge {
+    align-self: flex-start;
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.66rem;
-    font-weight: 600;
-    padding: 0.12rem 0.5rem;
-    border-radius: 20px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 0.18rem 0.55rem;
+    border-radius: 999px;
+    white-space: nowrap;
     border: 1px solid;
-    white-space: nowrap;
   }
-  .domain-ui-navigation { background: rgba(59,130,246,0.07);  color: #2563eb; border-color: rgba(59,130,246,0.22); }
-  .domain-collaboration  { background: rgba(139,92,246,0.07);  color: #7c3aed; border-color: rgba(139,92,246,0.22); }
-  .domain-database-admin { background: rgba(245,158,11,0.07);  color: #d97706; border-color: rgba(245,158,11,0.22); }
-  .domain-self-service   { background: rgba(16,185,129,0.07);  color: #059669; border-color: rgba(16,185,129,0.22); }
-  .domain-dev-intro      { background: rgba(239,68,68,0.07);   color: #dc2626; border-color: rgba(239,68,68,0.22); }
-  .domain-untagged       { background: rgba(148,163,184,0.07); color: #94a3b8; border-color: rgba(148,163,184,0.22); }
+  .badge-live { color: #059669; background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.25); }
+  .badge-pending { color: #d97706; background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.25); }
 
-  /* Question text */
-  .q-text {
-    font-size: 1.02rem;
-    font-weight: 500;
-    color: #0f172a;
-    line-height: 1.65;
-    margin-bottom: 1.1rem;
-  }
-
-  /* Options */
-  .q-options {
+  .meta-row {
     display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin: 0.8rem 0 1.1rem;
+  }
+
+  .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    background: #f8fafc;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 0.25rem 0.6rem;
+  }
+
+  .actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+  .btn {
+    border: none;
+    border-radius: 11px;
+    padding: 0.65rem 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+  .btn-primary { background: linear-gradient(135deg, var(--orange), var(--red)); color: #fff; }
+  .btn-secondary { background: #fff; color: var(--muted); border: 1px solid var(--line); }
+  .btn-success { background: rgba(16,185,129,0.1); color: #059669; border: 1px solid rgba(16,185,129,0.25); }
+  .btn-warning { background: rgba(245,158,11,0.1); color: #d97706; border: 1px solid rgba(245,158,11,0.25); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .stat-card { padding: 1rem; }
+  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--soft); text-transform: uppercase; letter-spacing: 1px; }
+  .stat-value { font-size: 1.55rem; font-weight: 700; color: var(--text); margin-top: 0.2rem; }
+
+  .domain-tabs { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1rem; }
+  .domain-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.32rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .domain-tab.active { border-color: rgba(245,158,11,0.45); background: rgba(245,158,11,0.08); color: #d97706; font-weight: 700; }
+
+  .question-card { margin-bottom: 1rem; overflow: hidden; }
+  .question-header {
+    width: 100%;
+    border: none;
+    background: #fff;
+    padding: 1.15rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    cursor: pointer;
+    text-align: left;
+  }
+  .question-header:hover { background: #f8fafc; }
+
+  .q-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: #fff;
+    background: linear-gradient(135deg, var(--orange), var(--red));
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+  }
+
+  .q-title { flex: 1; min-width: 0; }
+  .q-text { font-weight: 700; color: var(--text); line-height: 1.45; }
+  .q-meta { margin-top: 0.35rem; display: flex; gap: 0.45rem; flex-wrap: wrap; }
+  .chev { color: var(--soft); font-size: 1.2rem; }
+  .question-card.open .chev { transform: rotate(180deg); }
+
+  .question-body { display: none; padding: 0 1.25rem 1.25rem; }
+  .question-card.open .question-body { display: block; }
+  .divider { height: 1px; background: var(--line); margin-bottom: 1rem; }
+
+  .option {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0.85rem 1rem;
+    margin-bottom: 0.55rem;
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    cursor: pointer;
+    background: #fff;
+  }
+  .option.correct { border-color: rgba(16,185,129,0.45); background: rgba(16,185,129,0.08); }
+  .option input { margin-top: 0.2rem; }
+  .option-text { font-weight: 600; color: #334155; line-height: 1.45; }
+
+  .info-box {
+    border-radius: 12px;
+    padding: 1rem 1.05rem;
+    margin-top: 0.85rem;
+    border: 1px solid;
+  }
+  .info-title { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 0.5rem; }
+  .info-body { line-height: 1.65; color: #334155; }
+  .info-body ul { padding-left: 1.2rem; }
+  .box-explain { background: #f8fafc; border-color: var(--line); }
+  .box-explain .info-title { color: var(--muted); }
+  .box-trap { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.22); }
+  .box-trap .info-title { color: #d97706; }
+  .box-hook { background: rgba(59,130,246,0.07); border-color: rgba(59,130,246,0.22); }
+  .box-hook .info-title { color: #2563eb; }
+
+  .status-actions { display: flex; gap: 0.5rem; margin-top: 0.9rem; flex-wrap: wrap; }
+  .status-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    padding: 0.4rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: #fff;
+    color: var(--muted);
+    cursor: pointer;
+  }
+  .status-btn.active[data-status="mastered"] { background: rgba(16,185,129,0.1); color: #059669; border-color: rgba(16,185,129,0.3); }
+  .status-btn.active[data-status="weak"] { background: rgba(239,68,68,0.1); color: #dc2626; border-color: rgba(239,68,68,0.3); }
+  .status-btn.active[data-status="revisit"] { background: rgba(245,158,11,0.1); color: #d97706; border-color: rgba(245,158,11,0.3); }
+
+  .timer-wrap {
+    position: sticky;
+    top: 0.8rem;
+    z-index: 20;
+    background: rgba(255,255,255,0.94);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 0.8rem 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    box-shadow: var(--shadow);
     margin-bottom: 1rem;
   }
-  .option {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.7rem;
-    padding: 0.7rem 0.9rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 9px;
-    cursor: pointer;
-    transition: all 0.18s;
-    font-size: 0.93rem;
-    color: #334155;
-    background: #fafafa;
-    -webkit-user-select: none;
-    user-select: none;
-  }
-  /* Hover — only when not yet revealed */
-  .option:not(.revealed):not(.opt-selected):hover {
-    border-color: #f59e0b;
-    background: rgba(245,158,11,0.04);
-    color: #0f172a;
-  }
-  .option.revealed { cursor: default; }
+  .timer-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--soft); text-transform: uppercase; letter-spacing: 1px; }
+  .timer-value { font-family: 'JetBrains Mono', monospace; font-size: 1.45rem; font-weight: 700; color: var(--text); margin-top: 0.1rem; }
+  .timer-value.warning { color: #dc2626; }
+  .progress-bar { height: 7px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-top: 0.65rem; }
+  .progress-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--orange), var(--red)); border-radius: 999px; transition: width 0.3s linear; }
 
-  /* Pre-reveal selection (multi-select only) */
-  .option.opt-selected {
-    border-color: #6366f1;
-    background: rgba(99,102,241,0.06);
-    color: #3730a3;
-  }
-  .option.opt-selected .opt-letter { color: #4f46e5; }
-
-  /* Post-reveal states */
-  .option.opt-correct {
-    border-color: #10b981;
-    background: rgba(16,185,129,0.07);
-    color: #064e3b;
-  }
-  .option.opt-wrong {
-    border-color: #ef4444;
-    background: rgba(239,68,68,0.06);
-    color: #7f1d1d;
-  }
-  .q-options.options-revealed .option:not(.opt-correct):not(.opt-wrong) {
-    opacity: 0.55;
-  }
-
-  .opt-letter {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #94a3b8;
-    flex-shrink: 0;
-    margin-top: 1px;
-  }
-  .option.opt-correct .opt-letter { color: #059669; }
-  .option.opt-wrong .opt-letter   { color: #dc2626; }
-  .opt-text { flex: 1; line-height: 1.5; }
-  .opt-icon {
-    font-size: 0.8rem;
-    flex-shrink: 0;
-    margin-left: auto;
-    padding-left: 0.4rem;
-  }
-
-  /* Reveal / action row */
-  .reveal-row { display: flex; gap: 0.5rem; align-items: center; }
-  .btn-reveal {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    padding: 0.5rem 1.1rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 9px;
-    cursor: pointer;
+  .exam-shell { display: grid; grid-template-columns: 1fr 260px; gap: 1rem; align-items: start; }
+  .exam-question { padding: 1.35rem; }
+  .exam-side { padding: 1rem; position: sticky; top: 6.5rem; }
+  .question-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35rem; margin-top: 0.8rem; }
+  .nav-dot {
+    border: 1px solid var(--line);
     background: #fff;
-    color: #64748b;
-    transition: all 0.2s;
-  }
-  .btn-reveal:hover {
-    border-color: #f59e0b;
-    color: #d97706;
-    background: rgba(245,158,11,0.04);
-  }
-  .select-hint {
+    border-radius: 8px;
+    padding: 0.45rem 0;
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
-    color: #94a3b8;
-  }
-
-  /* Answer reveal footer */
-  .answer-reveal {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-    padding-top: 0.85rem;
-    border-top: 1px solid #f1f5f9;
-    margin-top: 0.2rem;
-  }
-  .correct-badge {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
-    color: #059669;
-    background: rgba(16,185,129,0.08);
-    border: 1px solid rgba(16,185,129,0.2);
-    border-radius: 8px;
-    padding: 0.28rem 0.65rem;
-    white-space: nowrap;
-  }
-  .correct-badge strong { font-weight: 700; }
-  .community-text {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: #94a3b8;
-  }
-  .rating-buttons { display: flex; gap: 0.45rem; margin-left: auto; }
-
-  .btn-got-it {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.38rem 0.85rem;
-    border: 1px solid rgba(16,185,129,0.3);
-    border-radius: 8px;
     cursor: pointer;
-    background: rgba(16,185,129,0.08);
-    color: #059669;
-    transition: all 0.2s;
   }
-  .btn-got-it:hover,
-  .btn-got-it.selected { background: #10b981; color: #fff; border-color: #10b981; }
+  .nav-dot.current { border-color: var(--orange); background: rgba(245,158,11,0.08); color: #d97706; font-weight: 700; }
+  .nav-dot.answered { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.08); color: #059669; }
 
-  .btn-review-again {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.38rem 0.85rem;
-    border: 1px solid rgba(245,158,11,0.3);
-    border-radius: 8px;
-    cursor: pointer;
-    background: rgba(245,158,11,0.08);
-    color: #d97706;
-    transition: all 0.2s;
-  }
-  .btn-review-again:hover,
-  .btn-review-again.selected { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+  .muted-copy { color: var(--muted); line-height: 1.65; }
+  .empty { color: var(--soft); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
 
-  /* Empty / error states */
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.88rem;
-    color: #94a3b8;
-    line-height: 1.9;
-  }
-
-  /* Pagination */
-  .pagination {
-    display: flex;
-    gap: 0.3rem;
-    justify-content: center;
-    align-items: center;
-    margin-top: 2rem;
-    flex-wrap: wrap;
-  }
-  .page-btn {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    padding: 0.38rem 0.65rem;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    cursor: pointer;
-    background: #fff;
-    color: #64748b;
-    transition: all 0.2s;
-    min-width: 34px;
-    text-align: center;
-  }
-  .page-btn:hover:not(:disabled) { border-color: #f59e0b; color: #d97706; }
-  .page-btn.active { background: #f59e0b; color: #fff; border-color: #f59e0b; font-weight: 600; }
-  .page-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-  .page-ellipsis {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    color: #94a3b8;
-    padding: 0 0.1rem;
-  }
-
-  .footer {
-    text-align: center;
-    margin-top: 3rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.8rem;
-    color: #cbd5e1;
-  }
-
-  @media (max-width: 500px) {
-    body { padding: 1.2rem 0.8rem; }
-    h1 { font-size: 1.5rem; }
-    .q-card { padding: 1rem; }
-    .q-text { font-size: 0.95rem; }
-    .option { padding: 0.6rem 0.75rem; font-size: 0.88rem; }
-    .domain-badge { display: none; }
-    .rating-buttons { margin-left: 0; margin-top: 0.5rem; width: 100%; }
-    .answer-reveal { flex-direction: column; align-items: flex-start; }
+  @media (max-width: 760px) {
+    body { padding: 1.25rem 0.8rem; }
+    .grid, .stats, .exam-shell { grid-template-columns: 1fr; }
+    .exam-side { position: static; }
+    .timer-wrap { position: static; }
+    .question-header { align-items: flex-start; }
   }
 </style>
 </head>
 <body>
 <div class="container">
-
   <a href="index.html" class="back-link">← back</a>
 
   <header>
     <h1>CSA Exam Prep</h1>
     <p class="subtitle">Certified System Administrator</p>
-    <span class="role-tag">200 questions · reveal answers · track weak spots</span>
+    <span class="role-tag">Mock reviews • weak areas • timed exam engine</span>
   </header>
 
-  <div class="progress-wrap">
-    <div class="progress-meta">
-      <span class="progress-label" id="progressLabel">0 / 0 seen</span>
-      <div class="progress-counts">
-        <span class="count-correct" id="countCorrect">✓ 0 got it</span>
-        <span class="count-review"  id="countReview">↺ 0 to review</span>
-      </div>
+  <section id="home-view" class="view active">
+    <div class="stats" id="home-stats"></div>
+
+    <div class="panel">
+      <h2 class="exam-title">Build plan</h2>
+      <p class="muted-copy" style="margin-top:0.5rem;">
+        Start with wrong-answer review. Then add confirmed answers, explanations, weak-area drills and full 60-question timed exam mode.
+      </p>
     </div>
-    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-  </div>
 
-  <div class="filter-tabs">
-    <div class="filter-tab active"            onclick="setDomain('all',            this)">All</div>
-    <div class="filter-tab"                   onclick="setDomain('ui-navigation',  this)">UI &amp; Nav</div>
-    <div class="filter-tab"                   onclick="setDomain('collaboration',  this)">Collaboration</div>
-    <div class="filter-tab"                   onclick="setDomain('database-admin', this)">Database</div>
-    <div class="filter-tab"                   onclick="setDomain('self-service',   this)">Self-Service</div>
-    <div class="filter-tab"                   onclick="setDomain('dev-intro',      this)">Development</div>
-    <div class="filter-tab filter-tab-review" onclick="setDomain('review',         this)">↺ Needs Review</div>
-  </div>
+    <div class="section-title">Practice tests</div>
+    <div class="grid" id="exam-grid"></div>
+  </section>
 
-  <div class="top-actions">
-    <span class="page-info" id="pageInfo"></span>
-    <button type="button" class="btn-reset-all" onclick="resetAll()">↺ Reset Progress</button>
-  </div>
+  <section id="review-view" class="view">
+    <div class="toolbar">
+      <button class="ghost-btn" onclick="goHome()">← back to CSA home</button>
+      <button class="ghost-btn" onclick="expandAllReview()">Expand all</button>
+    </div>
+    <div class="panel">
+      <div class="exam-kicker" id="review-kicker"></div>
+      <h2 class="exam-title" id="review-title"></h2>
+      <p class="muted-copy" id="review-desc" style="margin-top:0.45rem;"></p>
+    </div>
+    <div class="domain-tabs" id="domain-tabs"></div>
+    <div id="review-questions"></div>
+  </section>
 
-  <div id="questions-container"></div>
-  <div class="pagination" id="pagination"></div>
+  <section id="exam-view" class="view">
+    <div class="toolbar">
+      <button class="ghost-btn" onclick="confirmExitExam()">← exit exam</button>
+      <button class="ghost-btn" onclick="resetCurrentExamTimer()">Reset timer</button>
+    </div>
 
+    <div class="timer-wrap">
+      <div style="flex:1;">
+        <div class="timer-label" id="timer-label">Exam timer</div>
+        <div class="timer-value" id="timer-value">01:30:00</div>
+        <div class="progress-bar"><div class="progress-fill" id="timer-fill"></div></div>
+      </div>
+      <button class="btn btn-primary" onclick="finishExam()">Finish</button>
+    </div>
+
+    <div class="exam-shell">
+      <div class="question-card exam-question" id="exam-question"></div>
+      <aside class="panel exam-side">
+        <div class="stat-label">Question map</div>
+        <div class="question-nav" id="question-nav"></div>
+      </aside>
+    </div>
+  </section>
 </div>
 
-<div class="footer">study · reveal · rate · repeat</div>
-
-<script src="csa_data.js"></script>
 <script>
-// ─── Constants ────────────────────────────────────────────
-const PER_PAGE = 10;
+const EXAM_DURATION_SECONDS = 90 * 60;
 
-const DOMAINS = {
-  'ui-navigation':  'UI & Navigation',
-  'collaboration':  'Collaboration',
-  'database-admin': 'Database Admin',
-  'self-service':   'Self-Service & Automation',
-  'dev-intro':      'Development'
+const EXAMS = [
+  { id: 1, title: 'Mock Exam 1', label: 'Practice Test 1', status: 'live', questions: 22, note: 'Wrong-answer review started from category screenshots.' },
+  { id: 2, title: 'Mock Exam 2', label: 'Practice Test 2', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' },
+  { id: 3, title: 'Mock Exam 3', label: 'Practice Test 3', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' },
+  { id: 4, title: 'Mock Exam 4', label: 'Practice Test 4', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' },
+  { id: 5, title: 'Additional Exam 1', label: 'Practice Test 5', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' },
+  { id: 6, title: 'Additional Exam 2', label: 'Practice Test 6', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' }
+];
+
+const DOMAIN_LABELS = {
+  platform: 'Platform Overview and Navigation',
+  database: 'Database Management and Platform Security',
+  data: 'Data Migration and Integration',
+  selfservice: 'Self-Service and Automation',
+  collaboration: 'Configuring Applications for Collaboration'
 };
 
-// ─── State ────────────────────────────────────────────────
-// progress[id] = { status: 'correct'|'review', guessed: string|string[] }
-const progress = JSON.parse(localStorage.getItem('csa_progress') || '{}');
+const QUESTIONS = [
+  {
+    id: 'e1-q1', exam: 1, qNo: 1, domain: 'database', choose: 2,
+    question: 'Access Control List (ACL) rules allow you to specify the decision type, rule type and operation that defines them. What are the two decision types in ACL rules?',
+    options: ['Allow If', 'Allow Once', 'Restrict Access', 'Deny Unless', 'Deny Always'],
+    answer: ['Allow If', 'Deny Unless'],
+    explanation: 'ACL decision types are Allow If and Deny Unless. The condition, script and role sections define whether the ACL grants access or blocks it depending on the decision type.',
+    trap: 'CSA mixes real ACL wording with fake-sounding access phrases like Allow Once, Restrict Access and Deny Always.',
+    hook: 'ACL decision types: Allow If / Deny Unless.',
+    confirmed: true
+  },
+  { id:'e1-q4', exam:1, qNo:4, domain:'database', choose:4, question:'What are the different Schema relationship types that are supported for tables?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Schema relationship questions usually test exact ServiceNow relationship terminology.', hook:'Exact table relationship wording matters.', confirmed:false },
+  { id:'e1-q18', exam:1, qNo:18, domain:'database', choose:3, question:'ServiceNow can import data from which of the following external data source types when a valid transform map is available?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Import questions often mix valid data source types with integration methods that are not import set data sources.', hook:'Import sets need a data source plus a transform map.', confirmed:false },
+  { id:'e1-q19', exam:1, qNo:19, domain:'database', choose:1, question:'Which of the following is a true statement about importing data into ServiceNow?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Watch for wording around staging tables, transform maps and direct table imports.', hook:'Import data lands in staging before transform.', confirmed:false },
+  { id:'e1-q20', exam:1, qNo:20, domain:'database', choose:1, question:'Which of the following is the customer\'s responsibility under the Shared Responsibility Model?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Shared responsibility questions separate ServiceNow platform responsibility from customer configuration/data responsibility.', hook:'ServiceNow runs the platform. Customer owns configuration, access and data usage.', confirmed:false },
+  { id:'e1-q25', exam:1, qNo:25, domain:'database', choose:3, question:'The CMDB is the authoritative source of what information?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'CMDB questions usually test CIs, relationships and configuration context, not general knowledge/documentation.', hook:'CMDB = CIs + relationships + service context.', confirmed:false },
+  { id:'e1-q52', exam:1, qNo:52, domain:'database', choose:2, question:'Which CMDB feature tracks the activities and history of data sources as they insert and update CI attributes?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Do not confuse CMDB data source tracking with audit history or discovery schedules.', hook:'CMDB questions love source tracking wording.', confirmed:false },
+  { id:'e1-q58', exam:1, qNo:58, domain:'database', choose:1, question:'What is Configuration Item (CI)?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'CI definition questions may use broad asset language. The CSA answer focuses on a component tracked in the CMDB.', hook:'CI = trackable service/infrastructure component in CMDB.', confirmed:false },
 
-// pendingSelections[id] = Set of letters chosen before reveal (multi-select only)
-const pendingSelections = {};
+  { id:'e1-q32', exam:1, qNo:32, domain:'data', choose:1, question:'What can be used to extend the Flow Designer to call 3rd party systems, such as automating Microsoft Services and infrastructure using PowerShell and REST?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Flow Designer extension questions often point to spokes, IntegrationHub and actions rather than classic workflow.', hook:'Flow + external systems = IntegrationHub / spokes / actions.', confirmed:false },
 
-let currentDomain = 'all';
-let currentPage   = 1;
+  { id:'e1-q3', exam:1, qNo:3, domain:'selfservice', choose:3, question:'What are the different ways an end-user can leave feedback about an article?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Knowledge feedback questions mix article usefulness, comments, ratings and flagging options.', hook:'Knowledge feedback is more than one channel.', confirmed:false },
+  { id:'e1-q5', exam:1, qNo:5, domain:'selfservice', choose:3, question:'What are the typical Tier 2 support tasks that virtual agents can perform so that the support agents can focus on more complex user issues?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Virtual Agent handles repeatable, guided support tasks, not complex human judgement.', hook:'VA deflects repeatable support work.', confirmed:false },
+  { id:'e1-q12', exam:1, qNo:12, domain:'selfservice', choose:3, question:'What options are available to define the fulfilment process for a service catalogue item?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Known trap: Execution Plan is valid. Plain Plan is not.', hook:'Catalog fulfilment: Flow / Workflow / Execution Plan.', confirmed:false },
+  { id:'e1-q22', exam:1, qNo:22, domain:'selfservice', choose:1, question:'Where does the System Administrator navigate to edit a catalogue item?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Catalog navigation questions test the exact module path, not just the broad application.', hook:'Know the exact Service Catalog admin path.', confirmed:false },
+  { id:'e1-q35', exam:1, qNo:35, domain:'selfservice', choose:1, question:'What application enables you to quickly write drafts of knowledge articles based on cases, HR cases, or incidents?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Watch for AI-related ServiceNow product names versus generic knowledge creation wording.', hook:'Cases/incidents to article drafts = knowledge creation assist concept.', confirmed:false },
+  { id:'e1-q40', exam:1, qNo:40, domain:'selfservice', choose:3, question:'Which of the following is a true statement regarding Flow Designer actions?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Flow Designer action questions test inputs, outputs, reusable action logic and spokes.', hook:'Actions are reusable units inside Flow Designer.', confirmed:false },
+  { id:'e1-q41', exam:1, qNo:41, domain:'selfservice', choose:1, question:'When can you view personalised recommendations to improve the search engine optimisation (SEO) and accessibility of your Knowledge articles?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Knowledge article optimisation questions may test article authoring workflow timing.', hook:'SEO/accessibility recommendations appear during the knowledge authoring process.', confirmed:false },
 
-// ─── Persistence ──────────────────────────────────────────
-function saveProgress() {
-  localStorage.setItem('csa_progress', JSON.stringify(progress));
+  { id:'e1-q13', exam:1, qNo:13, domain:'collaboration', choose:1, question:'Which Visual Task Board type automatically updates tasks when users edit cards or move them to a new lane?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'VTB questions separate freeform boards from data-driven boards that update records.', hook:'Automatic task updates = data-driven board behaviour.', confirmed:false },
+  { id:'e1-q36', exam:1, qNo:36, domain:'collaboration', choose:2, question:'Select the report visualisation types you can generate from a list of records.', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'From a list, CSA commonly expects Pie and Bar. Do not over-select full Report Designer chart types.', hook:'List quick charts: Pie + Bar.', confirmed:false },
+  { id:'e1-q56', exam:1, qNo:56, domain:'collaboration', choose:1, question:'You have a requirement to create a set of filter conditions on the Incidents list to show records satisfying: state is Resolved or Closed, and Assignment Group is one of your groups. After clicking the Funnel icon and defining the first condition, what steps should you take?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Filter condition questions test AND/OR grouping and condition builder order.', hook:'Get AND/OR grouping right before adding more filter logic.', confirmed:false },
+  { id:'e1-q60', exam:1, qNo:60, domain:'collaboration', choose:1, question:'Form splits help you organise fields on a form into columns for enhanced visual appeal. What role is required to enable multiple form splits on the platform?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Role questions often distinguish admin from specialised elevated/admin-adjacent roles.', hook:'Form layout features often require exact admin capability.', confirmed:false },
+
+  {
+    id:'e1-q43', exam:1, qNo:43, domain:'platform', choose:2,
+    question:'Which of the following is a true statement about user impersonation?',
+    options:[
+      'The impersonation option is not available in the ServiceNow mobile apps.',
+      'When impersonating another user, the administrator does not have the same access as the impersonated user.',
+      'Administrators will have limited access to certain features when impersonating some scoped app admins.',
+      'Users will need to log out after each impersonation to end it.',
+      'Administrators can impersonate other authenticated users but cannot view impersonation logs.',
+      'Non-admin users with the impersonator role will have limited access if they impersonate admin users.'
+    ],
+    answer:[
+      'Administrators will have limited access to certain features when impersonating some scoped app admins.',
+      'Non-admin users with the impersonator role will have limited access if they impersonate admin users.'
+    ],
+    explanation:'Impersonation lets authorised users view the instance as another authenticated user, but access is still limited by platform security rules and special cases such as scoped app admin behaviour. Impersonation can be ended without logging out, and impersonation activity can be audited.',
+    trap:'The tempting wrong answer says the admin does not have the same access as the impersonated user. That sounds sensible, but the exam is looking for the more specific limitation cases.',
+    hook:'Impersonation follows the target user, but admin/scoped restrictions still matter.',
+    confirmed:true
+  },
+  { id:'e1-q50', exam:1, qNo:50, domain:'platform', choose:3, question:'Which of the following is a true statement about the admin role?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Admin role questions test exact limits: admin, security_admin, user_admin and who can grant what.', hook:'Admin is powerful, but not unlimited.', confirmed:false }
+];
+
+const state = {
+  currentExamId: null,
+  currentQuestionIndex: 0,
+  examQuestions: [],
+  answers: {},
+  timerInterval: null,
+  timerStarted: false,
+  selectedDomain: 'all'
+};
+
+const reviewStatus = JSON.parse(localStorage.getItem('csa_review_status') || '{}');
+
+function saveReviewStatus() {
+  localStorage.setItem('csa_review_status', JSON.stringify(reviewStatus));
 }
 
-// ─── Helpers ──────────────────────────────────────────────
-function getQuestions() {
-  return (typeof CSA_QUESTIONS !== 'undefined') ? CSA_QUESTIONS : [];
-}
-
-function isMulti(q) {
-  return Array.isArray(q.answer);
-}
-
-function getFiltered() {
-  const qs = getQuestions();
-  if (currentDomain === 'review') return qs.filter(q => progress[q.id]?.status === 'review');
-  if (currentDomain === 'all')    return qs;
-  return qs.filter(q => q.domain === currentDomain);
-}
-
-function getTotalPages() {
-  return Math.max(1, Math.ceil(getFiltered().length / PER_PAGE));
-}
-
-// ─── Render ───────────────────────────────────────────────
-function render() {
-  renderStats();
-  renderQuestions();
-  renderPagination();
-}
-
-function renderStats() {
-  const total   = getQuestions().length;
-  const seen    = Object.keys(progress).length;
-  const correct = Object.values(progress).filter(p => p.status === 'correct').length;
-  const review  = Object.values(progress).filter(p => p.status === 'review').length;
-
-  document.getElementById('progressLabel').textContent = seen + ' / ' + total + ' seen';
-  document.getElementById('progressFill').style.width  = total ? (seen / total * 100) + '%' : '0%';
-  document.getElementById('countCorrect').textContent  = '✓ ' + correct + ' got it';
-  document.getElementById('countReview').textContent   = '↺ ' + review  + ' to review';
-}
-
-function renderQuestions() {
-  const container = document.getElementById('questions-container');
-
-  if (!getQuestions().length) {
-    container.innerHTML = '<div class="empty-state">No questions loaded.<br>Make sure csa_data.js is in the same folder.</div>';
-    document.getElementById('pageInfo').textContent = '';
-    return;
-  }
-
-  const filtered = getFiltered();
-  if (!filtered.length) {
-    container.innerHTML = '<div class="empty-state">No questions match this filter.</div>';
-    document.getElementById('pageInfo').textContent = '';
-    return;
-  }
-
-  const total = getTotalPages();
-  if (currentPage > total) currentPage = total;
-
-  const start = (currentPage - 1) * PER_PAGE;
-  container.innerHTML = filtered.slice(start, start + PER_PAGE).map(renderQuestion).join('');
-
-  document.getElementById('pageInfo').textContent =
-    'Page ' + currentPage + ' of ' + total + ' · ' + filtered.length + ' questions';
-}
-
-function renderQuestion(q) {
-  const p        = progress[q.id];
-  const revealed = p !== undefined;
-  const status   = p?.status  || '';
-  const guessed  = p?.guessed ?? null;     // string or array after reveal
-  const multi    = isMulti(q);
-  const pending  = pendingSelections[q.id] || new Set();
-
-  const domainLabel = DOMAINS[q.domain] || 'Untagged';
-  const domainClass = q.domain ? 'domain-' + q.domain : 'domain-untagged';
-  const cardClass   = status ? ' status-' + status : '';
-  const dotClass    = status === 'correct' ? ' dot-correct' : status === 'review' ? ' dot-review' : '';
-
-  const multiHint = multi
-    ? '<span class="multi-tag">Select ' + q.answer.length + '</span>'
-    : '';
-
-  const letters = ['A', 'B', 'C', 'D'];
-
-  const optionsHtml = letters.map((letter, i) => {
-    const text = q.opts[i] || '';
-    let cls  = 'option';
-    let icon = '';
-
-    if (revealed) {
-      cls += ' revealed';
-      const correctSet = multi ? q.answer : [q.answer];
-      const guessedArr = multi ? (guessed || []) : (guessed ? [guessed] : []);
-
-      if (correctSet.includes(letter)) {
-        cls  += ' opt-correct';
-        icon  = '<span class="opt-icon">✓</span>';
-      } else if (guessedArr.includes(letter)) {
-        cls  += ' opt-wrong';
-        icon  = '<span class="opt-icon">✗</span>';
-      }
-    } else if (multi && pending.has(letter)) {
-      cls  += ' opt-selected';
-      icon  = '<span class="opt-icon" style="color:#4f46e5">✓</span>';
-    }
-
-    return (
-      '<div class="' + cls + '" onclick="handleOptionClick(' + q.id + ',\'' + letter + '\')">' +
-        '<span class="opt-letter">' + letter + '</span>' +
-        '<span class="opt-text">' + text + '</span>' +
-        icon +
-      '</div>'
-    );
-  }).join('');
-
-  const optWrapClass = 'q-options' + (revealed ? ' options-revealed' : '');
-
-  let bottomHtml;
-  if (revealed) {
-    const correctDisplay = multi ? q.answer.join(', ') : q.answer;
-    const communityHtml  = q.community
-      ? '<span class="community-text">' + q.community + '</span>' : '';
-    bottomHtml =
-      '<div class="answer-reveal">' +
-        '<div class="correct-badge">Correct: <strong>' + correctDisplay + '</strong></div>' +
-        communityHtml +
-        '<div class="rating-buttons">' +
-          '<button class="btn-got-it'      + (status === 'correct' ? ' selected' : '') + '" onclick="handleRating(' + q.id + ',\'correct\')">✓ Got it</button>' +
-          '<button class="btn-review-again' + (status === 'review'  ? ' selected' : '') + '" onclick="handleRating(' + q.id + ',\'review\')">↺ Review Again</button>' +
-        '</div>' +
-      '</div>';
-  } else {
-    const hint = multi
-      ? '<span class="select-hint">Click options then reveal</span>'
-      : '';
-    bottomHtml =
-      '<div class="reveal-row">' +
-        '<button class="btn-reveal" onclick="handleReveal(' + q.id + ')">Reveal Answer</button>' +
-        hint +
-      '</div>';
-  }
-
-  return (
-    '<div class="q-card' + cardClass + '">' +
-      '<div class="q-card-top">' +
-        '<span class="q-num">Q.' + q.id + '</span>' +
-        multiHint +
-        '<span class="domain-badge ' + domainClass + '">' + domainLabel + '</span>' +
-        '<span class="status-dot' + dotClass + '"></span>' +
-      '</div>' +
-      '<div class="q-text">' + q.q + '</div>' +
-      '<div class="' + optWrapClass + '">' + optionsHtml + '</div>' +
-      bottomHtml +
-    '</div>'
-  );
-}
-
-function renderPagination() {
-  const el    = document.getElementById('pagination');
-  const total = getTotalPages();
-  if (total <= 1) { el.innerHTML = ''; return; }
-
-  const DELTA = 2;
-  let html = '<button class="page-btn" onclick="goPage(' + (currentPage-1) + ')" ' + (currentPage===1?'disabled':'') + '>← Prev</button>';
-  let prev = -1;
-
-  for (let i = 1; i <= total; i++) {
-    if (i === 1 || i === total || Math.abs(i - currentPage) <= DELTA) {
-      if (prev !== -1 && i - prev > 1) html += '<span class="page-ellipsis">…</span>';
-      html += '<button class="page-btn' + (i===currentPage?' active':'') + '" onclick="goPage(' + i + ')">' + i + '</button>';
-      prev = i;
-    }
-  }
-
-  html += '<button class="page-btn" onclick="goPage(' + (currentPage+1) + ')" ' + (currentPage===total?'disabled':'') + '>Next →</button>';
-  el.innerHTML = html;
-}
-
-// ─── Interactions ─────────────────────────────────────────
-function handleOptionClick(id, letter) {
-  if (progress[id]) return; // already revealed
-  const q = getQuestions().find(q => q.id === id);
-  if (!q) return;
-
-  if (isMulti(q)) {
-    // Toggle pre-reveal selection
-    if (!pendingSelections[id]) pendingSelections[id] = new Set();
-    if (pendingSelections[id].has(letter)) pendingSelections[id].delete(letter);
-    else pendingSelections[id].add(letter);
-    render();
-    return;
-  }
-
-  // Single-select: reveal immediately on click
-  progress[id] = {
-    status:  letter === q.answer ? 'correct' : 'review',
-    guessed: letter
-  };
-  saveProgress();
-  render();
-}
-
-function handleReveal(id) {
-  if (progress[id]) return;
-  const q = getQuestions().find(q => q.id === id);
-  if (!q) return;
-
-  if (isMulti(q)) {
-    const selected  = pendingSelections[id] ? [...pendingSelections[id]] : [];
-    const correct   = q.answer;
-    const isCorrect = selected.length === correct.length &&
-                      selected.every(s => correct.includes(s));
-    progress[id] = { status: isCorrect ? 'correct' : 'review', guessed: selected };
-  } else {
-    progress[id] = { status: 'review', guessed: null };
-  }
-
-  saveProgress();
-  render();
-}
-
-function handleRating(id, rating) {
-  if (!progress[id]) progress[id] = { status: rating, guessed: null };
-  else progress[id].status = rating;
-  saveProgress();
-  render();
-}
-
-// ─── Navigation ───────────────────────────────────────────
-function goPage(page) {
-  const total = getTotalPages();
-  if (page < 1 || page > total) return;
-  currentPage = page;
-  render();
+function setView(viewId) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(viewId).classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function setDomain(domain, el) {
-  currentDomain = domain;
-  currentPage   = 1;
-  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
-  el.classList.add('active');
-  render();
+function goHome() {
+  stopTimer();
+  renderHome();
+  setView('home-view');
 }
 
-function resetAll() {
-  if (!confirm('Reset all progress? This cannot be undone.')) return;
-  Object.keys(progress).forEach(k => delete progress[k]);
-  Object.keys(pendingSelections).forEach(k => delete pendingSelections[k]);
-  saveProgress();
-  currentPage = 1;
-  render();
+function renderHome() {
+  const total = QUESTIONS.length;
+  const confirmed = QUESTIONS.filter(q => q.confirmed).length;
+  const mastered = Object.values(reviewStatus).filter(s => s === 'mastered').length;
+  const weak = Object.values(reviewStatus).filter(s => s === 'weak').length;
+
+  document.getElementById('home-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-label">Questions loaded</div><div class="stat-value">${total}</div></div>
+    <div class="stat-card"><div class="stat-label">Confirmed answers</div><div class="stat-value">${confirmed}</div></div>
+    <div class="stat-card"><div class="stat-label">Mastered</div><div class="stat-value">${mastered}</div></div>
+    <div class="stat-card"><div class="stat-label">Weak</div><div class="stat-value">${weak}</div></div>
+  `;
+
+  document.getElementById('exam-grid').innerHTML = EXAMS.map(exam => `
+    <article class="exam-card">
+      <div class="exam-head">
+        <div>
+          <div class="exam-kicker">${exam.label}</div>
+          <div class="exam-title">${exam.title}</div>
+        </div>
+        <span class="badge ${exam.status === 'live' ? 'badge-live' : 'badge-pending'}">${exam.status === 'live' ? 'started' : 'pending'}</span>
+      </div>
+      <p class="muted-copy">${exam.note}</p>
+      <div class="meta-row">
+        <span class="pill">${exam.questions} wrong Qs loaded</span>
+        <span class="pill">60 Q exam mode</span>
+        <span class="pill">90 min timer</span>
+      </div>
+      <div class="actions">
+        <button class="btn btn-secondary" onclick="openReview(${exam.id})" ${exam.questions ? '' : 'disabled'}>Review wrong answers</button>
+        <button class="btn btn-primary" onclick="startExam(${exam.id})" ${exam.questions ? '' : 'disabled'}>Start timed exam</button>
+      </div>
+    </article>
+  `).join('');
 }
 
-window.addEventListener('load', render);
+function getExamQuestions(examId) {
+  return QUESTIONS.filter(q => q.exam === examId).sort((a,b) => a.qNo - b.qNo);
+}
+
+function openReview(examId) {
+  state.currentExamId = examId;
+  state.selectedDomain = 'all';
+  const exam = EXAMS.find(e => e.id === examId);
+  document.getElementById('review-kicker').textContent = exam.label;
+  document.getElementById('review-title').textContent = `${exam.title} — Wrong Answer Review`;
+  document.getElementById('review-desc').textContent = 'Review the questions you missed. Confirmed answers are shown where available; pending cards are ready for answer/explanation data.';
+  renderDomainTabs(examId);
+  renderReviewQuestions(examId);
+  setView('review-view');
+}
+
+function renderDomainTabs(examId) {
+  const qs = getExamQuestions(examId);
+  const domains = ['all', ...new Set(qs.map(q => q.domain))];
+  document.getElementById('domain-tabs').innerHTML = domains.map(d => {
+    const count = d === 'all' ? qs.length : qs.filter(q => q.domain === d).length;
+    const label = d === 'all' ? 'All domains' : DOMAIN_LABELS[d];
+    return `<button class="domain-tab ${state.selectedDomain === d ? 'active' : ''}" onclick="selectDomain('${d}')">${label} · ${count}</button>`;
+  }).join('');
+}
+
+function selectDomain(domain) {
+  state.selectedDomain = domain;
+  renderDomainTabs(state.currentExamId);
+  renderReviewQuestions(state.currentExamId);
+}
+
+function renderReviewQuestions(examId) {
+  let qs = getExamQuestions(examId);
+  if (state.selectedDomain !== 'all') qs = qs.filter(q => q.domain === state.selectedDomain);
+
+  document.getElementById('review-questions').innerHTML = qs.map(q => renderReviewCard(q)).join('') || '<p class="empty">No questions found.</p>';
+}
+
+function renderReviewCard(q) {
+  const status = reviewStatus[q.id] || '';
+  const optionsHtml = q.options && q.options.length
+    ? q.options.map(opt => `<label class="option ${q.answer.includes(opt) ? 'correct' : ''}"><input type="checkbox" disabled ${q.answer.includes(opt) ? 'checked' : ''}><span class="option-text">${escapeHtml(opt)}</span></label>`).join('')
+    : `<div class="info-box box-explain"><div class="info-title">Answer pending</div><div class="info-body">Correct options will be added once the expanded Udemy feedback screenshot is captured.</div></div>`;
+
+  return `
+    <article class="question-card" data-qid="${q.id}">
+      <button class="question-header" onclick="toggleCard('${q.id}')">
+        <span class="q-number">Q${q.qNo}</span>
+        <div class="q-title">
+          <div class="q-text">${escapeHtml(q.question)}</div>
+          <div class="q-meta">
+            <span class="pill">${DOMAIN_LABELS[q.domain]}</span>
+            <span class="pill">Choose ${q.choose}</span>
+            <span class="pill">${q.confirmed ? 'confirmed' : 'answer pending'}</span>
+          </div>
+        </div>
+        <span class="chev">⌄</span>
+      </button>
+      <div class="question-body">
+        <div class="divider"></div>
+        ${optionsHtml}
+        <div class="info-box box-explain"><div class="info-title">Explanation</div><div class="info-body">${formatBody(q.explanation)}</div></div>
+        <div class="info-box box-trap"><div class="info-title">Exam trap</div><div class="info-body">${formatBody(q.trap)}</div></div>
+        <div class="info-box box-hook"><div class="info-title">Memory hook</div><div class="info-body">${formatBody(q.hook)}</div></div>
+        <div class="status-actions">
+          <button class="status-btn ${status === 'mastered' ? 'active' : ''}" data-status="mastered" onclick="setQuestionStatus('${q.id}','mastered')">Mastered</button>
+          <button class="status-btn ${status === 'weak' ? 'active' : ''}" data-status="weak" onclick="setQuestionStatus('${q.id}','weak')">Weak</button>
+          <button class="status-btn ${status === 'revisit' ? 'active' : ''}" data-status="revisit" onclick="setQuestionStatus('${q.id}','revisit')">Revisit</button>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+function toggleCard(qid) {
+  document.querySelector(`[data-qid="${qid}"]`).classList.toggle('open');
+}
+
+function expandAllReview() {
+  document.querySelectorAll('#review-questions .question-card').forEach(card => card.classList.add('open'));
+}
+
+function setQuestionStatus(qid, status) {
+  reviewStatus[qid] = reviewStatus[qid] === status ? '' : status;
+  saveReviewStatus();
+  renderReviewQuestions(state.currentExamId);
+}
+
+function startExam(examId) {
+  state.currentExamId = examId;
+  state.currentQuestionIndex = 0;
+  state.answers = {};
+  state.examQuestions = buildExamQuestionSet(examId);
+  setView('exam-view');
+  renderExamQuestion();
+  renderQuestionNav();
+  startTimer(examId);
+}
+
+function buildExamQuestionSet(examId) {
+  // Phase 1: use loaded wrong-answer questions. Later this becomes 60 weighted questions from the full bank.
+  return getExamQuestions(examId);
+}
+
+function renderExamQuestion() {
+  if (!state.timerStarted) startTimer(state.currentExamId);
+  const q = state.examQuestions[state.currentQuestionIndex];
+  const selected = state.answers[q.id] || [];
+  const inputType = q.choose > 1 ? 'checkbox' : 'radio';
+  const options = q.options && q.options.length ? q.options : ['Answer option pending', 'Answer option pending', 'Answer option pending', 'Answer option pending'];
+
+  document.getElementById('exam-question').innerHTML = `
+    <div class="exam-kicker">Question ${state.currentQuestionIndex + 1} of ${state.examQuestions.length} · ${DOMAIN_LABELS[q.domain]}</div>
+    <h2 class="exam-title" style="margin:0.35rem 0 0.9rem;">${escapeHtml(q.question)}</h2>
+    <div class="meta-row"><span class="pill">Choose ${q.choose}</span><span class="pill">Q${q.qNo}</span><span class="pill">${q.confirmed ? 'confirmed answer' : 'answer pending'}</span></div>
+    <div style="margin-top:1rem;">
+      ${options.map((opt, i) => `
+        <label class="option">
+          <input type="${inputType}" name="exam-answer" value="${escapeHtml(opt)}" ${selected.includes(opt) ? 'checked' : ''} onchange="selectExamAnswer('${q.id}', '${encodeURIComponent(opt)}', ${q.choose})">
+          <span class="option-text">${escapeHtml(opt)}</span>
+        </label>
+      `).join('')}
+    </div>
+    <div class="actions" style="margin-top:1.1rem; justify-content:space-between;">
+      <button class="btn btn-secondary" onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''}>Previous</button>
+      <button class="btn btn-primary" onclick="nextQuestion()">${state.currentQuestionIndex === state.examQuestions.length - 1 ? 'Review map' : 'Next'}</button>
+    </div>
+  `;
+  renderQuestionNav();
+}
+
+function selectExamAnswer(qid, encodedOpt, choose) {
+  const opt = decodeURIComponent(encodedOpt);
+  const current = state.answers[qid] || [];
+  if (choose === 1) {
+    state.answers[qid] = [opt];
+  } else {
+    if (current.includes(opt)) state.answers[qid] = current.filter(x => x !== opt);
+    else if (current.length < choose) state.answers[qid] = [...current, opt];
+    else state.answers[qid] = [...current.slice(1), opt];
+  }
+  renderQuestionNav();
+}
+
+function renderQuestionNav() {
+  document.getElementById('question-nav').innerHTML = state.examQuestions.map((q, i) => {
+    const answered = state.answers[q.id] && state.answers[q.id].length > 0;
+    return `<button class="nav-dot ${i === state.currentQuestionIndex ? 'current' : ''} ${answered ? 'answered' : ''}" onclick="jumpQuestion(${i})">${i + 1}</button>`;
+  }).join('');
+}
+
+function jumpQuestion(index) {
+  state.currentQuestionIndex = index;
+  renderExamQuestion();
+}
+function nextQuestion() {
+  if (state.currentQuestionIndex < state.examQuestions.length - 1) {
+    state.currentQuestionIndex++;
+    renderExamQuestion();
+  }
+}
+function prevQuestion() {
+  if (state.currentQuestionIndex > 0) {
+    state.currentQuestionIndex--;
+    renderExamQuestion();
+  }
+}
+
+function startTimer(examId) {
+  stopTimer();
+  state.timerStarted = true;
+  const key = `csa_exam_${examId}_start`;
+  const existing = localStorage.getItem(key);
+  const now = Date.now();
+  const start = existing ? Number(existing) : now;
+  localStorage.setItem(key, String(start));
+  state.timerInterval = setInterval(() => updateTimer(examId), 1000);
+  updateTimer(examId);
+}
+
+function updateTimer(examId) {
+  const start = Number(localStorage.getItem(`csa_exam_${examId}_start`) || Date.now());
+  const elapsed = Math.floor((Date.now() - start) / 1000);
+  const remaining = Math.max(0, EXAM_DURATION_SECONDS - elapsed);
+  const h = Math.floor(remaining / 3600);
+  const m = Math.floor((remaining % 3600) / 60);
+  const s = remaining % 60;
+  const value = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const timerEl = document.getElementById('timer-value');
+  timerEl.textContent = value;
+  timerEl.classList.toggle('warning', remaining <= 10 * 60);
+  document.getElementById('timer-fill').style.width = `${(remaining / EXAM_DURATION_SECONDS) * 100}%`;
+  if (remaining <= 0) finishExam();
+}
+
+function stopTimer() {
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  state.timerInterval = null;
+  state.timerStarted = false;
+}
+
+function resetCurrentExamTimer() {
+  if (!state.currentExamId) return;
+  localStorage.removeItem(`csa_exam_${state.currentExamId}_start`);
+  startTimer(state.currentExamId);
+}
+
+function confirmExitExam() {
+  stopTimer();
+  goHome();
+}
+
+function finishExam() {
+  stopTimer();
+  const answered = Object.values(state.answers).filter(v => v.length).length;
+  alert(`Exam stopped. Answered ${answered} of ${state.examQuestions.length}. Full scoring comes after the confirmed answer bank is added.`);
+  goHome();
+}
+
+function escapeHtml(str) {
+  return String(str || '').replace(/[&<>"]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[m]));
+}
+function formatBody(str) {
+  return escapeHtml(str).replace(/\n/g, '<br>');
+}
+
+renderHome();
 </script>
 </body>
 </html>
