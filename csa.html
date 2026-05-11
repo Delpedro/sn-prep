@@ -1,409 +1,469 @@
+# csa.html
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CSA Exam Prep — ServiceNow</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSA Exam Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  :root {
-    --bg: #f8f9fb;
-    --card: #ffffff;
-    --text: #0f172a;
-    --muted: #64748b;
-    --soft: #94a3b8;
-    --line: #e2e8f0;
-    --amber: #f59e0b;
-    --orange: #f97316;
-    --red: #ef4444;
-    --green: #10b981;
-    --blue: #3b82f6;
-    --purple: #8b5cf6;
-    --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 10px 28px rgba(15,23,42,0.04);
-  }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 2.5rem 1.2rem;
-  }
-  .container { max-width: 980px; margin: 0 auto; }
-  .back-link {
-    display: inline-flex; align-items: center; gap: .4rem;
-    font-family: 'JetBrains Mono', monospace; font-size: .85rem;
-    color: var(--soft); text-decoration: none; margin-bottom: 1.6rem;
-  }
-  .back-link:hover { color: var(--orange); }
-  header { text-align: center; margin-bottom: 2.2rem; }
-  header::after {
-    content: ''; display: block; width: 60px; height: 3px;
-    background: linear-gradient(90deg, var(--amber), var(--red));
-    margin: 1.1rem auto 0; border-radius: 2px;
-  }
-  h1 {
-    font-family: 'JetBrains Mono', monospace; font-size: 2rem;
-    letter-spacing: -.5px; font-weight: 700;
-  }
-  .subtitle {
-    margin-top: .45rem; color: var(--muted);
-    font-family: 'JetBrains Mono', monospace; font-size: .98rem;
-  }
-  .role-tag {
-    display: inline-block; margin-top: .95rem; padding: .35rem .85rem;
-    border: 1px solid rgba(245,158,11,.25); border-radius: 999px;
-    background: rgba(245,158,11,.08); color: #d97706;
-    font-family: 'JetBrains Mono', monospace; font-size: .78rem;
-  }
-  .dashboard {
-    display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem;
-    margin-bottom: 1.5rem;
-  }
-  .tile {
-    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-    padding: 1.2rem; box-shadow: var(--shadow);
-  }
-  .tile-title {
-    font-family: 'JetBrains Mono', monospace; font-size: .82rem; color: var(--soft);
-    text-transform: uppercase; letter-spacing: 1px; margin-bottom: .55rem;
-  }
-  .tile-value { font-size: 1.75rem; font-weight: 700; }
-  .tile-note { color: var(--muted); font-size: .92rem; margin-top: .35rem; line-height: 1.45; }
-  .mode-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1rem; margin-bottom: 1.4rem; }
-  .mode-card {
-    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
-    padding: 1.35rem; box-shadow: var(--shadow);
-  }
-  .mode-card.disabled { opacity: .72; }
-  .mode-head { display:flex; align-items: flex-start; justify-content: space-between; gap:1rem; }
-  .mode-title { font-size: 1.15rem; font-weight: 700; margin-bottom:.35rem; }
-  .mode-desc { color: var(--muted); line-height: 1.55; }
-  .pill {
-    display:inline-flex; align-items:center; gap:.35rem; border-radius:999px; padding:.24rem .62rem;
-    font-family:'JetBrains Mono', monospace; font-size:.72rem; border:1px solid var(--line); color: var(--muted);
-    background:#fff; white-space:nowrap;
-  }
-  .pill.amber { border-color: rgba(245,158,11,.35); color:#d97706; background:rgba(245,158,11,.07); }
-  .pill.green { border-color: rgba(16,185,129,.35); color:#047857; background:rgba(16,185,129,.07); }
-  .pill.red { border-color: rgba(239,68,68,.25); color:#dc2626; background:rgba(239,68,68,.06); }
-  .exam-list { display:grid; gap:.65rem; margin-top:1rem; }
-  .exam-row {
-    display:flex; justify-content:space-between; align-items:center; gap:1rem;
-    border:1px solid var(--line); background:#fff; border-radius:12px; padding:.85rem .95rem;
-  }
-  .exam-name { font-weight:700; }
-  .exam-meta { color:var(--muted); font-size:.9rem; margin-top:.2rem; }
-  .btn {
-    font-family:'JetBrains Mono', monospace; font-weight:700; font-size:.78rem;
-    border:none; border-radius:10px; padding:.62rem .9rem; cursor:pointer;
-    background: linear-gradient(135deg, var(--amber), var(--orange)); color:#fff;
-  }
-  .btn.secondary { background:#fff; color:var(--muted); border:1px solid var(--line); }
-  .btn:disabled { cursor:not-allowed; opacity:.5; }
-  .timer-box {
-    display:none; margin-bottom:1rem; background:#fff; border:1px solid var(--line); border-radius:16px;
-    padding:1rem 1.1rem; box-shadow:var(--shadow);
-  }
-  .timer-box.visible { display:block; }
-  .timer-top { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:.65rem; }
-  .timer-label { font-family:'JetBrains Mono', monospace; font-size:.75rem; color:var(--soft); text-transform:uppercase; letter-spacing:1px; }
-  .timer-value { font-family:'JetBrains Mono', monospace; font-size:1.45rem; font-weight:700; }
-  .timer-bar { height:6px; background:#e2e8f0; border-radius:99px; overflow:hidden; }
-  .timer-fill { height:100%; width:100%; background:linear-gradient(90deg,var(--amber),var(--red)); transition:width .4s linear; }
-  .section-panel {
-    background:#fff; border:1px solid var(--line); border-radius:16px; padding:1rem; box-shadow:var(--shadow);
-  }
-  .section-top { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; }
-  .section-title { font-size:1.2rem; font-weight:700; }
-  .filters { display:flex; flex-wrap:wrap; gap:.45rem; }
-  .filter {
-    border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:999px;
-    padding:.35rem .7rem; font-family:'JetBrains Mono', monospace; font-size:.72rem; cursor:pointer;
-  }
-  .filter.active { border-color:rgba(245,158,11,.45); color:#d97706; background:rgba(245,158,11,.08); font-weight:700; }
-  .questions { display:grid; gap:.8rem; }
-  .q-card { border:1px solid var(--line); border-radius:14px; background:#fff; overflow:hidden; }
-  .q-card.open { border-color:rgba(245,158,11,.55); box-shadow:0 5px 18px rgba(245,158,11,.08); }
-  .q-head {
-    width:100%; background:#fff; border:none; text-align:left; cursor:pointer; padding:1rem;
-    display:flex; align-items:flex-start; gap:.8rem;
-  }
-  .q-num {
-    font-family:'JetBrains Mono', monospace; font-size:.72rem; font-weight:700; color:#fff;
-    width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
-    background:linear-gradient(135deg,var(--amber),var(--red)); flex-shrink:0;
-  }
-  .q-title { flex:1; }
-  .q-meta { display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:.45rem; }
-  .q-text { font-size:1.02rem; font-weight:700; line-height:1.45; color:var(--text); }
-  .chev { color:var(--soft); font-size:1.3rem; transition:transform .25s ease; }
-  .q-card.open .chev { transform:rotate(45deg); color:var(--orange); }
-  .q-body { display:none; border-top:1px solid var(--line); padding:1rem; }
-  .q-card.open .q-body { display:block; }
-  .options { display:grid; gap:.6rem; margin-bottom:1rem; }
-  .option {
-    border:1px solid var(--line); border-radius:12px; padding:.85rem; display:flex; gap:.75rem; align-items:flex-start;
-    color:#334155; background:#fff;
-  }
-  .option.correct { border-color:rgba(16,185,129,.55); background:rgba(16,185,129,.08); }
-  .option.incorrect { border-color:rgba(239,68,68,.45); background:rgba(239,68,68,.07); }
-  .box { width:14px; height:14px; border:1px solid #94a3b8; border-radius:3px; margin-top:.18rem; flex-shrink:0; }
-  .option.correct .box { background:var(--green); border-color:var(--green); }
-  .option.incorrect .box { background:var(--red); border-color:var(--red); }
-  .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
-  .info {
-    border:1px solid var(--line); border-radius:12px; padding:.9rem; background:#f8fafc;
-  }
-  .info.full { grid-column:1/-1; }
-  .info-label { font-family:'JetBrains Mono', monospace; font-size:.72rem; color:var(--soft); text-transform:uppercase; letter-spacing:1px; margin-bottom:.45rem; }
-  .info p, .info li { color:#334155; line-height:1.6; font-size:.95rem; }
-  .info ul { margin-left:1rem; }
-  .status-actions { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1rem; }
-  .status-btn {
-    border:1px solid var(--line); background:#fff; border-radius:10px; padding:.48rem .72rem;
-    font-family:'JetBrains Mono', monospace; font-size:.72rem; color:var(--muted); cursor:pointer;
-  }
-  .status-btn.active.mastered { border-color:rgba(16,185,129,.45); background:rgba(16,185,129,.08); color:#047857; }
-  .status-btn.active.weak { border-color:rgba(239,68,68,.45); background:rgba(239,68,68,.07); color:#dc2626; }
-  .status-btn.active.revisit { border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.08); color:#b45309; }
-  @media (max-width: 760px) {
-    body { padding:1.2rem .8rem; }
-    .dashboard, .mode-grid, .info-grid { grid-template-columns:1fr; }
-    h1 { font-size:1.55rem; }
-    .exam-row { align-items:flex-start; flex-direction:column; }
-    .q-head { padding:.9rem; }
-  }
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:#f8f9fb;
+  color:#1e293b;
+  min-height:100vh;
+  padding:2.5rem 1.2rem;
+}
+.container{max-width:760px;margin:0 auto}
+.back-link{
+  display:inline-flex;
+  align-items:center;
+  gap:.4rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.85rem;
+  color:#94a3b8;
+  text-decoration:none;
+  margin-bottom:2rem;
+}
+header{text-align:center;margin-bottom:3rem}
+header::after{
+  content:'';
+  display:block;
+  width:60px;
+  height:3px;
+  background:linear-gradient(90deg,#f59e0b,#ef4444);
+  margin:1.2rem auto 0;
+  border-radius:2px;
+}
+h1{
+  font-family:'JetBrains Mono',monospace;
+  font-size:2.2rem;
+  color:#0f172a;
+  margin-bottom:.7rem;
+}
+.subtitle{
+  font-family:'JetBrains Mono',monospace;
+  color:#64748b;
+  font-size:1rem;
+}
+.progress-box{
+  margin-top:1.4rem;
+  display:inline-flex;
+  gap:1rem;
+  flex-wrap:wrap;
+  justify-content:center;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.82rem;
+  color:#64748b;
+}
+.section-title{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.8rem;
+  color:#94a3b8;
+  letter-spacing:1.5px;
+  margin-bottom:1rem;
+  margin-top:2rem;
+}
+.exam-grid{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
+.exam-card{
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:16px;
+  padding:1.5rem;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:1rem;
+  box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+.exam-left h3{
+  font-size:1.2rem;
+  margin-bottom:.45rem;
+}
+.exam-left p{
+  color:#64748b;
+  line-height:1.6;
+}
+.exam-meta{
+  margin-top:.7rem;
+  display:flex;
+  gap:.5rem;
+  flex-wrap:wrap;
+}
+.badge{
+  font-family:'JetBrains Mono',monospace;
+  font-size:.7rem;
+  padding:.22rem .55rem;
+  border-radius:20px;
+  border:1px solid;
+}
+.badge-live{
+  background:rgba(16,185,129,.08);
+  color:#059669;
+  border-color:rgba(16,185,129,.25);
+}
+.badge-pending{
+  background:#f8fafc;
+  color:#94a3b8;
+  border-color:#e2e8f0;
+}
+.btn{
+  text-decoration:none;
+  background:linear-gradient(135deg,#f59e0b,#ef4444);
+  color:#fff;
+  padding:.95rem 1.4rem;
+  border-radius:12px;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.85rem;
+  font-weight:600;
+}
+.btn-disabled{
+  background:#f8fafc;
+  color:#94a3b8;
+  border:1px solid #e2e8f0;
+  pointer-events:none;
+}
+.weak-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.6rem;
+}
+.weak-item{
+  background:#fff;
+  border:1px solid #e2e8f0;
+  border-radius:12px;
+  padding:.8rem 1rem;
+  font-family:'JetBrains Mono',monospace;
+  font-size:.78rem;
+  color:#475569;
+}
+@media(max-width:640px){
+.exam-card{flex-direction:column;align-items:flex-start}
+.btn{width:100%;text-align:center}
+}
 </style>
 </head>
 <body>
 <div class="container">
-  <a class="back-link" href="index.html">← back</a>
-  <header>
-    <h1>CSA Exam Prep</h1>
-    <p class="subtitle">Certified System Administrator</p>
-    <span class="role-tag">Mock reviews • weak areas • timed exam engine</span>
-  </header>
+<a href="index.html" class="back-link">← back</a>
 
-  <section class="dashboard">
-    <div class="tile"><div class="tile-title">Loaded Review</div><div class="tile-value">Exam 1</div><div class="tile-note">Incorrect questions captured from Udemy category review screenshots.</div></div>
-    <div class="tile"><div class="tile-title">Wrong Questions</div><div class="tile-value" id="wrongCount">22</div><div class="tile-note">Current focus: wrong-answer review, not full exam simulation.</div></div>
-    <div class="tile"><div class="tile-title">Exam Mode</div><div class="tile-value">Locked</div><div class="tile-note">Will unlock when enough confirmed answers/options are loaded.</div></div>
-  </section>
+<header>
+<h1>CSA Exam Prep</h1>
+<p class="subtitle">Certified System Administrator</p>
 
-  <section class="mode-grid">
-    <div class="mode-card">
-      <div class="mode-head">
-        <div>
-          <div class="mode-title">Mock Exam Reviews</div>
-          <p class="mode-desc">Review the questions you got wrong, grouped by CSA domain. This is the current working mode.</p>
-        </div>
-        <span class="pill green">active</span>
-      </div>
-      <div class="exam-list">
-        <div class="exam-row">
-          <div><div class="exam-name">Mock Exam 1 Review</div><div class="exam-meta">22 incorrect • 5 categories • answer confirmation in progress</div></div>
-          <button class="btn" onclick="scrollToReview()">Open Review</button>
-        </div>
-        <div class="exam-row">
-          <div><div class="exam-name">Mock Exams 2–6</div><div class="exam-meta">Add as screenshots are captured this week.</div></div>
-          <button class="btn secondary" disabled>Pending</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="mode-card disabled">
-      <div class="mode-head">
-        <div>
-          <div class="mode-title">Timed Exam Mode</div>
-          <p class="mode-desc">90-minute timer. Starts only when a real timed exam starts or Q1 is opened inside a timed attempt.</p>
-        </div>
-        <span class="pill red">locked</span>
-      </div>
-      <div class="exam-list">
-        <div class="exam-row">
-          <div><div class="exam-name">60-question attempt</div><div class="exam-meta">Requires confirmed answers/options first.</div></div>
-          <button class="btn secondary" disabled>Start Locked</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="timer-box" id="timerBox">
-    <div class="timer-top"><div><div class="timer-label">Exam Timer</div><div class="timer-value" id="timerValue">01:30:00</div></div><button class="btn secondary" onclick="resetTimer()">Reset</button></div>
-    <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
-  </section>
-
-  <section class="section-panel" id="reviewPanel">
-    <div class="section-top">
-      <div><div class="section-title">Mock Exam 1 — Wrong Answer Review</div><p class="tile-note">Review-first page. No fake placeholder exam mode.</p></div>
-      <div class="filters" id="filters"></div>
-    </div>
-    <div class="questions" id="questions"></div>
-  </section>
+<div class="progress-box">
+<span>6 mock exams</span>
+<span>1 completed</span>
+<span>22 weak questions tracked</span>
 </div>
-<script>
-const DOMAINS = {
-  all: 'All',
-  platform: 'Platform Overview and Navigation',
-  database: 'Database Management and Platform Security',
-  migration: 'Data Migration and Integration',
-  automation: 'Self-Service and Automation',
-  collaboration: 'Configuring Applications for Collaboration'
-};
+</header>
 
-const QUESTIONS = [
-  {
-    id: 1, domain: 'database', choose: 2, status: 'confirmed',
-    question: 'Access Control List (ACL) rules allow you to specify the decision type, rule type and operation that defines them. What are the two decision types in ACL rules?',
-    options: [
-      { text: 'Allow If', state: 'correct' },
-      { text: 'Allow Once', state: 'incorrect' },
-      { text: 'Restrict Access', state: '' },
-      { text: 'Deny Unless', state: 'correct' },
-      { text: 'Deny Always', state: '' }
-    ],
-    explanation: 'ACL decision types define how the rule evaluates access. The two decision types are Allow If and Deny Unless.',
-    trap: 'Do not confuse ACL decision type with operation. Operation is read/write/create/delete/report etc. Decision type is Allow If or Deny Unless.',
-    hook: 'ACL decision = allow condition OR deny unless condition.'
-  },
-  { id: 4, domain: 'database', choose: 4, question: 'What are the different Schema relationship types that are supported for tables?' },
-  { id: 18, domain: 'database', choose: 3, question: 'ServiceNow can import data from which of the following external data source types when a valid transform map is available?' },
-  { id: 19, domain: 'database', choose: 1, question: 'Which of the following is a true statement about importing data into ServiceNow?' },
-  { id: 20, domain: 'database', choose: 1, question: "Which of the following is the customer's responsibility under the Shared Responsibility Model?" },
-  { id: 25, domain: 'database', choose: 3, question: 'The CMDB is the authoritative source of what information?' },
-  { id: 52, domain: 'database', choose: 2, question: 'Which CMDB feature tracks the activities and history of data sources as they insert and update CI attributes?' },
-  { id: 58, domain: 'database', choose: 1, question: 'What is Configuration Item (CI)?' },
-  { id: 32, domain: 'migration', choose: 1, question: 'What can be used to extend the Flow Designer to call 3rd party systems, such as automating Microsoft Services and infrastructure using PowerShell and REST?' },
-  { id: 3, domain: 'automation', choose: 3, question: 'What are the different ways an end-user can leave feedback about an article?' },
-  { id: 5, domain: 'automation', choose: 3, question: 'What are the typical Tier 2 support tasks that virtual agents can perform so that the support agents can focus on more complex user issues?' },
-  { id: 12, domain: 'automation', choose: 3, question: 'What options are available to define the fulfilment process for a service catalogue item?' },
-  { id: 22, domain: 'automation', choose: 1, question: 'Where does the System Administrator navigate to edit a catalogue item?' },
-  { id: 35, domain: 'automation', choose: 1, question: 'What application enables you to quickly write drafts of knowledge articles based on cases, HR cases, or incidents?' },
-  { id: 40, domain: 'automation', choose: 3, question: 'Which of the following is a true statement regarding Flow Designer actions?' },
-  { id: 41, domain: 'automation', choose: 1, question: 'When can you view personalised recommendations to improve the search engine optimisation (SEO) and accessibility of your Knowledge articles?' },
-  { id: 13, domain: 'collaboration', choose: 1, question: 'Which Visual Task Board type automatically updates tasks when users edit cards or move them to a new lane?' },
-  { id: 36, domain: 'collaboration', choose: 2, question: 'Select the report visualisation types you can generate from a list of records.' },
-  { id: 56, domain: 'collaboration', choose: 1, question: 'You have a requirement to create a set of filter conditions on the Incident list to show records where the state is Resolved or Closed and the Assignment Group is one of your groups. After clicking the Funnel icon and defining the first condition, what steps should you take?' },
-  { id: 60, domain: 'collaboration', choose: 1, question: 'Form splits help you organise fields on a form into columns for an enhanced visual appeal. What role is required to enable multiple form splits on the platform?' },
-  {
-    id: 43, domain: 'platform', choose: 2, status: 'confirmed',
-    question: 'Which of the following is a true statement about user impersonation?',
-    options: [
-      { text: 'The impersonation option is not available in the ServiceNow mobile apps.', state: '' },
-      { text: 'When impersonating another user, the administrator does not have the same access as the impersonated user.', state: 'incorrect' },
-      { text: 'Administrators will have limited access to certain features when impersonating some scoped app admins.', state: 'correct' },
-      { text: 'Users will need to log out after each impersonation to end it.', state: '' },
-      { text: 'Administrators can impersonate other authenticated users but cannot view impersonation logs.', state: '' },
-      { text: 'Non-admin users with the impersonator role will have limited access if they impersonate admin users.', state: 'correct' }
-    ],
-    explanation: 'Impersonation generally lets the impersonator act as the selected user, but there are platform restrictions around scoped app admins and non-admin users with the impersonator role.',
-    trap: 'The phrase “same access as the impersonated user” sounds logical, but the exam is testing the exceptions and limitations, not the general behaviour.',
-    hook: 'Impersonation = act as user, but admin/scoped/security limits still matter.'
-  },
-  { id: 50, domain: 'platform', choose: 3, question: 'Which of the following is a true statement about the admin role?' }
-];
+<div class="section-title">MOCK EXAMS</div>
 
-let activeFilter = 'all';
-let timerSeconds = 90 * 60;
-let timerInterval = null;
+<div class="exam-grid">
 
-function scrollToReview(){ document.getElementById('reviewPanel').scrollIntoView({ behavior:'smooth', block:'start' }); }
-function domainLabel(key){ return DOMAINS[key] || key; }
-function questionStatus(q){ return q.status === 'confirmed' ? 'confirmed' : 'answer pending'; }
+<div class="exam-card">
+<div class="exam-left">
+<h3>Mock Exam 1</h3>
+<p>Wrong-answer review grouped by CSA domains. Current active review set.</p>
+<div class="exam-meta">
+<span class="badge badge-live">22 wrong questions</span>
+<span class="badge badge-live">active</span>
+</div>
+</div>
+<a class="btn" href="csa-exam-1.html">Open Review</a>
+</div>
 
-function renderFilters(){
-  const wrap = document.getElementById('filters');
-  wrap.innerHTML = Object.entries(DOMAINS).map(([key,label]) => `<button class="filter ${activeFilter===key?'active':''}" onclick="setFilter('${key}')">${label}</button>`).join('');
-}
-function setFilter(key){ activeFilter = key; renderFilters(); renderQuestions(); }
+<div class="exam-card">
+<div class="exam-left">
+<h3>Mock Exam 2</h3>
+<p>Ready for tomorrow morning post gym.</p>
+<div class="exam-meta">
+<span class="badge badge-pending">pending</span>
+</div>
+</div>
+<span class="btn btn-disabled">Pending</span>
+</div>
 
-function renderOptions(q){
-  if (!q.options) {
-    return `<div class="info full"><div class="info-label">Answer data pending</div><p>Correct options and Udemy explanation still need to be added from the expanded feedback screenshot. The question is captured so the framework can grow without faking answers.</p></div>`;
-  }
-  return `<div class="options">${q.options.map(o => `<div class="option ${o.state || ''}"><span class="box"></span><strong>${o.text}</strong></div>`).join('')}</div>`;
-}
-function renderInfo(q){
-  if (!q.explanation && !q.trap && !q.hook) return '';
-  return `<div class="info-grid">
-    ${q.explanation ? `<div class="info full"><div class="info-label">Explanation</div><p>${q.explanation}</p></div>` : ''}
-    ${q.trap ? `<div class="info"><div class="info-label">Exam trap</div><p>${q.trap}</p></div>` : ''}
-    ${q.hook ? `<div class="info"><div class="info-label">Memory hook</div><p>${q.hook}</p></div>` : ''}
-  </div>`;
-}
-function renderQuestions(){
-  const list = document.getElementById('questions');
-  const filtered = activeFilter === 'all' ? QUESTIONS : QUESTIONS.filter(q => q.domain === activeFilter);
-  list.innerHTML = filtered.map(q => `
-    <article class="q-card" data-id="${q.id}">
-      <button class="q-head" onclick="toggleQuestion(${q.id})">
-        <span class="q-num">Q${q.id}</span>
-        <span class="q-title">
-          <span class="q-meta"><span class="pill amber">Choose ${q.choose}</span><span class="pill">${domainLabel(q.domain)}</span><span class="pill ${q.status==='confirmed'?'green':'red'}">${questionStatus(q)}</span></span>
-          <span class="q-text">${q.question}</span>
-        </span>
-        <span class="chev">+</span>
-      </button>
-      <div class="q-body">
-        ${renderOptions(q)}
-        ${renderInfo(q)}
-        <div class="status-actions">
-          <button class="status-btn mastered" onclick="setStatus(event, ${q.id}, 'mastered')">mastered</button>
-          <button class="status-btn weak" onclick="setStatus(event, ${q.id}, 'weak')">weak</button>
-          <button class="status-btn revisit" onclick="setStatus(event, ${q.id}, 'revisit')">revisit</button>
-        </div>
-      </div>
-    </article>
-  `).join('');
-  hydrateStatuses();
-}
-function toggleQuestion(id){
-  const card = document.querySelector(`.q-card[data-id="${id}"]`);
-  card.classList.toggle('open');
-}
-function setStatus(event, id, status){
-  event.stopPropagation();
-  localStorage.setItem(`csa_exam1_q${id}_status`, status);
-  hydrateStatuses();
-}
-function hydrateStatuses(){
-  QUESTIONS.forEach(q => {
-    const status = localStorage.getItem(`csa_exam1_q${q.id}_status`);
-    const card = document.querySelector(`.q-card[data-id="${q.id}"]`);
-    if (!card) return;
-    card.querySelectorAll('.status-btn').forEach(btn => btn.classList.remove('active'));
-    if (status) {
-      const btn = card.querySelector(`.status-btn.${status}`);
-      if (btn) btn.classList.add('active');
-    }
-  });
-}
-function formatTime(s){
-  const h = String(Math.floor(s/3600)).padStart(2,'0');
-  const m = String(Math.floor((s%3600)/60)).padStart(2,'0');
-  const sec = String(s%60).padStart(2,'0');
-  return `${h}:${m}:${sec}`;
-}
-function startTimer(){
-  document.getElementById('timerBox').classList.add('visible');
-  if (timerInterval) return;
-  timerInterval = setInterval(() => {
-    timerSeconds = Math.max(0, timerSeconds - 1);
-    document.getElementById('timerValue').textContent = formatTime(timerSeconds);
-    document.getElementById('timerFill').style.width = `${(timerSeconds/(90*60))*100}%`;
-    if (timerSeconds === 0) clearInterval(timerInterval);
-  }, 1000);
-}
-function resetTimer(){
-  clearInterval(timerInterval); timerInterval = null; timerSeconds = 90*60;
-  document.getElementById('timerValue').textContent = '01:30:00';
-  document.getElementById('timerFill').style.width = '100%';
-}
+<div class="exam-card">
+<div class="exam-left">
+<h3>Mock Exams 3–6</h3>
+<p>Additional exams unlock progressively as wrong questions are captured.</p>
+<div class="exam-meta">
+<span class="badge badge-pending">not loaded yet</span>
+</div>
+</div>
+<span class="btn btn-disabled">Pending</span>
+</div>
 
-renderFilters();
-renderQuestions();
-document.getElementById('wrongCount').textContent = QUESTIONS.length;
-</script>
+</div>
+
+<div class="section-title">CURRENT WEAK AREAS</div>
+
+<div class="weak-grid">
+<div class="weak-item">ACLs</div>
+<div class="weak-item">Impersonation</div>
+<div class="weak-item">CMDB</div>
+<div class="weak-item">Imports</div>
+<div class="weak-item">Flow Designer</div>
+<div class="weak-item">Catalog Fulfilment</div>
+<div class="weak-item">Reporting</div>
+<div class="weak-item">Virtual Agent</div>
+</div>
+
+</div>
 </body>
 </html>
+```
+
+---
+
+# csa-exam-1.html
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mock Exam 1 Review</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+font-family:'DM Sans',sans-serif;
+background:#f8f9fb;
+color:#1e293b;
+padding:2.5rem 1.2rem;
+}
+.container{max-width:900px;margin:0 auto}
+.back-link{
+font-family:'JetBrains Mono',monospace;
+font-size:.85rem;
+text-decoration:none;
+color:#94a3b8;
+margin-bottom:2rem;
+display:inline-block;
+}
+header{text-align:center;margin-bottom:2.5rem}
+header::after{
+content:'';
+display:block;
+width:60px;
+height:3px;
+background:linear-gradient(90deg,#f59e0b,#ef4444);
+margin:1rem auto 0;
+}
+h1{
+font-family:'JetBrains Mono',monospace;
+font-size:2rem;
+margin-bottom:.6rem;
+}
+.subtitle{
+font-family:'JetBrains Mono',monospace;
+color:#64748b;
+}
+.stats{
+display:flex;
+gap:1rem;
+justify-content:center;
+margin-top:1.3rem;
+flex-wrap:wrap;
+}
+.stat{
+background:#fff;
+border:1px solid #e2e8f0;
+padding:.7rem 1rem;
+border-radius:12px;
+font-family:'JetBrains Mono',monospace;
+font-size:.75rem;
+}
+.filters{
+display:flex;
+gap:.5rem;
+flex-wrap:wrap;
+margin-bottom:1.5rem;
+}
+.filter{
+font-family:'JetBrains Mono',monospace;
+font-size:.72rem;
+padding:.35rem .75rem;
+border-radius:20px;
+border:1px solid #e2e8f0;
+background:#fff;
+}
+.card{
+background:#fff;
+border:1px solid #e2e8f0;
+border-radius:16px;
+margin-bottom:1rem;
+overflow:hidden;
+box-shadow:0 1px 3px rgba(0,0,0,.04);
+}
+.card-header{
+padding:1.2rem 1.4rem;
+cursor:pointer;
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:1rem;
+}
+.card-title{
+font-size:1.05rem;
+font-weight:600;
+line-height:1.5;
+}
+.card-meta{
+display:flex;
+gap:.5rem;
+flex-wrap:wrap;
+margin-bottom:.7rem;
+}
+.badge{
+font-family:'JetBrains Mono',monospace;
+font-size:.65rem;
+padding:.18rem .45rem;
+border-radius:20px;
+border:1px solid;
+}
+.orange{background:rgba(245,158,11,.08);color:#d97706;border-color:rgba(245,158,11,.25)}
+.green{background:rgba(16,185,129,.08);color:#059669;border-color:rgba(16,185,129,.25)}
+.blue{background:rgba(59,130,246,.08);color:#2563eb;border-color:rgba(59,130,246,.25)}
+.red{background:rgba(239,68,68,.08);color:#dc2626;border-color:rgba(239,68,68,.25)}
+.card-body{
+display:none;
+padding:0 1.4rem 1.4rem;
+}
+.card.open .card-body{display:block}
+.divider{height:1px;background:#e2e8f0;margin-bottom:1rem}
+.section{
+margin-bottom:1rem;
+padding:1rem;
+border-radius:12px;
+}
+.answer{background:#f8fafc;border:1px solid #e2e8f0}
+.trap{background:rgba(239,68,68,.04);border:1px solid rgba(239,68,68,.12)}
+.memory{background:rgba(16,185,129,.04);border:1px solid rgba(16,185,129,.12)}
+.label{
+font-family:'JetBrains Mono',monospace;
+font-size:.72rem;
+margin-bottom:.6rem;
+letter-spacing:1px;
+color:#64748b;
+}
+.section p{line-height:1.7;color:#475569}
+.toggle{font-size:1.3rem;color:#94a3b8}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="csa.html" class="back-link">← back to CSA exams</a>
+
+<header>
+<h1>Mock Exam 1 Review</h1>
+<p class="subtitle">22 wrong questions • grouped by CSA domains</p>
+
+<div class="stats">
+<div class="stat">Database & Security: 8</div>
+<div class="stat">Automation: 7</div>
+<div class="stat">Navigation: 2</div>
+</div>
+</header>
+
+<div class="filters">
+<div class="filter">All</div>
+<div class="filter">Platform Navigation</div>
+<div class="filter">Database & Security</div>
+<div class="filter">Automation</div>
+<div class="filter">Collaboration</div>
+</div>
+
+<div class="card open">
+<div class="card-header">
+<div>
+<div class="card-meta">
+<span class="badge orange">Q1</span>
+<span class="badge blue">Choose 2</span>
+<span class="badge green">Confidence: High</span>
+</div>
+<div class="card-title">Access Control List (ACL) rules allow you to specify the decision type, rule type and operation that defines them. What are the two decision types in ACL rules?</div>
+</div>
+<div class="toggle">−</div>
+</div>
+
+<div class="card-body">
+<div class="divider"></div>
+
+<div class="section answer">
+<div class="label">AI GENERATED REVIEW ANSWER</div>
+<p>The two decision types in ACL rules are <strong>Allow If</strong> and <strong>Deny Unless</strong>.</p>
+</div>
+
+<div class="section trap">
+<div class="label">EXAM TRAP</div>
+<p>CSA mixes real ACL terminology with fake-but-believable wording like “Allow Once” or “Restrict Access”.</p>
+</div>
+
+<div class="section memory">
+<div class="label">MEMORY HOOK</div>
+<p>Think in terms of ALLOW or DENY — not access-level labels.</p>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<div>
+<div class="card-meta">
+<span class="badge orange">Q43</span>
+<span class="badge blue">Choose 2</span>
+<span class="badge green">Confidence: Medium</span>
+</div>
+<div class="card-title">Which of the following is a true statement about user impersonation?</div>
+</div>
+<div class="toggle">+</div>
+</div>
+
+<div class="card-body">
+<div class="divider"></div>
+
+<div class="section answer">
+<div class="label">AI GENERATED REVIEW ANSWER</div>
+<p>Scoped app restrictions and impersonator-role limitations are the important concepts being tested here.</p>
+</div>
+
+<div class="section trap">
+<div class="label">EXAM TRAP</div>
+<p>CSA wording often tries to trick you with phrases like “same access”, “full access”, or “must log out”.</p>
+</div>
+
+<div class="section memory">
+<div class="label">MEMORY HOOK</div>
+<p>Impersonation behaves mostly like the target user, except where scoped/security restrictions apply.</p>
+</div>
+
+</div>
+</div>
+
+<script>
+document.querySelectorAll('.card-header').forEach(header=>{
+header.addEventListener('click',()=>{
+header.parentElement.classList.toggle('open');
+const toggle=header.querySelector('.toggle');
+toggle.textContent=header.parentElement.classList.contains('open')?'−':'+';
+});
+});
+</script>
+
+</div>
+</body>
+</html>
+```

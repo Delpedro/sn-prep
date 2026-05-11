@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<div class="filter">Automation</div>
+<div class="filter">Collaboration</div>
+</div>
+
+<div class="card open">
+<div class="card-header">
+<div>
+<div class="card-meta">
+<span class="badge orange">Q1</span>
+<span class="badge blue">Choose 2</span>
+<span class="badge green">Confidence: High</span>
+</div>
+<div class="card-title">Access Control List (ACL) rules allow you to specify the decision type, rule type and operation that defines them. What are the two decision types in ACL rules?</div>
+</div>
+<div class="toggle">−</div>
+</div>
+
+<div class="card-body">
+<div class="divider"></div>
+
+<div class="section answer">
+<div class="label">AI GENERATED REVIEW ANSWER</div>
+<p>The two decision types in ACL rules are <strong>Allow If</strong> and <strong>Deny Unless</strong>.</p>
+</div>
+
+<div class="section trap">
+<div class="label">EXAM TRAP</div>
+<p>CSA mixes real ACL terminology with fake-but-believable wording like “Allow Once” or “Restrict Access”.</p>
+</div>
+
+<div class="section memory">
+<div class="label">MEMORY HOOK</div>
+<p>Think in terms of ALLOW or DENY — not access-level labels.</p>
+</div>
+
+</div>
+</div>
+
+<div class="card">
+<div class="card-header">
+<div>
+<div class="card-meta">
+<span class="badge orange">Q43</span>
+<span class="badge blue">Choose 2</span>
+<span class="badge green">Confidence: Medium</span>
+</div>
+<div class="card-title">Which of the following is a true statement about user impersonation?</div>
+</div>
+<div class="toggle">+</div>
+</div>
+
+<div class="card-body">
+<div class="divider"></div>
+
+<div class="section answer">
+<div class="label">AI GENERATED REVIEW ANSWER</div>
+<p>Scoped app restrictions and impersonator-role limitations are the important concepts being tested here.</p>
+</div>
+
+<div class="section trap">
+<div class="label">EXAM TRAP</div>
+<p>CSA wording often tries to trick you with phrases like “same access”, “full access”, or “must log out”.</p>
+</div>
+
+<div class="section memory">
+<div class="label">MEMORY HOOK</div>
+<p>Impersonation behaves mostly like the target user, except where scoped/security restrictions apply.</p>
+</div>
+
+</div>
+</div>
+
+<script>
+document.querySelectorAll('.card-header').forEach(header=>{
+header.addEventListener('click',()=>{
+header.parentElement.classList.toggle('open');
+const toggle=header.querySelector('.toggle');
+toggle.textContent=header.parentElement.classList.contains('open')?'−':'+';
+});
+});
+</script>
+
+</div>
+</body>
+</html>
