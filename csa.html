@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>CSA Exam Prep — ServiceNow</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   :root {
     --bg: #f8f9fb;
     --card: #ffffff;
@@ -15,789 +14,396 @@
     --muted: #64748b;
     --soft: #94a3b8;
     --line: #e2e8f0;
-    --orange: #f59e0b;
+    --amber: #f59e0b;
+    --orange: #f97316;
     --red: #ef4444;
     --green: #10b981;
     --blue: #3b82f6;
     --purple: #8b5cf6;
-    --shadow: 0 1px 3px rgba(15, 23, 42, 0.06);
-    --shadow-hover: 0 10px 28px rgba(15, 23, 42, 0.09);
+    --shadow: 0 1px 3px rgba(15,23,42,0.06), 0 10px 28px rgba(15,23,42,0.04);
   }
-
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--bg);
-    color: #1e293b;
+    color: var(--text);
     min-height: 100vh;
     padding: 2.5rem 1.2rem;
   }
-
-  .container { max-width: 940px; margin: 0 auto; }
-
+  .container { max-width: 980px; margin: 0 auto; }
   .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.85rem;
-    color: var(--soft);
-    text-decoration: none;
-    margin-bottom: 1.5rem;
-    transition: color 0.2s;
+    display: inline-flex; align-items: center; gap: .4rem;
+    font-family: 'JetBrains Mono', monospace; font-size: .85rem;
+    color: var(--soft); text-decoration: none; margin-bottom: 1.6rem;
   }
   .back-link:hover { color: var(--orange); }
-
-  header { text-align: center; margin-bottom: 2rem; }
+  header { text-align: center; margin-bottom: 2.2rem; }
   header::after {
-    content: '';
-    display: block;
-    width: 60px;
-    height: 3px;
-    background: linear-gradient(90deg, var(--orange), var(--red));
-    margin: 1.2rem auto 0;
-    border-radius: 2px;
+    content: ''; display: block; width: 60px; height: 3px;
+    background: linear-gradient(90deg, var(--amber), var(--red));
+    margin: 1.1rem auto 0; border-radius: 2px;
   }
-
   h1 {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: clamp(1.55rem, 3vw, 2.2rem);
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.6px;
+    font-family: 'JetBrains Mono', monospace; font-size: 2rem;
+    letter-spacing: -.5px; font-weight: 700;
   }
-
   .subtitle {
-    font-size: 1.05rem;
-    color: var(--muted);
-    margin-top: 0.55rem;
-    font-family: 'JetBrains Mono', monospace;
+    margin-top: .45rem; color: var(--muted);
+    font-family: 'JetBrains Mono', monospace; font-size: .98rem;
   }
-
   .role-tag {
-    display: inline-block;
-    margin-top: 1rem;
-    padding: 0.35rem 0.9rem;
-    background: rgba(245,158,11,0.08);
-    border: 1px solid rgba(245,158,11,0.25);
-    border-radius: 20px;
-    font-size: 0.82rem;
-    color: #d97706;
-    font-family: 'JetBrains Mono', monospace;
+    display: inline-block; margin-top: .95rem; padding: .35rem .85rem;
+    border: 1px solid rgba(245,158,11,.25); border-radius: 999px;
+    background: rgba(245,158,11,.08); color: #d97706;
+    font-family: 'JetBrains Mono', monospace; font-size: .78rem;
   }
-
-  .view { display: none; }
-  .view.active { display: block; }
-
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    margin: 0 0 1.4rem;
-    flex-wrap: wrap;
-  }
-
-  .small-link, .ghost-btn {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.78rem;
-    color: var(--soft);
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-decoration: none;
-  }
-  .small-link:hover, .ghost-btn:hover { color: var(--orange); }
-
-  .section-title {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.84rem;
-    color: var(--soft);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin: 2rem 0 0.8rem;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1rem;
-  }
-
-  .panel, .exam-card, .question-card, .stat-card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
-  }
-
-  .panel { padding: 1.3rem; margin-bottom: 1rem; }
-
-  .exam-card {
-    padding: 1.3rem;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-  }
-  .exam-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); border-color: rgba(245,158,11,0.45); }
-
-  .exam-head {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 0.8rem;
-  }
-
-  .exam-kicker {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--soft);
-    margin-bottom: 0.25rem;
-  }
-
-  .exam-title {
-    font-size: 1.12rem;
-    font-weight: 700;
-    color: var(--text);
-    line-height: 1.35;
-  }
-
-  .badge {
-    align-self: flex-start;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.68rem;
-    font-weight: 700;
-    padding: 0.18rem 0.55rem;
-    border-radius: 999px;
-    white-space: nowrap;
-    border: 1px solid;
-  }
-  .badge-live { color: #059669; background: rgba(16,185,129,0.08); border-color: rgba(16,185,129,0.25); }
-  .badge-pending { color: #d97706; background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.25); }
-
-  .meta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin: 0.8rem 0 1.1rem;
-  }
-
-  .pill {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    color: var(--muted);
-    background: #f8fafc;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 0.25rem 0.6rem;
-  }
-
-  .actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-
-  .btn {
-    border: none;
-    border-radius: 11px;
-    padding: 0.65rem 0.9rem;
-    font-family: 'JetBrains Mono', monospace;
-    font-weight: 700;
-    font-size: 0.78rem;
-    cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
-  }
-  .btn:hover { transform: translateY(-1px); }
-  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-  .btn-primary { background: linear-gradient(135deg, var(--orange), var(--red)); color: #fff; }
-  .btn-secondary { background: #fff; color: var(--muted); border: 1px solid var(--line); }
-  .btn-success { background: rgba(16,185,129,0.1); color: #059669; border: 1px solid rgba(16,185,129,0.25); }
-  .btn-warning { background: rgba(245,158,11,0.1); color: #d97706; border: 1px solid rgba(245,158,11,0.25); }
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.8rem;
+  .dashboard {
+    display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 1rem;
     margin-bottom: 1.5rem;
   }
-  .stat-card { padding: 1rem; }
-  .stat-label { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--soft); text-transform: uppercase; letter-spacing: 1px; }
-  .stat-value { font-size: 1.55rem; font-weight: 700; color: var(--text); margin-top: 0.2rem; }
-
-  .domain-tabs { display: flex; flex-wrap: wrap; gap: 0.45rem; margin-bottom: 1rem; }
-  .domain-tab {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    padding: 0.32rem 0.65rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: #fff;
-    color: var(--muted);
-    cursor: pointer;
+  .tile {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 1.2rem; box-shadow: var(--shadow);
   }
-  .domain-tab.active { border-color: rgba(245,158,11,0.45); background: rgba(245,158,11,0.08); color: #d97706; font-weight: 700; }
-
-  .question-card { margin-bottom: 1rem; overflow: hidden; }
-  .question-header {
-    width: 100%;
-    border: none;
-    background: #fff;
-    padding: 1.15rem 1.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    cursor: pointer;
-    text-align: left;
+  .tile-title {
+    font-family: 'JetBrains Mono', monospace; font-size: .82rem; color: var(--soft);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: .55rem;
   }
-  .question-header:hover { background: #f8fafc; }
-
-  .q-number {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.7rem;
-    color: #fff;
-    background: linear-gradient(135deg, var(--orange), var(--red));
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-weight: 700;
+  .tile-value { font-size: 1.75rem; font-weight: 700; }
+  .tile-note { color: var(--muted); font-size: .92rem; margin-top: .35rem; line-height: 1.45; }
+  .mode-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 1rem; margin-bottom: 1.4rem; }
+  .mode-card {
+    background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+    padding: 1.35rem; box-shadow: var(--shadow);
   }
-
-  .q-title { flex: 1; min-width: 0; }
-  .q-text { font-weight: 700; color: var(--text); line-height: 1.45; }
-  .q-meta { margin-top: 0.35rem; display: flex; gap: 0.45rem; flex-wrap: wrap; }
-  .chev { color: var(--soft); font-size: 1.2rem; }
-  .question-card.open .chev { transform: rotate(180deg); }
-
-  .question-body { display: none; padding: 0 1.25rem 1.25rem; }
-  .question-card.open .question-body { display: block; }
-  .divider { height: 1px; background: var(--line); margin-bottom: 1rem; }
-
+  .mode-card.disabled { opacity: .72; }
+  .mode-head { display:flex; align-items: flex-start; justify-content: space-between; gap:1rem; }
+  .mode-title { font-size: 1.15rem; font-weight: 700; margin-bottom:.35rem; }
+  .mode-desc { color: var(--muted); line-height: 1.55; }
+  .pill {
+    display:inline-flex; align-items:center; gap:.35rem; border-radius:999px; padding:.24rem .62rem;
+    font-family:'JetBrains Mono', monospace; font-size:.72rem; border:1px solid var(--line); color: var(--muted);
+    background:#fff; white-space:nowrap;
+  }
+  .pill.amber { border-color: rgba(245,158,11,.35); color:#d97706; background:rgba(245,158,11,.07); }
+  .pill.green { border-color: rgba(16,185,129,.35); color:#047857; background:rgba(16,185,129,.07); }
+  .pill.red { border-color: rgba(239,68,68,.25); color:#dc2626; background:rgba(239,68,68,.06); }
+  .exam-list { display:grid; gap:.65rem; margin-top:1rem; }
+  .exam-row {
+    display:flex; justify-content:space-between; align-items:center; gap:1rem;
+    border:1px solid var(--line); background:#fff; border-radius:12px; padding:.85rem .95rem;
+  }
+  .exam-name { font-weight:700; }
+  .exam-meta { color:var(--muted); font-size:.9rem; margin-top:.2rem; }
+  .btn {
+    font-family:'JetBrains Mono', monospace; font-weight:700; font-size:.78rem;
+    border:none; border-radius:10px; padding:.62rem .9rem; cursor:pointer;
+    background: linear-gradient(135deg, var(--amber), var(--orange)); color:#fff;
+  }
+  .btn.secondary { background:#fff; color:var(--muted); border:1px solid var(--line); }
+  .btn:disabled { cursor:not-allowed; opacity:.5; }
+  .timer-box {
+    display:none; margin-bottom:1rem; background:#fff; border:1px solid var(--line); border-radius:16px;
+    padding:1rem 1.1rem; box-shadow:var(--shadow);
+  }
+  .timer-box.visible { display:block; }
+  .timer-top { display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:.65rem; }
+  .timer-label { font-family:'JetBrains Mono', monospace; font-size:.75rem; color:var(--soft); text-transform:uppercase; letter-spacing:1px; }
+  .timer-value { font-family:'JetBrains Mono', monospace; font-size:1.45rem; font-weight:700; }
+  .timer-bar { height:6px; background:#e2e8f0; border-radius:99px; overflow:hidden; }
+  .timer-fill { height:100%; width:100%; background:linear-gradient(90deg,var(--amber),var(--red)); transition:width .4s linear; }
+  .section-panel {
+    background:#fff; border:1px solid var(--line); border-radius:16px; padding:1rem; box-shadow:var(--shadow);
+  }
+  .section-top { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1rem; flex-wrap:wrap; }
+  .section-title { font-size:1.2rem; font-weight:700; }
+  .filters { display:flex; flex-wrap:wrap; gap:.45rem; }
+  .filter {
+    border:1px solid var(--line); background:#fff; color:var(--muted); border-radius:999px;
+    padding:.35rem .7rem; font-family:'JetBrains Mono', monospace; font-size:.72rem; cursor:pointer;
+  }
+  .filter.active { border-color:rgba(245,158,11,.45); color:#d97706; background:rgba(245,158,11,.08); font-weight:700; }
+  .questions { display:grid; gap:.8rem; }
+  .q-card { border:1px solid var(--line); border-radius:14px; background:#fff; overflow:hidden; }
+  .q-card.open { border-color:rgba(245,158,11,.55); box-shadow:0 5px 18px rgba(245,158,11,.08); }
+  .q-head {
+    width:100%; background:#fff; border:none; text-align:left; cursor:pointer; padding:1rem;
+    display:flex; align-items:flex-start; gap:.8rem;
+  }
+  .q-num {
+    font-family:'JetBrains Mono', monospace; font-size:.72rem; font-weight:700; color:#fff;
+    width:34px; height:34px; border-radius:10px; display:flex; align-items:center; justify-content:center;
+    background:linear-gradient(135deg,var(--amber),var(--red)); flex-shrink:0;
+  }
+  .q-title { flex:1; }
+  .q-meta { display:flex; flex-wrap:wrap; gap:.35rem; margin-bottom:.45rem; }
+  .q-text { font-size:1.02rem; font-weight:700; line-height:1.45; color:var(--text); }
+  .chev { color:var(--soft); font-size:1.3rem; transition:transform .25s ease; }
+  .q-card.open .chev { transform:rotate(45deg); color:var(--orange); }
+  .q-body { display:none; border-top:1px solid var(--line); padding:1rem; }
+  .q-card.open .q-body { display:block; }
+  .options { display:grid; gap:.6rem; margin-bottom:1rem; }
   .option {
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 0.85rem 1rem;
-    margin-bottom: 0.55rem;
-    display: flex;
-    gap: 0.75rem;
-    align-items: flex-start;
-    cursor: pointer;
-    background: #fff;
+    border:1px solid var(--line); border-radius:12px; padding:.85rem; display:flex; gap:.75rem; align-items:flex-start;
+    color:#334155; background:#fff;
   }
-  .option.correct { border-color: rgba(16,185,129,0.45); background: rgba(16,185,129,0.08); }
-  .option input { margin-top: 0.2rem; }
-  .option-text { font-weight: 600; color: #334155; line-height: 1.45; }
-
-  .info-box {
-    border-radius: 12px;
-    padding: 1rem 1.05rem;
-    margin-top: 0.85rem;
-    border: 1px solid;
+  .option.correct { border-color:rgba(16,185,129,.55); background:rgba(16,185,129,.08); }
+  .option.incorrect { border-color:rgba(239,68,68,.45); background:rgba(239,68,68,.07); }
+  .box { width:14px; height:14px; border:1px solid #94a3b8; border-radius:3px; margin-top:.18rem; flex-shrink:0; }
+  .option.correct .box { background:var(--green); border-color:var(--green); }
+  .option.incorrect .box { background:var(--red); border-color:var(--red); }
+  .info-grid { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+  .info {
+    border:1px solid var(--line); border-radius:12px; padding:.9rem; background:#f8fafc;
   }
-  .info-title { font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; margin-bottom: 0.5rem; }
-  .info-body { line-height: 1.65; color: #334155; }
-  .info-body ul { padding-left: 1.2rem; }
-  .box-explain { background: #f8fafc; border-color: var(--line); }
-  .box-explain .info-title { color: var(--muted); }
-  .box-trap { background: rgba(245,158,11,0.07); border-color: rgba(245,158,11,0.22); }
-  .box-trap .info-title { color: #d97706; }
-  .box-hook { background: rgba(59,130,246,0.07); border-color: rgba(59,130,246,0.22); }
-  .box-hook .info-title { color: #2563eb; }
-
-  .status-actions { display: flex; gap: 0.5rem; margin-top: 0.9rem; flex-wrap: wrap; }
+  .info.full { grid-column:1/-1; }
+  .info-label { font-family:'JetBrains Mono', monospace; font-size:.72rem; color:var(--soft); text-transform:uppercase; letter-spacing:1px; margin-bottom:.45rem; }
+  .info p, .info li { color:#334155; line-height:1.6; font-size:.95rem; }
+  .info ul { margin-left:1rem; }
+  .status-actions { display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1rem; }
   .status-btn {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    padding: 0.4rem 0.65rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: #fff;
-    color: var(--muted);
-    cursor: pointer;
+    border:1px solid var(--line); background:#fff; border-radius:10px; padding:.48rem .72rem;
+    font-family:'JetBrains Mono', monospace; font-size:.72rem; color:var(--muted); cursor:pointer;
   }
-  .status-btn.active[data-status="mastered"] { background: rgba(16,185,129,0.1); color: #059669; border-color: rgba(16,185,129,0.3); }
-  .status-btn.active[data-status="weak"] { background: rgba(239,68,68,0.1); color: #dc2626; border-color: rgba(239,68,68,0.3); }
-  .status-btn.active[data-status="revisit"] { background: rgba(245,158,11,0.1); color: #d97706; border-color: rgba(245,158,11,0.3); }
-
-  .timer-wrap {
-    position: sticky;
-    top: 0.8rem;
-    z-index: 20;
-    background: rgba(255,255,255,0.94);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 0.8rem 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    box-shadow: var(--shadow);
-    margin-bottom: 1rem;
-  }
-  .timer-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--soft); text-transform: uppercase; letter-spacing: 1px; }
-  .timer-value { font-family: 'JetBrains Mono', monospace; font-size: 1.45rem; font-weight: 700; color: var(--text); margin-top: 0.1rem; }
-  .timer-value.warning { color: #dc2626; }
-  .progress-bar { height: 7px; background: #e2e8f0; border-radius: 999px; overflow: hidden; margin-top: 0.65rem; }
-  .progress-fill { height: 100%; width: 100%; background: linear-gradient(90deg, var(--orange), var(--red)); border-radius: 999px; transition: width 0.3s linear; }
-
-  .exam-shell { display: grid; grid-template-columns: 1fr 260px; gap: 1rem; align-items: start; }
-  .exam-question { padding: 1.35rem; }
-  .exam-side { padding: 1rem; position: sticky; top: 6.5rem; }
-  .question-nav { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.35rem; margin-top: 0.8rem; }
-  .nav-dot {
-    border: 1px solid var(--line);
-    background: #fff;
-    border-radius: 8px;
-    padding: 0.45rem 0;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.72rem;
-    cursor: pointer;
-  }
-  .nav-dot.current { border-color: var(--orange); background: rgba(245,158,11,0.08); color: #d97706; font-weight: 700; }
-  .nav-dot.answered { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.08); color: #059669; }
-
-  .muted-copy { color: var(--muted); line-height: 1.65; }
-  .empty { color: var(--soft); font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
-
+  .status-btn.active.mastered { border-color:rgba(16,185,129,.45); background:rgba(16,185,129,.08); color:#047857; }
+  .status-btn.active.weak { border-color:rgba(239,68,68,.45); background:rgba(239,68,68,.07); color:#dc2626; }
+  .status-btn.active.revisit { border-color:rgba(245,158,11,.45); background:rgba(245,158,11,.08); color:#b45309; }
   @media (max-width: 760px) {
-    body { padding: 1.25rem 0.8rem; }
-    .grid, .stats, .exam-shell { grid-template-columns: 1fr; }
-    .exam-side { position: static; }
-    .timer-wrap { position: static; }
-    .question-header { align-items: flex-start; }
+    body { padding:1.2rem .8rem; }
+    .dashboard, .mode-grid, .info-grid { grid-template-columns:1fr; }
+    h1 { font-size:1.55rem; }
+    .exam-row { align-items:flex-start; flex-direction:column; }
+    .q-head { padding:.9rem; }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <a href="index.html" class="back-link">← back</a>
-
+  <a class="back-link" href="index.html">← back</a>
   <header>
     <h1>CSA Exam Prep</h1>
     <p class="subtitle">Certified System Administrator</p>
     <span class="role-tag">Mock reviews • weak areas • timed exam engine</span>
   </header>
 
-  <section id="home-view" class="view active">
-    <div class="stats" id="home-stats"></div>
-
-    <div class="panel">
-      <h2 class="exam-title">Build plan</h2>
-      <p class="muted-copy" style="margin-top:0.5rem;">
-        Start with wrong-answer review. Then add confirmed answers, explanations, weak-area drills and full 60-question timed exam mode.
-      </p>
-    </div>
-
-    <div class="section-title">Practice tests</div>
-    <div class="grid" id="exam-grid"></div>
+  <section class="dashboard">
+    <div class="tile"><div class="tile-title">Loaded Review</div><div class="tile-value">Exam 1</div><div class="tile-note">Incorrect questions captured from Udemy category review screenshots.</div></div>
+    <div class="tile"><div class="tile-title">Wrong Questions</div><div class="tile-value" id="wrongCount">22</div><div class="tile-note">Current focus: wrong-answer review, not full exam simulation.</div></div>
+    <div class="tile"><div class="tile-title">Exam Mode</div><div class="tile-value">Locked</div><div class="tile-note">Will unlock when enough confirmed answers/options are loaded.</div></div>
   </section>
 
-  <section id="review-view" class="view">
-    <div class="toolbar">
-      <button class="ghost-btn" onclick="goHome()">← back to CSA home</button>
-      <button class="ghost-btn" onclick="expandAllReview()">Expand all</button>
-    </div>
-    <div class="panel">
-      <div class="exam-kicker" id="review-kicker"></div>
-      <h2 class="exam-title" id="review-title"></h2>
-      <p class="muted-copy" id="review-desc" style="margin-top:0.45rem;"></p>
-    </div>
-    <div class="domain-tabs" id="domain-tabs"></div>
-    <div id="review-questions"></div>
-  </section>
-
-  <section id="exam-view" class="view">
-    <div class="toolbar">
-      <button class="ghost-btn" onclick="confirmExitExam()">← exit exam</button>
-      <button class="ghost-btn" onclick="resetCurrentExamTimer()">Reset timer</button>
-    </div>
-
-    <div class="timer-wrap">
-      <div style="flex:1;">
-        <div class="timer-label" id="timer-label">Exam timer</div>
-        <div class="timer-value" id="timer-value">01:30:00</div>
-        <div class="progress-bar"><div class="progress-fill" id="timer-fill"></div></div>
+  <section class="mode-grid">
+    <div class="mode-card">
+      <div class="mode-head">
+        <div>
+          <div class="mode-title">Mock Exam Reviews</div>
+          <p class="mode-desc">Review the questions you got wrong, grouped by CSA domain. This is the current working mode.</p>
+        </div>
+        <span class="pill green">active</span>
       </div>
-      <button class="btn btn-primary" onclick="finishExam()">Finish</button>
+      <div class="exam-list">
+        <div class="exam-row">
+          <div><div class="exam-name">Mock Exam 1 Review</div><div class="exam-meta">22 incorrect • 5 categories • answer confirmation in progress</div></div>
+          <button class="btn" onclick="scrollToReview()">Open Review</button>
+        </div>
+        <div class="exam-row">
+          <div><div class="exam-name">Mock Exams 2–6</div><div class="exam-meta">Add as screenshots are captured this week.</div></div>
+          <button class="btn secondary" disabled>Pending</button>
+        </div>
+      </div>
     </div>
 
-    <div class="exam-shell">
-      <div class="question-card exam-question" id="exam-question"></div>
-      <aside class="panel exam-side">
-        <div class="stat-label">Question map</div>
-        <div class="question-nav" id="question-nav"></div>
-      </aside>
+    <div class="mode-card disabled">
+      <div class="mode-head">
+        <div>
+          <div class="mode-title">Timed Exam Mode</div>
+          <p class="mode-desc">90-minute timer. Starts only when a real timed exam starts or Q1 is opened inside a timed attempt.</p>
+        </div>
+        <span class="pill red">locked</span>
+      </div>
+      <div class="exam-list">
+        <div class="exam-row">
+          <div><div class="exam-name">60-question attempt</div><div class="exam-meta">Requires confirmed answers/options first.</div></div>
+          <button class="btn secondary" disabled>Start Locked</button>
+        </div>
+      </div>
     </div>
+  </section>
+
+  <section class="timer-box" id="timerBox">
+    <div class="timer-top"><div><div class="timer-label">Exam Timer</div><div class="timer-value" id="timerValue">01:30:00</div></div><button class="btn secondary" onclick="resetTimer()">Reset</button></div>
+    <div class="timer-bar"><div class="timer-fill" id="timerFill"></div></div>
+  </section>
+
+  <section class="section-panel" id="reviewPanel">
+    <div class="section-top">
+      <div><div class="section-title">Mock Exam 1 — Wrong Answer Review</div><p class="tile-note">Review-first page. No fake placeholder exam mode.</p></div>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="questions" id="questions"></div>
   </section>
 </div>
-
 <script>
-const EXAM_DURATION_SECONDS = 90 * 60;
-
-const EXAMS = [
-  { id: 1, title: 'Mock Exam 1', label: 'Practice Test 1', status: 'live', questions: 22, note: 'Wrong-answer review started from category screenshots.' },
-  { id: 2, title: 'Mock Exam 2', label: 'Practice Test 2', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' },
-  { id: 3, title: 'Mock Exam 3', label: 'Practice Test 3', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' },
-  { id: 4, title: 'Mock Exam 4', label: 'Practice Test 4', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' },
-  { id: 5, title: 'Additional Exam 1', label: 'Practice Test 5', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' },
-  { id: 6, title: 'Additional Exam 2', label: 'Practice Test 6', status: 'pending', questions: 0, note: 'Ready for the next screenshot batch.' }
-];
-
-const DOMAIN_LABELS = {
+const DOMAINS = {
+  all: 'All',
   platform: 'Platform Overview and Navigation',
   database: 'Database Management and Platform Security',
-  data: 'Data Migration and Integration',
-  selfservice: 'Self-Service and Automation',
+  migration: 'Data Migration and Integration',
+  automation: 'Self-Service and Automation',
   collaboration: 'Configuring Applications for Collaboration'
 };
 
 const QUESTIONS = [
   {
-    id: 'e1-q1', exam: 1, qNo: 1, domain: 'database', choose: 2,
+    id: 1, domain: 'database', choose: 2, status: 'confirmed',
     question: 'Access Control List (ACL) rules allow you to specify the decision type, rule type and operation that defines them. What are the two decision types in ACL rules?',
-    options: ['Allow If', 'Allow Once', 'Restrict Access', 'Deny Unless', 'Deny Always'],
-    answer: ['Allow If', 'Deny Unless'],
-    explanation: 'ACL decision types are Allow If and Deny Unless. The condition, script and role sections define whether the ACL grants access or blocks it depending on the decision type.',
-    trap: 'CSA mixes real ACL wording with fake-sounding access phrases like Allow Once, Restrict Access and Deny Always.',
-    hook: 'ACL decision types: Allow If / Deny Unless.',
-    confirmed: true
+    options: [
+      { text: 'Allow If', state: 'correct' },
+      { text: 'Allow Once', state: 'incorrect' },
+      { text: 'Restrict Access', state: '' },
+      { text: 'Deny Unless', state: 'correct' },
+      { text: 'Deny Always', state: '' }
+    ],
+    explanation: 'ACL decision types define how the rule evaluates access. The two decision types are Allow If and Deny Unless.',
+    trap: 'Do not confuse ACL decision type with operation. Operation is read/write/create/delete/report etc. Decision type is Allow If or Deny Unless.',
+    hook: 'ACL decision = allow condition OR deny unless condition.'
   },
-  { id:'e1-q4', exam:1, qNo:4, domain:'database', choose:4, question:'What are the different Schema relationship types that are supported for tables?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Schema relationship questions usually test exact ServiceNow relationship terminology.', hook:'Exact table relationship wording matters.', confirmed:false },
-  { id:'e1-q18', exam:1, qNo:18, domain:'database', choose:3, question:'ServiceNow can import data from which of the following external data source types when a valid transform map is available?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Import questions often mix valid data source types with integration methods that are not import set data sources.', hook:'Import sets need a data source plus a transform map.', confirmed:false },
-  { id:'e1-q19', exam:1, qNo:19, domain:'database', choose:1, question:'Which of the following is a true statement about importing data into ServiceNow?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Watch for wording around staging tables, transform maps and direct table imports.', hook:'Import data lands in staging before transform.', confirmed:false },
-  { id:'e1-q20', exam:1, qNo:20, domain:'database', choose:1, question:'Which of the following is the customer\'s responsibility under the Shared Responsibility Model?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Shared responsibility questions separate ServiceNow platform responsibility from customer configuration/data responsibility.', hook:'ServiceNow runs the platform. Customer owns configuration, access and data usage.', confirmed:false },
-  { id:'e1-q25', exam:1, qNo:25, domain:'database', choose:3, question:'The CMDB is the authoritative source of what information?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'CMDB questions usually test CIs, relationships and configuration context, not general knowledge/documentation.', hook:'CMDB = CIs + relationships + service context.', confirmed:false },
-  { id:'e1-q52', exam:1, qNo:52, domain:'database', choose:2, question:'Which CMDB feature tracks the activities and history of data sources as they insert and update CI attributes?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Do not confuse CMDB data source tracking with audit history or discovery schedules.', hook:'CMDB questions love source tracking wording.', confirmed:false },
-  { id:'e1-q58', exam:1, qNo:58, domain:'database', choose:1, question:'What is Configuration Item (CI)?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'CI definition questions may use broad asset language. The CSA answer focuses on a component tracked in the CMDB.', hook:'CI = trackable service/infrastructure component in CMDB.', confirmed:false },
-
-  { id:'e1-q32', exam:1, qNo:32, domain:'data', choose:1, question:'What can be used to extend the Flow Designer to call 3rd party systems, such as automating Microsoft Services and infrastructure using PowerShell and REST?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Flow Designer extension questions often point to spokes, IntegrationHub and actions rather than classic workflow.', hook:'Flow + external systems = IntegrationHub / spokes / actions.', confirmed:false },
-
-  { id:'e1-q3', exam:1, qNo:3, domain:'selfservice', choose:3, question:'What are the different ways an end-user can leave feedback about an article?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Knowledge feedback questions mix article usefulness, comments, ratings and flagging options.', hook:'Knowledge feedback is more than one channel.', confirmed:false },
-  { id:'e1-q5', exam:1, qNo:5, domain:'selfservice', choose:3, question:'What are the typical Tier 2 support tasks that virtual agents can perform so that the support agents can focus on more complex user issues?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Virtual Agent handles repeatable, guided support tasks, not complex human judgement.', hook:'VA deflects repeatable support work.', confirmed:false },
-  { id:'e1-q12', exam:1, qNo:12, domain:'selfservice', choose:3, question:'What options are available to define the fulfilment process for a service catalogue item?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Known trap: Execution Plan is valid. Plain Plan is not.', hook:'Catalog fulfilment: Flow / Workflow / Execution Plan.', confirmed:false },
-  { id:'e1-q22', exam:1, qNo:22, domain:'selfservice', choose:1, question:'Where does the System Administrator navigate to edit a catalogue item?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Catalog navigation questions test the exact module path, not just the broad application.', hook:'Know the exact Service Catalog admin path.', confirmed:false },
-  { id:'e1-q35', exam:1, qNo:35, domain:'selfservice', choose:1, question:'What application enables you to quickly write drafts of knowledge articles based on cases, HR cases, or incidents?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Watch for AI-related ServiceNow product names versus generic knowledge creation wording.', hook:'Cases/incidents to article drafts = knowledge creation assist concept.', confirmed:false },
-  { id:'e1-q40', exam:1, qNo:40, domain:'selfservice', choose:3, question:'Which of the following is a true statement regarding Flow Designer actions?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Flow Designer action questions test inputs, outputs, reusable action logic and spokes.', hook:'Actions are reusable units inside Flow Designer.', confirmed:false },
-  { id:'e1-q41', exam:1, qNo:41, domain:'selfservice', choose:1, question:'When can you view personalised recommendations to improve the search engine optimisation (SEO) and accessibility of your Knowledge articles?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Knowledge article optimisation questions may test article authoring workflow timing.', hook:'SEO/accessibility recommendations appear during the knowledge authoring process.', confirmed:false },
-
-  { id:'e1-q13', exam:1, qNo:13, domain:'collaboration', choose:1, question:'Which Visual Task Board type automatically updates tasks when users edit cards or move them to a new lane?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'VTB questions separate freeform boards from data-driven boards that update records.', hook:'Automatic task updates = data-driven board behaviour.', confirmed:false },
-  { id:'e1-q36', exam:1, qNo:36, domain:'collaboration', choose:2, question:'Select the report visualisation types you can generate from a list of records.', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'From a list, CSA commonly expects Pie and Bar. Do not over-select full Report Designer chart types.', hook:'List quick charts: Pie + Bar.', confirmed:false },
-  { id:'e1-q56', exam:1, qNo:56, domain:'collaboration', choose:1, question:'You have a requirement to create a set of filter conditions on the Incidents list to show records satisfying: state is Resolved or Closed, and Assignment Group is one of your groups. After clicking the Funnel icon and defining the first condition, what steps should you take?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Filter condition questions test AND/OR grouping and condition builder order.', hook:'Get AND/OR grouping right before adding more filter logic.', confirmed:false },
-  { id:'e1-q60', exam:1, qNo:60, domain:'collaboration', choose:1, question:'Form splits help you organise fields on a form into columns for enhanced visual appeal. What role is required to enable multiple form splits on the platform?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Role questions often distinguish admin from specialised elevated/admin-adjacent roles.', hook:'Form layout features often require exact admin capability.', confirmed:false },
-
+  { id: 4, domain: 'database', choose: 4, question: 'What are the different Schema relationship types that are supported for tables?' },
+  { id: 18, domain: 'database', choose: 3, question: 'ServiceNow can import data from which of the following external data source types when a valid transform map is available?' },
+  { id: 19, domain: 'database', choose: 1, question: 'Which of the following is a true statement about importing data into ServiceNow?' },
+  { id: 20, domain: 'database', choose: 1, question: "Which of the following is the customer's responsibility under the Shared Responsibility Model?" },
+  { id: 25, domain: 'database', choose: 3, question: 'The CMDB is the authoritative source of what information?' },
+  { id: 52, domain: 'database', choose: 2, question: 'Which CMDB feature tracks the activities and history of data sources as they insert and update CI attributes?' },
+  { id: 58, domain: 'database', choose: 1, question: 'What is Configuration Item (CI)?' },
+  { id: 32, domain: 'migration', choose: 1, question: 'What can be used to extend the Flow Designer to call 3rd party systems, such as automating Microsoft Services and infrastructure using PowerShell and REST?' },
+  { id: 3, domain: 'automation', choose: 3, question: 'What are the different ways an end-user can leave feedback about an article?' },
+  { id: 5, domain: 'automation', choose: 3, question: 'What are the typical Tier 2 support tasks that virtual agents can perform so that the support agents can focus on more complex user issues?' },
+  { id: 12, domain: 'automation', choose: 3, question: 'What options are available to define the fulfilment process for a service catalogue item?' },
+  { id: 22, domain: 'automation', choose: 1, question: 'Where does the System Administrator navigate to edit a catalogue item?' },
+  { id: 35, domain: 'automation', choose: 1, question: 'What application enables you to quickly write drafts of knowledge articles based on cases, HR cases, or incidents?' },
+  { id: 40, domain: 'automation', choose: 3, question: 'Which of the following is a true statement regarding Flow Designer actions?' },
+  { id: 41, domain: 'automation', choose: 1, question: 'When can you view personalised recommendations to improve the search engine optimisation (SEO) and accessibility of your Knowledge articles?' },
+  { id: 13, domain: 'collaboration', choose: 1, question: 'Which Visual Task Board type automatically updates tasks when users edit cards or move them to a new lane?' },
+  { id: 36, domain: 'collaboration', choose: 2, question: 'Select the report visualisation types you can generate from a list of records.' },
+  { id: 56, domain: 'collaboration', choose: 1, question: 'You have a requirement to create a set of filter conditions on the Incident list to show records where the state is Resolved or Closed and the Assignment Group is one of your groups. After clicking the Funnel icon and defining the first condition, what steps should you take?' },
+  { id: 60, domain: 'collaboration', choose: 1, question: 'Form splits help you organise fields on a form into columns for an enhanced visual appeal. What role is required to enable multiple form splits on the platform?' },
   {
-    id:'e1-q43', exam:1, qNo:43, domain:'platform', choose:2,
-    question:'Which of the following is a true statement about user impersonation?',
-    options:[
-      'The impersonation option is not available in the ServiceNow mobile apps.',
-      'When impersonating another user, the administrator does not have the same access as the impersonated user.',
-      'Administrators will have limited access to certain features when impersonating some scoped app admins.',
-      'Users will need to log out after each impersonation to end it.',
-      'Administrators can impersonate other authenticated users but cannot view impersonation logs.',
-      'Non-admin users with the impersonator role will have limited access if they impersonate admin users.'
+    id: 43, domain: 'platform', choose: 2, status: 'confirmed',
+    question: 'Which of the following is a true statement about user impersonation?',
+    options: [
+      { text: 'The impersonation option is not available in the ServiceNow mobile apps.', state: '' },
+      { text: 'When impersonating another user, the administrator does not have the same access as the impersonated user.', state: 'incorrect' },
+      { text: 'Administrators will have limited access to certain features when impersonating some scoped app admins.', state: 'correct' },
+      { text: 'Users will need to log out after each impersonation to end it.', state: '' },
+      { text: 'Administrators can impersonate other authenticated users but cannot view impersonation logs.', state: '' },
+      { text: 'Non-admin users with the impersonator role will have limited access if they impersonate admin users.', state: 'correct' }
     ],
-    answer:[
-      'Administrators will have limited access to certain features when impersonating some scoped app admins.',
-      'Non-admin users with the impersonator role will have limited access if they impersonate admin users.'
-    ],
-    explanation:'Impersonation lets authorised users view the instance as another authenticated user, but access is still limited by platform security rules and special cases such as scoped app admin behaviour. Impersonation can be ended without logging out, and impersonation activity can be audited.',
-    trap:'The tempting wrong answer says the admin does not have the same access as the impersonated user. That sounds sensible, but the exam is looking for the more specific limitation cases.',
-    hook:'Impersonation follows the target user, but admin/scoped restrictions still matter.',
-    confirmed:true
+    explanation: 'Impersonation generally lets the impersonator act as the selected user, but there are platform restrictions around scoped app admins and non-admin users with the impersonator role.',
+    trap: 'The phrase “same access as the impersonated user” sounds logical, but the exam is testing the exceptions and limitations, not the general behaviour.',
+    hook: 'Impersonation = act as user, but admin/scoped/security limits still matter.'
   },
-  { id:'e1-q50', exam:1, qNo:50, domain:'platform', choose:3, question:'Which of the following is a true statement about the admin role?', options:[], answer:[], explanation:'Answer pending until expanded Udemy feedback is captured.', trap:'Admin role questions test exact limits: admin, security_admin, user_admin and who can grant what.', hook:'Admin is powerful, but not unlimited.', confirmed:false }
+  { id: 50, domain: 'platform', choose: 3, question: 'Which of the following is a true statement about the admin role?' }
 ];
 
-const state = {
-  currentExamId: null,
-  currentQuestionIndex: 0,
-  examQuestions: [],
-  answers: {},
-  timerInterval: null,
-  timerStarted: false,
-  selectedDomain: 'all'
-};
+let activeFilter = 'all';
+let timerSeconds = 90 * 60;
+let timerInterval = null;
 
-const reviewStatus = JSON.parse(localStorage.getItem('csa_review_status') || '{}');
+function scrollToReview(){ document.getElementById('reviewPanel').scrollIntoView({ behavior:'smooth', block:'start' }); }
+function domainLabel(key){ return DOMAINS[key] || key; }
+function questionStatus(q){ return q.status === 'confirmed' ? 'confirmed' : 'answer pending'; }
 
-function saveReviewStatus() {
-  localStorage.setItem('csa_review_status', JSON.stringify(reviewStatus));
+function renderFilters(){
+  const wrap = document.getElementById('filters');
+  wrap.innerHTML = Object.entries(DOMAINS).map(([key,label]) => `<button class="filter ${activeFilter===key?'active':''}" onclick="setFilter('${key}')">${label}</button>`).join('');
 }
+function setFilter(key){ activeFilter = key; renderFilters(); renderQuestions(); }
 
-function setView(viewId) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.getElementById(viewId).classList.add('active');
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+function renderOptions(q){
+  if (!q.options) {
+    return `<div class="info full"><div class="info-label">Answer data pending</div><p>Correct options and Udemy explanation still need to be added from the expanded feedback screenshot. The question is captured so the framework can grow without faking answers.</p></div>`;
+  }
+  return `<div class="options">${q.options.map(o => `<div class="option ${o.state || ''}"><span class="box"></span><strong>${o.text}</strong></div>`).join('')}</div>`;
 }
-
-function goHome() {
-  stopTimer();
-  renderHome();
-  setView('home-view');
+function renderInfo(q){
+  if (!q.explanation && !q.trap && !q.hook) return '';
+  return `<div class="info-grid">
+    ${q.explanation ? `<div class="info full"><div class="info-label">Explanation</div><p>${q.explanation}</p></div>` : ''}
+    ${q.trap ? `<div class="info"><div class="info-label">Exam trap</div><p>${q.trap}</p></div>` : ''}
+    ${q.hook ? `<div class="info"><div class="info-label">Memory hook</div><p>${q.hook}</p></div>` : ''}
+  </div>`;
 }
-
-function renderHome() {
-  const total = QUESTIONS.length;
-  const confirmed = QUESTIONS.filter(q => q.confirmed).length;
-  const mastered = Object.values(reviewStatus).filter(s => s === 'mastered').length;
-  const weak = Object.values(reviewStatus).filter(s => s === 'weak').length;
-
-  document.getElementById('home-stats').innerHTML = `
-    <div class="stat-card"><div class="stat-label">Questions loaded</div><div class="stat-value">${total}</div></div>
-    <div class="stat-card"><div class="stat-label">Confirmed answers</div><div class="stat-value">${confirmed}</div></div>
-    <div class="stat-card"><div class="stat-label">Mastered</div><div class="stat-value">${mastered}</div></div>
-    <div class="stat-card"><div class="stat-label">Weak</div><div class="stat-value">${weak}</div></div>
-  `;
-
-  document.getElementById('exam-grid').innerHTML = EXAMS.map(exam => `
-    <article class="exam-card">
-      <div class="exam-head">
-        <div>
-          <div class="exam-kicker">${exam.label}</div>
-          <div class="exam-title">${exam.title}</div>
+function renderQuestions(){
+  const list = document.getElementById('questions');
+  const filtered = activeFilter === 'all' ? QUESTIONS : QUESTIONS.filter(q => q.domain === activeFilter);
+  list.innerHTML = filtered.map(q => `
+    <article class="q-card" data-id="${q.id}">
+      <button class="q-head" onclick="toggleQuestion(${q.id})">
+        <span class="q-num">Q${q.id}</span>
+        <span class="q-title">
+          <span class="q-meta"><span class="pill amber">Choose ${q.choose}</span><span class="pill">${domainLabel(q.domain)}</span><span class="pill ${q.status==='confirmed'?'green':'red'}">${questionStatus(q)}</span></span>
+          <span class="q-text">${q.question}</span>
+        </span>
+        <span class="chev">+</span>
+      </button>
+      <div class="q-body">
+        ${renderOptions(q)}
+        ${renderInfo(q)}
+        <div class="status-actions">
+          <button class="status-btn mastered" onclick="setStatus(event, ${q.id}, 'mastered')">mastered</button>
+          <button class="status-btn weak" onclick="setStatus(event, ${q.id}, 'weak')">weak</button>
+          <button class="status-btn revisit" onclick="setStatus(event, ${q.id}, 'revisit')">revisit</button>
         </div>
-        <span class="badge ${exam.status === 'live' ? 'badge-live' : 'badge-pending'}">${exam.status === 'live' ? 'started' : 'pending'}</span>
-      </div>
-      <p class="muted-copy">${exam.note}</p>
-      <div class="meta-row">
-        <span class="pill">${exam.questions} wrong Qs loaded</span>
-        <span class="pill">60 Q exam mode</span>
-        <span class="pill">90 min timer</span>
-      </div>
-      <div class="actions">
-        <button class="btn btn-secondary" onclick="openReview(${exam.id})" ${exam.questions ? '' : 'disabled'}>Review wrong answers</button>
-        <button class="btn btn-primary" onclick="startExam(${exam.id})" ${exam.questions ? '' : 'disabled'}>Start timed exam</button>
       </div>
     </article>
   `).join('');
+  hydrateStatuses();
+}
+function toggleQuestion(id){
+  const card = document.querySelector(`.q-card[data-id="${id}"]`);
+  card.classList.toggle('open');
+}
+function setStatus(event, id, status){
+  event.stopPropagation();
+  localStorage.setItem(`csa_exam1_q${id}_status`, status);
+  hydrateStatuses();
+}
+function hydrateStatuses(){
+  QUESTIONS.forEach(q => {
+    const status = localStorage.getItem(`csa_exam1_q${q.id}_status`);
+    const card = document.querySelector(`.q-card[data-id="${q.id}"]`);
+    if (!card) return;
+    card.querySelectorAll('.status-btn').forEach(btn => btn.classList.remove('active'));
+    if (status) {
+      const btn = card.querySelector(`.status-btn.${status}`);
+      if (btn) btn.classList.add('active');
+    }
+  });
+}
+function formatTime(s){
+  const h = String(Math.floor(s/3600)).padStart(2,'0');
+  const m = String(Math.floor((s%3600)/60)).padStart(2,'0');
+  const sec = String(s%60).padStart(2,'0');
+  return `${h}:${m}:${sec}`;
+}
+function startTimer(){
+  document.getElementById('timerBox').classList.add('visible');
+  if (timerInterval) return;
+  timerInterval = setInterval(() => {
+    timerSeconds = Math.max(0, timerSeconds - 1);
+    document.getElementById('timerValue').textContent = formatTime(timerSeconds);
+    document.getElementById('timerFill').style.width = `${(timerSeconds/(90*60))*100}%`;
+    if (timerSeconds === 0) clearInterval(timerInterval);
+  }, 1000);
+}
+function resetTimer(){
+  clearInterval(timerInterval); timerInterval = null; timerSeconds = 90*60;
+  document.getElementById('timerValue').textContent = '01:30:00';
+  document.getElementById('timerFill').style.width = '100%';
 }
 
-function getExamQuestions(examId) {
-  return QUESTIONS.filter(q => q.exam === examId).sort((a,b) => a.qNo - b.qNo);
-}
-
-function openReview(examId) {
-  state.currentExamId = examId;
-  state.selectedDomain = 'all';
-  const exam = EXAMS.find(e => e.id === examId);
-  document.getElementById('review-kicker').textContent = exam.label;
-  document.getElementById('review-title').textContent = `${exam.title} — Wrong Answer Review`;
-  document.getElementById('review-desc').textContent = 'Review the questions you missed. Confirmed answers are shown where available; pending cards are ready for answer/explanation data.';
-  renderDomainTabs(examId);
-  renderReviewQuestions(examId);
-  setView('review-view');
-}
-
-function renderDomainTabs(examId) {
-  const qs = getExamQuestions(examId);
-  const domains = ['all', ...new Set(qs.map(q => q.domain))];
-  document.getElementById('domain-tabs').innerHTML = domains.map(d => {
-    const count = d === 'all' ? qs.length : qs.filter(q => q.domain === d).length;
-    const label = d === 'all' ? 'All domains' : DOMAIN_LABELS[d];
-    return `<button class="domain-tab ${state.selectedDomain === d ? 'active' : ''}" onclick="selectDomain('${d}')">${label} · ${count}</button>`;
-  }).join('');
-}
-
-function selectDomain(domain) {
-  state.selectedDomain = domain;
-  renderDomainTabs(state.currentExamId);
-  renderReviewQuestions(state.currentExamId);
-}
-
-function renderReviewQuestions(examId) {
-  let qs = getExamQuestions(examId);
-  if (state.selectedDomain !== 'all') qs = qs.filter(q => q.domain === state.selectedDomain);
-
-  document.getElementById('review-questions').innerHTML = qs.map(q => renderReviewCard(q)).join('') || '<p class="empty">No questions found.</p>';
-}
-
-function renderReviewCard(q) {
-  const status = reviewStatus[q.id] || '';
-  const optionsHtml = q.options && q.options.length
-    ? q.options.map(opt => `<label class="option ${q.answer.includes(opt) ? 'correct' : ''}"><input type="checkbox" disabled ${q.answer.includes(opt) ? 'checked' : ''}><span class="option-text">${escapeHtml(opt)}</span></label>`).join('')
-    : `<div class="info-box box-explain"><div class="info-title">Answer pending</div><div class="info-body">Correct options will be added once the expanded Udemy feedback screenshot is captured.</div></div>`;
-
-  return `
-    <article class="question-card" data-qid="${q.id}">
-      <button class="question-header" onclick="toggleCard('${q.id}')">
-        <span class="q-number">Q${q.qNo}</span>
-        <div class="q-title">
-          <div class="q-text">${escapeHtml(q.question)}</div>
-          <div class="q-meta">
-            <span class="pill">${DOMAIN_LABELS[q.domain]}</span>
-            <span class="pill">Choose ${q.choose}</span>
-            <span class="pill">${q.confirmed ? 'confirmed' : 'answer pending'}</span>
-          </div>
-        </div>
-        <span class="chev">⌄</span>
-      </button>
-      <div class="question-body">
-        <div class="divider"></div>
-        ${optionsHtml}
-        <div class="info-box box-explain"><div class="info-title">Explanation</div><div class="info-body">${formatBody(q.explanation)}</div></div>
-        <div class="info-box box-trap"><div class="info-title">Exam trap</div><div class="info-body">${formatBody(q.trap)}</div></div>
-        <div class="info-box box-hook"><div class="info-title">Memory hook</div><div class="info-body">${formatBody(q.hook)}</div></div>
-        <div class="status-actions">
-          <button class="status-btn ${status === 'mastered' ? 'active' : ''}" data-status="mastered" onclick="setQuestionStatus('${q.id}','mastered')">Mastered</button>
-          <button class="status-btn ${status === 'weak' ? 'active' : ''}" data-status="weak" onclick="setQuestionStatus('${q.id}','weak')">Weak</button>
-          <button class="status-btn ${status === 'revisit' ? 'active' : ''}" data-status="revisit" onclick="setQuestionStatus('${q.id}','revisit')">Revisit</button>
-        </div>
-      </div>
-    </article>
-  `;
-}
-
-function toggleCard(qid) {
-  document.querySelector(`[data-qid="${qid}"]`).classList.toggle('open');
-}
-
-function expandAllReview() {
-  document.querySelectorAll('#review-questions .question-card').forEach(card => card.classList.add('open'));
-}
-
-function setQuestionStatus(qid, status) {
-  reviewStatus[qid] = reviewStatus[qid] === status ? '' : status;
-  saveReviewStatus();
-  renderReviewQuestions(state.currentExamId);
-}
-
-function startExam(examId) {
-  state.currentExamId = examId;
-  state.currentQuestionIndex = 0;
-  state.answers = {};
-  state.examQuestions = buildExamQuestionSet(examId);
-  setView('exam-view');
-  renderExamQuestion();
-  renderQuestionNav();
-  startTimer(examId);
-}
-
-function buildExamQuestionSet(examId) {
-  // Phase 1: use loaded wrong-answer questions. Later this becomes 60 weighted questions from the full bank.
-  return getExamQuestions(examId);
-}
-
-function renderExamQuestion() {
-  if (!state.timerStarted) startTimer(state.currentExamId);
-  const q = state.examQuestions[state.currentQuestionIndex];
-  const selected = state.answers[q.id] || [];
-  const inputType = q.choose > 1 ? 'checkbox' : 'radio';
-  const options = q.options && q.options.length ? q.options : ['Answer option pending', 'Answer option pending', 'Answer option pending', 'Answer option pending'];
-
-  document.getElementById('exam-question').innerHTML = `
-    <div class="exam-kicker">Question ${state.currentQuestionIndex + 1} of ${state.examQuestions.length} · ${DOMAIN_LABELS[q.domain]}</div>
-    <h2 class="exam-title" style="margin:0.35rem 0 0.9rem;">${escapeHtml(q.question)}</h2>
-    <div class="meta-row"><span class="pill">Choose ${q.choose}</span><span class="pill">Q${q.qNo}</span><span class="pill">${q.confirmed ? 'confirmed answer' : 'answer pending'}</span></div>
-    <div style="margin-top:1rem;">
-      ${options.map((opt, i) => `
-        <label class="option">
-          <input type="${inputType}" name="exam-answer" value="${escapeHtml(opt)}" ${selected.includes(opt) ? 'checked' : ''} onchange="selectExamAnswer('${q.id}', '${encodeURIComponent(opt)}', ${q.choose})">
-          <span class="option-text">${escapeHtml(opt)}</span>
-        </label>
-      `).join('')}
-    </div>
-    <div class="actions" style="margin-top:1.1rem; justify-content:space-between;">
-      <button class="btn btn-secondary" onclick="prevQuestion()" ${state.currentQuestionIndex === 0 ? 'disabled' : ''}>Previous</button>
-      <button class="btn btn-primary" onclick="nextQuestion()">${state.currentQuestionIndex === state.examQuestions.length - 1 ? 'Review map' : 'Next'}</button>
-    </div>
-  `;
-  renderQuestionNav();
-}
-
-function selectExamAnswer(qid, encodedOpt, choose) {
-  const opt = decodeURIComponent(encodedOpt);
-  const current = state.answers[qid] || [];
-  if (choose === 1) {
-    state.answers[qid] = [opt];
-  } else {
-    if (current.includes(opt)) state.answers[qid] = current.filter(x => x !== opt);
-    else if (current.length < choose) state.answers[qid] = [...current, opt];
-    else state.answers[qid] = [...current.slice(1), opt];
-  }
-  renderQuestionNav();
-}
-
-function renderQuestionNav() {
-  document.getElementById('question-nav').innerHTML = state.examQuestions.map((q, i) => {
-    const answered = state.answers[q.id] && state.answers[q.id].length > 0;
-    return `<button class="nav-dot ${i === state.currentQuestionIndex ? 'current' : ''} ${answered ? 'answered' : ''}" onclick="jumpQuestion(${i})">${i + 1}</button>`;
-  }).join('');
-}
-
-function jumpQuestion(index) {
-  state.currentQuestionIndex = index;
-  renderExamQuestion();
-}
-function nextQuestion() {
-  if (state.currentQuestionIndex < state.examQuestions.length - 1) {
-    state.currentQuestionIndex++;
-    renderExamQuestion();
-  }
-}
-function prevQuestion() {
-  if (state.currentQuestionIndex > 0) {
-    state.currentQuestionIndex--;
-    renderExamQuestion();
-  }
-}
-
-function startTimer(examId) {
-  stopTimer();
-  state.timerStarted = true;
-  const key = `csa_exam_${examId}_start`;
-  const existing = localStorage.getItem(key);
-  const now = Date.now();
-  const start = existing ? Number(existing) : now;
-  localStorage.setItem(key, String(start));
-  state.timerInterval = setInterval(() => updateTimer(examId), 1000);
-  updateTimer(examId);
-}
-
-function updateTimer(examId) {
-  const start = Number(localStorage.getItem(`csa_exam_${examId}_start`) || Date.now());
-  const elapsed = Math.floor((Date.now() - start) / 1000);
-  const remaining = Math.max(0, EXAM_DURATION_SECONDS - elapsed);
-  const h = Math.floor(remaining / 3600);
-  const m = Math.floor((remaining % 3600) / 60);
-  const s = remaining % 60;
-  const value = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
-  const timerEl = document.getElementById('timer-value');
-  timerEl.textContent = value;
-  timerEl.classList.toggle('warning', remaining <= 10 * 60);
-  document.getElementById('timer-fill').style.width = `${(remaining / EXAM_DURATION_SECONDS) * 100}%`;
-  if (remaining <= 0) finishExam();
-}
-
-function stopTimer() {
-  if (state.timerInterval) clearInterval(state.timerInterval);
-  state.timerInterval = null;
-  state.timerStarted = false;
-}
-
-function resetCurrentExamTimer() {
-  if (!state.currentExamId) return;
-  localStorage.removeItem(`csa_exam_${state.currentExamId}_start`);
-  startTimer(state.currentExamId);
-}
-
-function confirmExitExam() {
-  stopTimer();
-  goHome();
-}
-
-function finishExam() {
-  stopTimer();
-  const answered = Object.values(state.answers).filter(v => v.length).length;
-  alert(`Exam stopped. Answered ${answered} of ${state.examQuestions.length}. Full scoring comes after the confirmed answer bank is added.`);
-  goHome();
-}
-
-function escapeHtml(str) {
-  return String(str || '').replace(/[&<>"]/g, m => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[m]));
-}
-function formatBody(str) {
-  return escapeHtml(str).replace(/\n/g, '<br>');
-}
-
-renderHome();
+renderFilters();
+renderQuestions();
+document.getElementById('wrongCount').textContent = QUESTIONS.length;
 </script>
 </body>
 </html>
