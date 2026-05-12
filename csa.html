@@ -4,217 +4,39 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CSA Exam Prep</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:'DM Sans',sans-serif;
-  background:#f8f9fb;
-  color:#1e293b;
-  min-height:100vh;
-  padding:2.5rem 1.2rem;
-}
-.container{max-width:760px;margin:0 auto}
-.back-link{
-  display:inline-flex;
-  align-items:center;
-  gap:.4rem;
-  font-family:'JetBrains Mono',monospace;
-  font-size:.85rem;
-  color:#94a3b8;
-  text-decoration:none;
-  margin-bottom:2rem;
-}
-header{text-align:center;margin-bottom:3rem}
-header::after{
-  content:'';
-  display:block;
-  width:60px;
-  height:3px;
-  background:linear-gradient(90deg,#f59e0b,#ef4444);
-  margin:1.2rem auto 0;
-  border-radius:2px;
-}
-h1{
-  font-family:'JetBrains Mono',monospace;
-  font-size:2.2rem;
-  color:#0f172a;
-  margin-bottom:.7rem;
-}
-.subtitle{
-  font-family:'JetBrains Mono',monospace;
-  color:#64748b;
-  font-size:1rem;
-}
-.progress-box{
-  margin-top:1.4rem;
-  display:inline-flex;
-  gap:1rem;
-  flex-wrap:wrap;
-  justify-content:center;
-  font-family:'JetBrains Mono',monospace;
-  font-size:.82rem;
-  color:#64748b;
-}
-.section-title{
-  font-family:'JetBrains Mono',monospace;
-  font-size:.8rem;
-  color:#94a3b8;
-  letter-spacing:1.5px;
-  margin-bottom:1rem;
-  margin-top:2rem;
-}
-.exam-grid{
-  display:flex;
-  flex-direction:column;
-  gap:1rem;
-}
-.exam-card{
-  background:#fff;
-  border:1px solid #e2e8f0;
-  border-radius:16px;
-  padding:1.5rem;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:1rem;
-  box-shadow:0 1px 3px rgba(0,0,0,.04);
-}
-.exam-left h3{
-  font-size:1.2rem;
-  margin-bottom:.45rem;
-}
-.exam-left p{
-  color:#64748b;
-  line-height:1.6;
-}
-.exam-meta{
-  margin-top:.7rem;
-  display:flex;
-  gap:.5rem;
-  flex-wrap:wrap;
-}
-.badge{
-  font-family:'JetBrains Mono',monospace;
-  font-size:.7rem;
-  padding:.22rem .55rem;
-  border-radius:20px;
-  border:1px solid;
-}
-.badge-live{
-  background:rgba(16,185,129,.08);
-  color:#059669;
-  border-color:rgba(16,185,129,.25);
-}
-.badge-pending{
-  background:#f8fafc;
-  color:#94a3b8;
-  border-color:#e2e8f0;
-}
-.btn{
-  text-decoration:none;
-  background:linear-gradient(135deg,#f59e0b,#ef4444);
-  color:#fff;
-  padding:.95rem 1.4rem;
-  border-radius:12px;
-  font-family:'JetBrains Mono',monospace;
-  font-size:.85rem;
-  font-weight:600;
-}
-.btn-disabled{
-  background:#f8fafc;
-  color:#94a3b8;
-  border:1px solid #e2e8f0;
-  pointer-events:none;
-}
-.weak-grid{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.6rem;
-}
-.weak-item{
-  background:#fff;
-  border:1px solid #e2e8f0;
-  border-radius:12px;
-  padding:.8rem 1rem;
-  font-family:'JetBrains Mono',monospace;
-  font-size:.78rem;
-  color:#475569;
-}
-@media(max-width:640px){
-.exam-card{flex-direction:column;align-items:flex-start}
-.btn{width:100%;text-align:center}
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="csa-style.css">
 </head>
-<body>
-<div class="container">
-<a href="index.html" class="back-link">← back</a>
-
-<header>
-<h1>CSA Exam Prep</h1>
-<p class="subtitle">Certified System Administrator</p>
-
-<div class="progress-box">
-<span>6 mock exams</span>
-<span>1 completed</span>
-<span>22 weak questions tracked</span>
-</div>
-</header>
-
-<div class="section-title">MOCK EXAMS</div>
-
-<div class="exam-grid">
-
-<div class="exam-card">
-<div class="exam-left">
-<h3>Mock Exam 1</h3>
-<p>Wrong-answer review grouped by CSA domains. Current active review set.</p>
-<div class="exam-meta">
-<span class="badge badge-live">22 wrong questions</span>
-<span class="badge badge-live">active</span>
-</div>
-</div>
-<a class="btn" href="csa-exam-1.html">Open Review</a>
-</div>
-
-<div class="exam-card">
-<div class="exam-left">
-<h3>Mock Exam 2</h3>
-<p>Ready for tomorrow morning post gym.</p>
-<div class="exam-meta">
-<span class="badge badge-pending">pending</span>
-</div>
-</div>
-<span class="btn btn-disabled">Pending</span>
-</div>
-
-<div class="exam-card">
-<div class="exam-left">
-<h3>Mock Exams 3–6</h3>
-<p>Additional exams unlock progressively as wrong questions are captured.</p>
-<div class="exam-meta">
-<span class="badge badge-pending">not loaded yet</span>
-</div>
-</div>
-<span class="btn btn-disabled">Pending</span>
-</div>
-
-</div>
-
-<div class="section-title">CURRENT WEAK AREAS</div>
-
-<div class="weak-grid">
-<div class="weak-item">ACLs</div>
-<div class="weak-item">Impersonation</div>
-<div class="weak-item">CMDB</div>
-<div class="weak-item">Imports</div>
-<div class="weak-item">Flow Designer</div>
-<div class="weak-item">Catalog Fulfilment</div>
-<div class="weak-item">Reporting</div>
-<div class="weak-item">Virtual Agent</div>
-</div>
-
-</div>
+<body data-page="landing">
+<main class="shell">
+  <a class="back" href="index.html">← back</a>
+  <section class="hero">
+    <div>
+      <p class="eyebrow">ServiceNow CSA</p>
+      <h1>Exam 1 Training</h1>
+      <p class="lead">A rewritten, Del-focused CSA simulator built from your full Exam 1 review. Practice concepts, learn traps, then sit the timed version.</p>
+      <div class="actions">
+        <a id="startPractice" class="primary" href="#">Start Practice Mode</a>
+        <a id="startExam" class="secondary" href="#">Take Timed Exam</a>
+      </div>
+    </div>
+    <div class="card">
+      <p class="eyebrow">Current score source</p>
+      <h2>Attempt 6 • 75%</h2>
+      <p class="lead" style="font-size:15px">60 questions loaded across all CSA domains.</p>
+    </div>
+  </section>
+  <section class="grid">
+    <div class="stat"><strong>60</strong><span>questions</span></div>
+    <div class="stat"><strong>90</strong><span>minute exam mode</span></div>
+    <div class="stat"><strong>75%</strong><span>target pass score</span></div>
+  </section>
+  <section class="card">
+    <h2>Domain coverage</h2>
+    <div id="domainStats"></div>
+  </section>
+</main>
+<script src="questions-exam-1.js"></script>
+<script src="exam-engine.js"></script>
 </body>
 </html>

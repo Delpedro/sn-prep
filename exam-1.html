@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exam 1 Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="csa-style.css">
+</head>
+<body data-page="exam">
+<main class="shell">
+  <a class="back" href="csa.html">← CSA home</a>
+  <div class="topbar">
+    <div>
+      <p class="eyebrow">Mock Exam 1</p>
+      <h1 id="modeLabel">Practice Mode</h1>
+      <p class="lead" style="font-size:15px">Question <span id="qNum">1</span> of <span id="questionTotal">60</span></p>
+    </div>
+    <div id="timerWrap" class="mode-pill">Time left: <span id="timer" class="timer">90:00</span></div>
+  </div>
+  <section class="exam-layout">
+    <article class="question-card">
+      <div class="q-meta">
+        <span id="qDomain" class="badge orange"></span>
+        <span id="qTopic" class="badge blue"></span>
+        <span id="qDifficulty" class="badge purple"></span>
+        <span id="qChoose" class="badge"></span>
+      </div>
+      <div id="qText" class="question"></div>
+      <div id="answers" class="options"></div>
+      <div id="feedback" class="feedback hidden">
+        <h3 id="feedbackTitle"></h3>
+        <div class="feedback-block"><strong>Correct answer</strong><ul id="correctAnswer"></ul></div>
+        <div class="feedback-block"><strong>CSA trap</strong><p id="why"></p></div>
+        <div class="feedback-block"><strong>Memory hook</strong><p id="memory"></p></div>
+      </div>
+      <div class="controls">
+        <button id="prevBtn">Previous</button>
+        <div>
+          <button id="checkBtn" class="main">Check</button>
+          <button id="nextBtn">Next</button>
+          <button id="finishBtn" class="finish">Finish</button>
+        </div>
+      </div>
+    </article>
+    <aside class="card side">
+      <h2>Question map</h2>
+      <div id="questionMap" class="map"></div>
+    </aside>
+  </section>
+</main>
+<script src="questions-exam-1.js"></script>
+<script src="exam-engine.js"></script>
+</body>
+</html>
