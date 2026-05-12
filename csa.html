@@ -6,36 +6,126 @@
 <title>CSA Exam Prep</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="csa-style.css">
+<style>
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+
+  .exam-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 18px;
+    flex-wrap: wrap;
+  }
+
+  .mini-status {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+  }
+
+  .status-pill {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 10px 13px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #334155;
+  }
+
+  .domain-card {
+    margin-top: 22px;
+  }
+
+  .domain-card h2 {
+    margin-bottom: 6px;
+  }
+
+  .domain-subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 18px;
+  }
+
+  .domain-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    align-items: center;
+    border-bottom: 1px solid var(--line);
+    padding: 13px 0;
+  }
+
+  .domain-row:last-child {
+    border-bottom: 0;
+  }
+
+  .domain-row span {
+    color: #334155;
+  }
+
+  .domain-row strong {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+  }
+
+  .site-score {
+    margin-top: 12px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  @media(max-width:700px){
+    .exam-title-row {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>
 </head>
 <body data-page="landing">
 <main class="shell">
   <a class="back" href="index.html">← back</a>
+
   <section class="hero">
-    <div>
-      <p class="eyebrow">ServiceNow CSA</p>
-      <h1>Exam 1 Training</h1>
-      <p class="lead">A rewritten, Del-focused CSA simulator built from your full Exam 1 review. Practice concepts, learn traps, then sit the timed version.</p>
+    <div class="exam-title-row">
+      <div>
+        <p class="eyebrow">ServiceNow CSA</p>
+        <h1>Exam 1</h1>
+        <div class="mini-status">
+          <span class="status-pill">60 questions loaded</span>
+          <span class="status-pill">Practice mode</span>
+          <span class="status-pill">Timed mode</span>
+          <span class="status-pill">Site attempts: 0</span>
+        </div>
+        <p class="site-score">Last score on this site: not taken yet</p>
+      </div>
+
       <div class="actions">
-        <a id="startPractice" class="primary" href="#">Start Practice Mode</a>
-        <a id="startExam" class="secondary" href="#">Take Timed Exam</a>
+        <a id="startPractice" class="primary" href="exam-1.html?mode=practice">Start Practice</a>
+        <a id="startExam" class="secondary" href="exam-1.html?mode=exam">Take Timed Exam</a>
       </div>
     </div>
-    <div class="card">
-      <p class="eyebrow">Current score source</p>
-      <h2>Attempt 6 • 75%</h2>
-      <p class="lead" style="font-size:15px">60 questions loaded across all CSA domains.</p>
-    </div>
   </section>
+
   <section class="grid">
     <div class="stat"><strong>60</strong><span>questions</span></div>
     <div class="stat"><strong>90</strong><span>minute exam mode</span></div>
     <div class="stat"><strong>75%</strong><span>target pass score</span></div>
   </section>
-  <section class="card">
+
+  <section class="card domain-card">
     <h2>Domain coverage</h2>
+    <p class="domain-subtitle">Exam 1 question spread based on your captured mock review.</p>
     <div id="domainStats"></div>
   </section>
 </main>
+
 <script src="questions-exam-1.js"></script>
 <script src="exam-engine.js"></script>
 </body>
