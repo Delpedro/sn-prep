@@ -1,0 +1,1035 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ornua Interview Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #f8f9fb;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 2.5rem 1.2rem;
+  }
+
+  .container { max-width: 760px; margin: 0 auto; }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: #10b981; }
+
+  header { text-align: center; margin-bottom: 2rem; }
+
+  header::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, #10b981, #3b82f6);
+    margin: 1.2rem auto 0;
+    border-radius: 2px;
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #0f172a;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    color: #64748b;
+    margin-top: 0.5rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .role-tag {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.35rem 0.9rem;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 20px;
+    font-size: 0.95rem;
+    color: #059669;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .panel-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 1.3rem 1.4rem;
+    margin-bottom: 1.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+
+  .panel-person { display: flex; gap: 0.9rem; align-items: flex-start; }
+
+  .panel-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+    background: rgba(16, 185, 129, 0.1);
+  }
+
+  .panel-name { font-weight: 700; color: #0f172a; font-size: 1rem; }
+  .panel-role { font-size: 0.88rem; color: #64748b; }
+  .panel-read {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #059669;
+    margin-top: 0.15rem;
+  }
+
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin: 1.8rem 0 0.7rem;
+  }
+  .section-label:first-of-type { margin-top: 0; }
+
+  .card, .note-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    margin-bottom: 0.7rem;
+    overflow: hidden;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .note-card:hover { border-color: #8b5cf6; }
+  .note-card.open { border-color: #8b5cf6; box-shadow: 0 4px 16px rgba(139, 92, 246, 0.1); }
+  .note-card.star:hover { border-color: #f59e0b; }
+  .note-card.star.open { border-color: #f59e0b; box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12); }
+
+  .card-header {
+    padding: 1.1rem 1.4rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .card-header:hover { background: #f8fafc; }
+
+  .q-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #a78bfa, #6366f1);
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .note-card.star .q-number { background: linear-gradient(135deg, #fbbf24, #f97316); }
+
+  .q-text {
+    flex: 1;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #0f172a;
+  }
+
+  .q-sub {
+    display: block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #94a3b8;
+    margin-top: 0.15rem;
+  }
+
+  .toggle-icon {
+    font-size: 1.4rem;
+    color: #94a3b8;
+    transition: transform 0.3s ease, color 0.3s ease;
+    flex-shrink: 0;
+  }
+  .note-card.open .toggle-icon { transform: rotate(45deg); color: #8b5cf6; }
+  .note-card.star.open .toggle-icon { color: #f59e0b; }
+
+  .card-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+  }
+  .card-body-inner { padding: 0 1.4rem 1.4rem 1.4rem; }
+
+  .divider { height: 1px; background: #e2e8f0; margin-bottom: 1.1rem; }
+
+  .note-subhead {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #7c3aed;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 1.1rem;
+    margin-bottom: 0.5rem;
+  }
+  .note-subhead:first-child { margin-top: 0; }
+
+  .subhead-note {
+    font-weight: 400;
+    color: #94a3b8;
+    text-transform: none;
+    letter-spacing: normal;
+  }
+
+  .hint {
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+    font-size: 0.98rem;
+    line-height: 1.6;
+    color: #334155;
+    margin-bottom: 0.5rem;
+  }
+  .hint-icon { color: #cbd5e1; flex-shrink: 0; margin-top: 0.15rem; font-size: 0.85rem; }
+  .hint strong { color: #0f172a; font-weight: 700; }
+
+  .term-row {
+    display: flex;
+    gap: 1rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px dashed #e2e8f0;
+    font-size: 0.88rem;
+  }
+  .term-row:last-child { border-bottom: none; }
+  .term-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    color: #7c3aed;
+    width: 150px;
+    flex-shrink: 0;
+  }
+  .term-def { color: #475569; line-height: 1.5; }
+
+  .value-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px dashed #e2e8f0;
+  }
+  .value-row:last-child { border-bottom: none; }
+
+  .value-row .keyword {
+    flex: 0 0 210px;
+    text-align: center;
+    font-size: 0.85rem;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 560px) {
+    .value-row { flex-direction: column; align-items: flex-start; gap: 0.4rem; }
+    .value-row .keyword { flex: none; white-space: normal; }
+  }
+
+  .value-def {
+    color: #334155;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .vs-box {
+    margin-top: 1rem;
+    padding: 0.9rem 1.1rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+  }
+
+  .vs-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+  }
+
+  .vs-old {
+    font-size: 0.92rem;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 0.7rem;
+  }
+
+  .vs-verdict {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.5;
+  }
+
+  .keyword {
+    display: inline-block;
+    padding: 0.1rem 0.5rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 0.92em;
+    color: #2563eb;
+  }
+  .keyword.green { background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.28); color: #059669; }
+  .keyword.amber { background: rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.28); color: #b45309; }
+  .keyword.purple { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.25); color: #7c3aed; }
+  .keyword.rose { background: rgba(244, 63, 94, 0.1); border-color: rgba(244, 63, 94, 0.25); color: #e11d48; }
+
+  .think-box {
+    margin-top: 0.9rem;
+    padding: 0.8rem 1.05rem;
+    background: rgba(16, 185, 129, 0.05);
+    border-left: 3px solid #10b981;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.95rem;
+    color: #047857;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.6;
+  }
+
+  .modal-trigger {
+    margin-top: 0.9rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #7c3aed;
+    background: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.25);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .modal-trigger:hover { background: rgba(139, 92, 246, 0.15); border-color: rgba(139, 92, 246, 0.4); }
+
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    z-index: 100;
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-box {
+    background: #ffffff;
+    border-radius: 16px;
+    max-width: 1100px;
+    width: 96vw;
+    max-height: 94vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.3);
+  }
+
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.4rem;
+    border-bottom: 1px solid #e2e8f0;
+    flex-shrink: 0;
+  }
+
+  .modal-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    color: #7c3aed;
+  }
+
+  .modal-close {
+    font-size: 1.6rem;
+    line-height: 1;
+    color: #94a3b8;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+  }
+  .modal-close:hover { color: #475569; }
+
+  .modal-body {
+    padding: 1.1rem 1.4rem 1.4rem;
+    overflow-y: auto;
+  }
+
+  .modal-body .note-subhead {
+    color: #7c3aed;
+    font-size: 0.72rem;
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+  }
+
+  .hands-on-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem 0.8rem;
+    margin-bottom: 1.3rem;
+  }
+
+  .hands-on-chip {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 0.65rem 0.9rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1e293b;
+    line-height: 1.35;
+  }
+
+  .modal-body .term-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem 0.9rem;
+  }
+
+  .modal-body .term-row {
+    display: block;
+    border-bottom: none;
+    padding: 0.7rem 0.9rem;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+  }
+
+  .modal-body .term-label {
+    display: inline-block;
+    width: auto;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #6d28d9;
+    background: rgba(139, 92, 246, 0.14);
+    padding: 0.1rem 0.5rem;
+    border-radius: 5px;
+    margin-bottom: 0.35rem;
+  }
+
+  .modal-body .term-def {
+    display: block;
+    color: #334155;
+    font-size: 1.05rem;
+    font-weight: 500;
+    line-height: 1.42;
+  }
+
+  @media (max-width: 900px) {
+    .modal-body .term-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .modal-body .term-grid { grid-template-columns: 1fr; }
+    .hands-on-grid { grid-template-columns: 1fr; }
+  }
+
+  .gotcha {
+    margin-top: 0.9rem;
+    padding: 0.8rem 1.05rem;
+    background: rgba(245, 158, 11, 0.05);
+    border-left: 3px solid #f59e0b;
+    border-radius: 0 8px 8px 0;
+    font-size: 0.95rem;
+    color: #b45309;
+    font-family: 'JetBrains Mono', monospace;
+    line-height: 1.6;
+  }
+
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.7rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .filter-tabs-left { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+  .view-controls { display: flex; gap: 0.5rem; }
+
+  .view-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .view-btn:hover { border-color: #10b981; color: #059669; }
+
+  .filter-tab {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    background: #fff;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+
+  .filter-tab:hover { border-color: #8b5cf6; color: #7c3aed; }
+
+  .filter-tab.active {
+    background: rgba(139, 92, 246, 0.08);
+    border-color: rgba(139, 92, 246, 0.4);
+    color: #7c3aed;
+    font-weight: 600;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+  }
+
+  @media (max-width: 500px) {
+    body { padding: 1.2rem 0.8rem; }
+    h1 { font-size: 1.5rem; }
+    .term-row { flex-direction: column; gap: 0.15rem; }
+    .term-label { width: auto; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <a href="index.html" class="back-link">← back</a>
+
+  <header>
+    <h1>Ornua</h1>
+    <p class="subtitle">IT ServiceNow Support Specialist</p>
+    <span class="role-tag">Fri 24 Jul • 11:30–12:00 • MS Teams</span>
+  </header>
+
+  <div class="panel-card">
+    <div class="panel-person">
+      <div class="panel-icon">👤</div>
+      <div>
+        <div class="panel-name">Nigel Bannister</div>
+        <div class="panel-role">IT Service Delivery Manager</div>
+        <div class="panel-read">reads as: safe to hire?</div>
+      </div>
+    </div>
+    <div class="panel-person">
+      <div class="panel-icon">👤</div>
+      <div>
+        <div class="panel-name">Rahul Kishore</div>
+        <div class="panel-role">IT ServiceNow Analyst</div>
+        <div class="panel-read">reads as: knows his stuff?</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-tabs">
+    <div class="filter-tabs-left">
+      <div class="filter-tab active" onclick="filterCards('all', event)">All</div>
+      <div class="filter-tab" onclick="filterCards('company', event)">Ornua</div>
+      <div class="filter-tab" onclick="filterCards('background', event)">Info on Me</div>
+      <div class="filter-tab" onclick="filterCards('technical', event)">Technical</div>
+      <div class="filter-tab" onclick="filterCards('prep', event)">Questions</div>
+    </div>
+    <div class="view-controls">
+      <div class="view-btn" onclick="expandAll()">Expand All</div>
+      <div class="view-btn" onclick="foldAll()">Fold All</div>
+    </div>
+  </div>
+
+  <div class="section-label" data-section="company">🏢 Ornua</div>
+
+  <!-- 1. ORNUA -->
+  <div class="note-card" data-cat="company" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">1</div>
+      <div class="q-text">Ornua</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span><span class="keyword green">Irish dairy co-op</span> — sells on behalf of Ireland's processors → farmers</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><span class="keyword amber">Kerrygold</span> is theirs. Also Dubliner, Pilgrim's Choice, Forto, BEO.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><span class="keyword">€3.4bn</span> turnover · <span class="keyword">~2,800</span> staff · <span class="keyword">110</span> countries</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Founded <span class="keyword purple">1961</span>, was the Irish Dairy Board. HQ Grattan House, Dublin 2.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><span class="keyword">Ornua Foods</span> (consumer) / <span class="keyword">Ornua Ingredients</span> (B2B)</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. THEIR VALUES -->
+  <div class="note-card" data-cat="company" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">2</div>
+      <div class="q-text">Core Values<span class="q-sub">glance only — don't recite</span></div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="value-row"><span class="keyword green">Show you care</span><span class="value-def">quality, don't walk past something wrong</span></div>
+        <div class="value-row"><span class="keyword">Achieve great things</span><span class="value-def">collaborate, think beyond silos</span></div>
+        <div class="value-row"><span class="keyword purple">Be our true selves</span><span class="value-def">authenticity, diversity</span></div>
+        <div class="value-row"><span class="keyword amber">Make it happen</span><span class="value-def">ownership, don't wait</span></div>
+        <div class="value-row"><span class="keyword rose">Seek new ideas</span><span class="value-def">"how we can", not "we've always done it this way"</span></div>
+        <div class="vs-box">
+          <div class="vs-label">vs my V1 values</div>
+          <div class="vs-old">Customer First · Drive · Personal Commitment · No Ego · Excellence · Honesty &amp; Integrity</div>
+          <div class="vs-verdict">Same furniture, rearranged — except <span class="keyword rose">new ideas</span>, which V1 didn't have.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" data-section="background">🧭 Info on Me</div>
+
+  <!-- 3. ME -->
+  <div class="note-card" data-cat="background" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">3</div>
+      <div class="q-text">Me</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="think-box">💡 If I blank: "Seen it from implementation through to living with it day to day."</div>
+
+        <div class="hint"><span class="hint-icon">→</span><span>Mature student → 1.1 honours → straight into Version 1</span></div>
+
+        <div class="note-subhead">Infrastructure Consultant</div>
+        <div class="hint"><span class="hint-icon">→</span><span>ITIL, teamwork, priorities, patching, knowledge creation</span></div>
+
+        <div class="note-subhead">LANDesk → ServiceNow</div>
+        <div class="hint"><span class="hint-icon">→</span><span>First on the team, zero SN experience, learned it ground up</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Flagged early how big the ecosystem was — we went ITSM + ITOM</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Implementation partner: <strong>Crossfuze</strong></span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>On every call with them and the business decision makers</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Brought the infrastructure/LANDesk view — how we actually dealt with customers</span></div>
+
+        <div class="note-subhead">Then</div>
+        <div class="hint"><span class="hint-icon">→</span><span>Primarily ITSM. Hired others for ITOM/CMDB.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>I set up all the original MID Servers — Azure and AWS — kept them patched and up. SLAs, notifications, inbound actions.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Shifted left to the service desk so my team could take on new projects — TPSM, CSM.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. THE GAP -->
+  <div class="note-card" data-cat="background" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">4</div>
+      <div class="q-text">The Gap</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Redundant July 2025. Took a proper break. Started looking in the new year.</span></div>
+        <div class="gotcha">⚠ Don't itemise. Don't apologise. Move on.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" data-section="technical">⚙️ Technical</div>
+
+  <!-- 5. HOW I INVESTIGATE AN ISSUE -->
+  <div class="note-card" data-cat="technical" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">5</div>
+      <div class="q-text">How I Investigate An Issue</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="think-box">💡 Method is the answer. Don't jump to the fix.</div>
+        <div class="hint"><span class="hint-icon">1.</span><span>Has it happened before? — SN Utils, older tickets</span></div>
+        <div class="hint"><span class="hint-icon">2.</span><span>Ticket history — everything the record already tells me</span></div>
+        <div class="hint"><span class="hint-icon">3.</span><span>Scope — one user or everyone? since when? what changed?</span></div>
+        <div class="hint"><span class="hint-icon">4.</span><span>Config layer — flow, business rules, UI actions</span></div>
+        <div class="hint"><span class="hint-icon">5.</span><span>Logs — filter to the exact time</span></div>
+        <div class="hint"><span class="hint-icon">6.</span><span>Dev — reproduce</span></div>
+        <div class="hint"><span class="hint-icon">7.</span><span>Update set → fix → functional test</span></div>
+        <div class="hint"><span class="hint-icon">8.</span><span>Promote to test — requester/their team validates</span></div>
+        <div class="hint"><span class="hint-icon">9.</span><span>Change record → CAB</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. CMDB / ITOM -->
+  <div class="note-card" data-cat="technical" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">6</div>
+      <div class="q-text">CMDB / ITOM<span class="q-sub">honest: not been near it in years</span></div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+
+        <div class="think-box">💡 The one line: alert is useless unless the CI is right. Wrong CI = wrong team, or nobody.</div>
+
+        <div class="hint"><span class="hint-icon">→</span><span><span class="keyword">CI</span> = a record — server, VM, app, laptop</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><span class="keyword green">MID Server</span> = the thing that does the scanning</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><span class="keyword purple">IRE</span> = decides which source wins when two disagree</span></div>
+
+        <div class="gotcha">⚠ Not hands-on in years. If pushed on maintaining it: fix the source, not the record.</div>
+
+        <button type="button" class="modal-trigger" onclick="event.stopPropagation(); openModal('cmdb-modal')">Full breakdown — only if Rahul goes deep</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. CATALOGUE & DATA LOADS -->
+  <div class="note-card" data-cat="technical" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">7</div>
+      <div class="q-text">Catalogue &amp; Data Loads</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+
+        <div class="note-subhead">Catalogue</div>
+        <div class="hint"><span class="hint-icon">→</span><span><strong>Catalog item</strong> — the orderable thing</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><strong>Record producer</strong> — form that creates a record (not an order)</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><strong>Order guide</strong> — bundles several items, e.g. new starter</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><strong>Variable sets</strong> — reusable blocks of variables</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Catalog client scripts / UI policies — behaviour on the form</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Flow behind the item — what happens after submit</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Variables map onto the RITM / catalog task</span></div>
+
+        <div class="note-subhead">Data Loads</div>
+        <div class="hint"><span class="hint-icon">→</span><span>Staging table → transform map → target table</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><strong>Coalesce field</strong> = the match key</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Wrong coalesce = duplicates instead of updates</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Field maps vs scripted maps · onBefore / onAfter · run order</span></div>
+        <div class="think-box">💡 My example: migrated users from another platform.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 8. UPGRADES -->
+  <div class="note-card" data-cat="technical" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">8</div>
+      <div class="q-text">Upgrades</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="think-box">💡 Why it's safe by prod: same upgrade done twice already. Decisions and fixes travel in update sets. Prod isn't the first attempt.</div>
+
+        <div class="note-subhead">Before</div>
+        <div class="hint"><span class="hint-icon">→</span><span>Review release + upgrade notes against our instance</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Check for bottlenecks, then schedule via Now Support</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Comms to dev users — export or promote your update sets</span></div>
+
+        <div class="note-subhead">Dev</div>
+        <div class="hint"><span class="hint-icon">→</span><span>Clone → upgrade</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Spin up an update set, capture the skipped-record decisions in it</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Functional testing (not UAT) — incident, problem, change + CAB, service requests, portal</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Anything off → log a bug in production, reviewed by architect / platform owner / process owner</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Fixes in a correctly named update set → promote</span></div>
+
+        <div class="note-subhead">Test</div>
+        <div class="hint"><span class="hint-icon">→</span><span>Sign-off first</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Schedule clone + upgrade, comms again</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>UAT testers — test scripts, plus how people actually use it</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Defects → logged in prod → update set → fixed and functionally tested in dev → promoted to test → retested</span></div>
+
+        <div class="note-subhead">Prod</div>
+        <div class="hint"><span class="hint-icon">→</span><span>CAB approval — business, CAB, product owner</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Comms out, go-live announced</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Hypercare at least a week</span></div>
+
+        <div class="think-box">💡 What actually made it work: put a PM on the upgrade. Before, a team member ran it alongside P1s — bogged down, rushing, chasing UAT consultants across every area of the business. PM chases, tech person does the tech.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 9. TARGETED COMMUNICATIONS -->
+  <div class="note-card" data-cat="technical" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">9</div>
+      <div class="q-text">Targeted Communications</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="think-box">💡 Still in use, zero issues. Built as a pattern, not a one-off. Delivered after I knew I was being made redundant.</div>
+
+        <div class="note-subhead">The Ask</div>
+        <div class="hint"><span class="hint-icon">→</span><span>CIM logged — product owner wanted comms sent from the platform, not from outside email</span></div>
+
+        <div class="note-subhead">V1 — OOTB</div>
+        <div class="hint"><span class="hint-icon">→</span><span>Spun it up out-of-the-box</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Only customisation: the email template. Recipient lists via script.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Tested in dev → full UAT in test → production</span></div>
+
+        <div class="note-subhead">V2 — Open It Up To Customers <span class="subhead-note">(messy)</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Second CIM logged</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Started down the Azure / MS Teams route with the architect and product owner → parked</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Went to the ERP team, ran the requirement calls again, requirements confirmed in writing</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Landed with me</span></div>
+
+        <div class="note-subhead">The Wall</div>
+        <div class="gotcha">⚠ 2 weeks of scripting to get it part-working. Hit a snag the architect couldn't call. Logged an HI case with ServiceNow — 2-3 months, several SN consultants.</div>
+
+        <div class="note-subhead">Why Flow Designer Over The OOTB Workflow</div>
+        <div class="hint"><span class="hint-icon">→</span><span>Old workflow engine too rigid</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Portal + email delivery across domain separation — SN's own tech spec said it was supported. It wasn't.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Proved that through the HI case.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Rebuilt from scratch on Flow Designer — recipients get it to their mailbox <strong>and</strong> their portal</span></div>
+
+        <div class="note-subhead">The Delivery</div>
+        <div class="hint"><span class="hint-icon">→</span><span>Head of ERP got involved in UAT herself, brought a real customer in — delighted with the end result</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Built as a pattern, not a one-off — works for any customer in a domain-separated instance (AWS, Azure, whoever)</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Wrote the KB articles for my team and the ERP team</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10. TRAINING & THE P1 -->
+  <div class="note-card" data-cat="technical" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">10</div>
+      <div class="q-text">Training &amp; The P1</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+
+        <div class="note-subhead">Training</div>
+        <div class="hint"><span class="hint-icon">→</span><span>LANDesk → SN rollout: trained fulfillers and end users</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>400+ consultants, 200+ customers</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Training materials, floorwalking, post-go-live support</span></div>
+
+        <div class="note-subhead">The P1</div>
+        <div class="hint"><span class="hint-icon">→</span><span>Passwords pasted into the wrong ticket, domain-separated instance</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Deleting the field isn't enough — text persists in journal fields, audit history, attachments, email logs</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Domain separation = cross-customer exposure risk</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Sanitised it, creds rotated, KB article written, team trained</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label" data-section="prep">🎯 Questions</div>
+
+  <!-- 11. QUESTIONS FOR THEM -->
+  <div class="note-card" data-cat="prep" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">11</div>
+      <div class="q-text">Questions For Them</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span>What does a day in this role look like — and expectations?</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>How many on the team, how do they work?</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>How many instances?</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Change control?</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Run books / processes — how do I get up to speed quickly?</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span>Who's doing the implementation — partner or in-house?</span></div>
+        <div class="gotcha">★ And when it's handed over, who owns the platform day to day?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 12. IF ASKED -->
+  <div class="note-card" data-cat="prep" onclick="toggle(this)">
+    <div class="card-header">
+      <div class="q-number">12</div>
+      <div class="q-text">If Asked</div>
+      <div class="toggle-icon">+</div>
+    </div>
+    <div class="card-body">
+      <div class="card-body-inner">
+        <div class="divider"></div>
+        <div class="hint"><span class="hint-icon">→</span><span><strong>Availability</strong> — "Available immediately, could start Monday." Dog line if needed. Nothing more.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><strong>Why this role</strong> — post-implementation ownership of a fresh platform is a build role. Done that transition before.</span></div>
+        <div class="hint"><span class="hint-icon">→</span><span><strong>ITIL</strong> — "Did the Foundation training years back, worked ITIL-aligned throughout."</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">Keys 1–9, 0=10, q=11, w=12 open a card • e expand • f fold</div>
+</div>
+
+<div class="modal-overlay" id="cmdb-modal" onclick="closeModal('cmdb-modal', event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">CMDB / ITOM — Full Breakdown</div>
+      <button type="button" class="modal-close" onclick="closeModal('cmdb-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="note-subhead">My hands-on</div>
+      <div class="hands-on-grid">
+        <div class="hands-on-chip">Drew CI diagrams in Visio, pre-SN</div>
+        <div class="hands-on-chip">Tested Discovery / Event Mgmt / CMDB</div>
+        <div class="hands-on-chip">Built the test bed</div>
+        <div class="hands-on-chip">Set up MID Servers — Azure &amp; AWS</div>
+        <div class="hands-on-chip">OpsView monitoring → matched to CI</div>
+        <div class="hands-on-chip">3 alerts → incident → assignment group</div>
+      </div>
+
+      <div class="note-subhead">Terminology</div>
+      <div class="term-grid">
+        <div class="term-row"><span class="term-label">CI</span><span class="term-def">record in the CMDB. Server, VM, app, laptop.</span></div>
+        <div class="term-row"><span class="term-label">CI class</span><span class="term-def">the table it lives in. Wrong class = duplicates.</span></div>
+        <div class="term-row"><span class="term-label">Relationships</span><span class="term-def">runs on / depends on / used by — what breaks when one thing falls over</span></div>
+        <div class="term-row"><span class="term-label">Dependency map</span><span class="term-def">visual of those relationships</span></div>
+        <div class="term-row"><span class="term-label">Business service</span><span class="term-def">what the business cares about, sitting on top of CIs</span></div>
+        <div class="term-row"><span class="term-label">Discovery source</span><span class="term-def">where the record came from</span></div>
+        <div class="term-row"><span class="term-label">MID Server</span><span class="term-def">outbound only, sits in the estate, does the scanning</span></div>
+        <div class="term-row"><span class="term-label">ECC queue</span><span class="term-def">the in/out tray between instance and MID Server</span></div>
+        <div class="term-row"><span class="term-label">Probes / sensors</span><span class="term-def">probe goes out, sensor makes sense of what came back</span></div>
+        <div class="term-row"><span class="term-label">Patterns</span><span class="term-def">newer replacement for probes/sensors</span></div>
+        <div class="term-row"><span class="term-label">IRE</span><span class="term-def">Identification &amp; Reconciliation Engine — gatekeeper</span></div>
+        <div class="term-row"><span class="term-label">Identification rules</span><span class="term-def">is this the same box we already have?</span></div>
+        <div class="term-row"><span class="term-label">Reconciliation rules</span><span class="term-def">two sources disagree — which one wins?</span></div>
+        <div class="term-row"><span class="term-label">Authoritative source</span><span class="term-def">the source allowed to win for that field</span></div>
+        <div class="term-row"><span class="term-label">Duplicate CI</span><span class="term-def">same thing twice, usually a bad identification rule</span></div>
+        <div class="term-row"><span class="term-label">Orphan CI</span><span class="term-def">no relationships, so nothing routes off it</span></div>
+        <div class="term-row"><span class="term-label">Stale CI</span><span class="term-def">nothing's updated it in X days — probably gone</span></div>
+        <div class="term-row"><span class="term-label">CMDB health</span><span class="term-def">completeness / correctness / compliance</span></div>
+        <div class="term-row"><span class="term-label">Install vs operational</span><span class="term-def">"we own it" vs "it's running"</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggle(card) {
+  const wasOpen = card.classList.contains('open');
+  const body = card.querySelector('.card-body');
+  if (wasOpen) {
+    card.classList.remove('open');
+    body.style.maxHeight = null;
+  } else {
+    card.classList.add('open');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+}
+
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+
+function closeModal(id, evt) {
+  if (evt && evt.target !== evt.currentTarget) return;
+  document.getElementById(id).classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+    return;
+  }
+  if (document.querySelector('.modal-overlay.open')) return;
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+  const keyMap = { '1':1, '2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, '0':10, 'q':11, 'w':12 };
+  if (e.key === 'e') { expandAll(); return; }
+  if (e.key === 'f') { foldAll(); return; }
+
+  const n = keyMap[e.key.toLowerCase()];
+  if (!n) return;
+  const cards = document.querySelectorAll('.note-card');
+  const card = cards[n - 1];
+  if (!card || card.style.display === 'none') return;
+  foldAll();
+  card.classList.add('open');
+  const body = card.querySelector('.card-body');
+  body.style.maxHeight = body.scrollHeight + 'px';
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+function expandAll() {
+  document.querySelectorAll('.note-card').forEach(card => {
+    card.classList.add('open');
+    const body = card.querySelector('.card-body');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  });
+}
+
+function foldAll() {
+  document.querySelectorAll('.note-card').forEach(card => {
+    card.classList.remove('open');
+    card.querySelector('.card-body').style.maxHeight = null;
+  });
+}
+
+function filterCards(cat, evt) {
+  document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+  evt.target.classList.add('active');
+  document.querySelectorAll('.note-card[data-cat]').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+  document.querySelectorAll('.section-label[data-section]').forEach(label => {
+    label.style.display = (cat === 'all' || label.dataset.section === cat) ? '' : 'none';
+  });
+}
+</script>
+
+</body>
+</html>
